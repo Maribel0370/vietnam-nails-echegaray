@@ -1,0 +1,22 @@
+- CSV
+fffff,b76e7,27272,e3b1b,f5f5f
+
+- With #
+#FFFFFF,#B76E79,#272727,#E3B1B6,#F5F5F5
+
+- JSON Array
+["fffff","b76e7","27272","e3b1b","f5f5f"]
+
+- JSON Object
+{
+ "White": "#ffffff",
+ "Mine Shaft": "#272727",
+ "Rose Fog": "#e3b1b6",
+ "Wild Sand": "#f5f5f5"
+}
+
+Pancho: #EEC7A3
+Periwinkle: #D8D7F1,
+Pink Salmon: #FF91AF,
+Voodoo: #46344E,
+ Turkish Rose: "#b76e79",

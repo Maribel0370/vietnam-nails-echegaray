@@ -1,0 +1,18 @@
+- CSV
+eec7a,d8d7f,ff91a,46344,fffff,b76e7
+
+- With #
+#EEC7A3,#D8D7F1,#FF91AF,#46344E,#FFFFFF,#B76E79
+
+- JSON Array
+["eec7a","d8d7f","ff91a","46344","fffff","b76e7"]
+
+- JSON Object
+{
+ "Pancho": "#eec7a3",
+ "Periwinkle Gray": "#d8d7f1",
+ "Pink Salmon": "#ff91af",
+ "Voodoo": "#46344e",
+ "White": "#ffffff",
+ "Turkish Rose": "#b76e79"
+}

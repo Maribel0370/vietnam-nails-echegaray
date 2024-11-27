@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" name="David, Maria Isabel, Fernanda Montalvan">
+    <meta name="author" name="David, Maria Isabel, Fernanda Montalvan, Cristian">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure">
     <link rel="stylesheet" href="public/Resources/css/style.css">
@@ -21,9 +21,9 @@
             <nav>
                 <ul>
                     <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Reservas</a></li>
-                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="public/Webpages/servicios.php">Servicios</a></li>
+                    <li><a href="public/Webpages/reservas.php">Reservas</a></li>
+                    <li><a href="public/Webpages/ofertas.php">Ofertas</a></li>
                 </ul>
             </nav>
         </div>
@@ -37,7 +37,7 @@
                 <a href="#services" class="btn">Browse Now</a>
             </div>
             <div class="image-content">
-                <img src="nail-polish.jpg" alt="Nail Polish">
+                <img src="public/Resources/img/" alt="Nail Polish">
             </div>
         </div>
     </section>

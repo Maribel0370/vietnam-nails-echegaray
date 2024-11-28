@@ -1,8 +1,16 @@
 @keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
 /* General Styles */
+:root {
+    --background-body: linear-gradient(145deg, #885c60, #f5d0d8, #885c60);
+    --background-head: linear-gradient(135deg, rgb(22, 22, 22), #cecdcd, #212020, #4f4d4d); 
+    --white-glow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
+    --pink-glow: 0 0 42px #f316ef, 0 0 82px #f316ef,  0 0 92px #f316ef,  0 0 102px #f316ef,  0 0 151px #f316ef;
+}
+
 body {
     font-family: Arial, sans-serif;
+    font-size: 1.2em;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,12 +20,7 @@ body {
 h1, h2, h3 {
     margin: 0;
     padding: 0;
-    color: #d13c6c;
-}
-
-p {
-    margin: 0 0 1em;
-    line-height: 1.5;
+    color: #c33260;
 }
 
 .container {
@@ -25,6 +28,9 @@ p {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 ul {
@@ -45,16 +51,29 @@ ul {
     }
 }
 
+
+section:nth-child(even) {
+    background: var(--background-body);
+    animation: shine 2s infinite linear;
+}
+
 /* Header */
 
 .header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     padding: 20px 0;
-    border-bottom: 1px solid #ddd;
-    background: linear-gradient(145deg, #A9A9A9, #D2B48C, #D2B48C);
+    background: var(--background-head);
+    background-size: 200% 110%; 
+    animation: shine;
+    font-size: 1.2rem;
 
     h1 {
-        font-size: 24px;
+        font-size: 2.5rem;
+        padding: .5rem 0;
         color: #d13c6c;
+        text-shadow: var(--white-glow);
     }
 
     nav ul {
@@ -65,13 +84,11 @@ ul {
 
 /* Hero Section */
 
-.hero {
+#home {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 50px 0;
-    background: linear-gradient(145deg, #c68a93, #f5d0d8, #a97c80);
-    animation: shine 2s infinite linear;
     color: rgb(95, 70, 7);
 
     .text-content {
@@ -93,14 +110,17 @@ ul {
         margin-top: 20px;
     }
 
-    .image-content img {
-        max-width: 100%;
-        border-radius: 10px;
+    img {
+        max-width: 40%;
+        height: auto;
+        border-radius: 25px;
+        padding: 0.8rem;
+        border: 5px solid white;
     }
 }
 
 /* About Section */
-.about {
+#about {
     text-align: center;
     padding: 50px 0;
     background: #fff;
@@ -118,13 +138,32 @@ ul {
         text-decoration: none;
         border-radius: 5px;
     }
+
+    .container {
+        div {
+            margin: 0 2rem;
+        }
+    }
+
+    .carousel-item {
+        width: 90%;
+        background-color: rgb(246, 224, 227);
+        border-radius: 20px;
+    
+        img {
+            width: 70%!important;
+            height: 80%;
+            margin: 0 auto;
+            padding: 0.5rem;
+            border-radius: 20px;
+        }
+    }
+    
 }
 
 /* Services Section */
-.services {
+#services {
     text-align: center;
-    background: linear-gradient(145deg, #c68a93, #f5d0d8, #a97c80);
-    animation: shine 2s infinite linear;
     color: rgb(95, 70, 7);
     padding: 50px 0;
 
@@ -139,7 +178,7 @@ ul {
 }
 
 /* Testimonials */
-.testimonials {
+#testimonials {
     background: #fff;
     padding: 50px 0;
     text-align: center;
@@ -158,7 +197,7 @@ ul {
 }
 
 /* Blog Section */
-.blog {
+#blog {
     background: #f9f9f9;
     padding: 50px 0;
 
@@ -173,11 +212,19 @@ ul {
 }
 
 /* Footer */
-.footer {
-    background: #d13c6c;
-    color: #fff;
+footer {
+    background: var(--background-head);
+    background-size: 200% 110%; 
+    animation: shine;
     padding: 30px 0;
     text-align: center;
+
+    h2 {
+        font-size: 2rem;
+        padding: .5rem 0;
+        color: #d13c6c;
+        text-shadow: var(--white-glow), var(--pink-glow);
+    }
 
     form {
         margin-top: 20px;

@@ -55,10 +55,10 @@ function translate($key, $default = '') {
                                 <img src="public/Resources/img/icons/es.png" alt="Español" width="20"> Español
                             </a>
                             <a class="dropdown-item" href="?lang=ca">
-                                <img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20"> Catalán
+                                <img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20"> Català
                             </a>
                             <a class="dropdown-item" href="?lang=en">
-                                <img src="public/Resources/img/icons/en.png" alt="Inglés" width="20"> Inglés
+                                <img src="public/Resources/img/icons/en.png" alt="Inglés" width="20"> English
                             </a>
                         </div>
                     </div>
@@ -121,10 +121,10 @@ function translate($key, $default = '') {
             </div>
         </section>
 
-        <!-- !-- Sección de testimonios -->
+        <!-- Sección de testimonios -->
         <section id="testimonials">
           <div class="container">
-            <h2><?php echo translate('testimonials', 'Testimonis'); ?></h2>
+            <h2><?php echo translate('testimonials', 'Testimonios'); ?></h2>
               <blockquote>
                <p>"<?php echo translate('testimonial_quote', 'Just like every other time, an amazing experience! The quality of the service, as well as the staff, is unbeatable!'); ?>"</p>
               <footer><?php echo translate('testimonial_author', '- Angela'); ?></footer>
@@ -147,7 +147,7 @@ function translate($key, $default = '') {
     <!-- Pie de página -->
     <footer>
         <div class="container">
-            <p><?php echo translate('rights_reserved', 'Todos los derechos reservados.'); ?></p>
+            <p>&copy; 2024 Vietnam Nails Echegaray. <?php echo translate('rights_reserved', 'Todos los derechos reservados.'); ?></p>
         </div>
     </footer>
 

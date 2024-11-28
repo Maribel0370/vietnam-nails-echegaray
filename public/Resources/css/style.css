@@ -1,4 +1,7 @@
-@keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+@keyframes shine {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
 
 /* General Styles */
 :root {
@@ -15,6 +18,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     color: #333;
+    background-color: #f9f9f9; /* Añadí un fondo claro para una mejor lectura */
 }
 
 h1, h2, h3 {
@@ -38,19 +42,17 @@ ul {
     margin: 0;
     padding: 0;
     display: flex;
-
-    li {
-        margin: 0 15px;
-
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        
-    }
 }
 
+ul li {
+    margin: 0 15px;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
 
 section:nth-child(even) {
     background: var(--background-body);
@@ -61,24 +63,24 @@ section:nth-child(even) {
 
 .header {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* Cambio para ajustar a un espaciado más claro */
     align-items: center;
     padding: 20px 0;
     background: var(--background-head);
     background-size: 200% 110%; 
     animation: shine;
     font-size: 1.2rem;
+}
 
-    h1 {
-        font-size: 2.5rem;
-        padding: .5rem 0;
-        color: #d13c6c;
-        text-shadow: var(--white-glow);
-    }
+.header h1 {
+    font-size: 2.5rem;
+    padding: .5rem 0;
+    color: #d13c6c;
+    text-shadow: var(--white-glow);
+}
 
-    nav ul {
-        justify-content: flex-end;
-    }
+.header nav ul {
+    justify-content: flex-end;
 }
 
 
@@ -90,33 +92,33 @@ section:nth-child(even) {
     justify-content: space-between;
     padding: 50px 0;
     color: rgb(95, 70, 7);
+}
 
-    .text-content {
-        max-width: 50%;
-    }
+#home .text-content {
+    max-width: 50%;
+}
 
-    h2 {
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
+#home h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
 
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #d13c6c;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
+#home .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #d13c6c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
 
-    img {
-        max-width: 40%;
-        height: auto;
-        border-radius: 25px;
-        padding: 0.8rem;
-        border: 5px solid white;
-    }
+#home img {
+    max-width: 40%;
+    height: auto;
+    border-radius: 25px;
+    padding: 0.8rem;
+    border: 5px solid white;
 }
 
 /* About Section */
@@ -124,41 +126,38 @@ section:nth-child(even) {
     text-align: center;
     padding: 50px 0;
     background: #fff;
+}
 
-    h2 {
-        font-size: 30px;
-        margin-bottom: 10px;
-    }
+#about h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
 
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #d13c6c;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-    }
+#about .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #d13c6c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
 
-    .container {
-        div {
-            margin: 0 2rem;
-        }
-    }
+#about .container div {
+    margin: 0 2rem;
+}
 
-    .carousel-item {
-        width: 90%;
-        background-color: rgb(246, 224, 227);
-        border-radius: 20px;
-    
-        img {
-            width: 70%!important;
-            height: 80%;
-            margin: 0 auto;
-            padding: 0.5rem;
-            border-radius: 20px;
-        }
-    }
-    
+#about .carousel-item {
+    width: 90%;
+    background-color: rgb(246, 224, 227);
+    border-radius: 20px;
+}
+
+#about .carousel-item img {
+    width: 70%!important;
+    height: 80%;
+    margin: 0 auto;
+    padding: 0.5rem;
+    border-radius: 20px;
 }
 
 /* Services Section */
@@ -166,15 +165,15 @@ section:nth-child(even) {
     text-align: center;
     color: rgb(95, 70, 7);
     padding: 50px 0;
+}
 
-    h2 {
-        font-size: 30px;
-        margin-bottom: 10px;
-    }
+#services h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
 
-    span {
-        color: #d13c6c;
-    }
+#services span {
+    color: #d13c6c;
 }
 
 /* Testimonials */
@@ -182,33 +181,55 @@ section:nth-child(even) {
     background: #fff;
     padding: 50px 0;
     text-align: center;
+}
 
-    .testimonial {
-        max-width: 600px;
-        margin: 0 auto;
-        font-style: italic;
-    }
+#testimonials .testimonial {
+    max-width: 600px;
+    margin: 0 auto;
+    font-style: italic;
+}
 
-    span {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-    }
+#testimonials span {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 /* Blog Section */
 #blog {
     background: #f9f9f9;
     padding: 50px 0;
+}
 
-    .blog-entry {
-        margin-bottom: 20px;
-    }
+#blog .blog-entry {
+    margin-bottom: 20px;
+}
 
-    h2 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+#blog h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+/* Forzar el color y estilo del botón de suscripción */
+#subscribe .btn {
+    padding: 10px 20px !important;
+    background-color: #fff !important;
+    color: #d13c6c !important;
+    border: 2px solid #d13c6c !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 1rem !important;
+}
+
+/* Evitar que el botón se vea azul cuando se enfoca */
+#subscribe .btn:focus {
+    outline: none !important;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Estilo cuando el botón se presiona */
+#subscribe .btn:active {
+    background-color: #f0f0f0 !important;
+    color: #c33260 !important;
 }
 
 /* Footer */
@@ -218,33 +239,33 @@ footer {
     animation: shine;
     padding: 30px 0;
     text-align: center;
+}
 
-    h2 {
-        font-size: 2rem;
-        padding: .5rem 0;
-        color: #d13c6c;
-        text-shadow: var(--white-glow), var(--pink-glow);
-    }
+footer h2 {
+    font-size: 2rem;
+    padding: .5rem 0;
+    color: #d13c6c;
+    text-shadow: var(--white-glow), var(--pink-glow);
+}
 
-    form {
-        margin-top: 20px;
-    }
+footer form {
+    margin-top: 20px;
+}
 
-    input[type="email"] {
-        padding: 10px;
-        width: 300px;
-        max-width: 100%;
-        margin-right: 10px;
-        border: none;
-        border-radius: 5px;
-    }
+footer input[type="email"] {
+    padding: 10px;
+    width: 300px;
+    max-width: 100%;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+}
 
-    button {
-        padding: 10px 20px;
-        background: #fff;
-        color: #d13c6c;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+footer button {
+    padding: 10px 20px;
+    background: #fff;
+    color: #d13c6c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

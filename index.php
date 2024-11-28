@@ -1,8 +1,5 @@
-<?php
-// Definir la ruta base del proyecto
+<?php 
 define('BASE_PATH', __DIR__ . '/');
-
-// Incluir archivo de configuración inicial
 include_once BASE_PATH . 'init.php';
 
 // Cargar las traducciones
@@ -15,7 +12,7 @@ function translate($key, $default = '') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo $_SESSION['lang']; ?>"> <!-- Idioma dinámico -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,28 +20,49 @@ function translate($key, $default = '') {
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure, Salon uñas Badalona">
     <link rel="stylesheet" href="public/Resources/css/style.css">
-    <title>Vietnam Nails Echegaray</title>
-    
+    <title><?php echo translate('welcome_message', 'Vietnam Nails Echegaray'); ?></title>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <!-- Encabezado del sitio -->
     <header class="header">
         <div class="container">
             <h1><?php echo translate('welcome_message', 'Bienvenido a Vietnam Nails Echegaray'); ?></h1>
-            <nav>
-                <ul>
-                    <li><a href="#"><?php echo translate('home', 'Inicio'); ?></a></li>
-                    <li><a href="public/Webpages/servicios.php"><?php echo translate('services', 'Servicios'); ?></a></li>
-                    <li><a href="public/Webpages/reservas.php"><?php echo translate('reservations', 'Reservas'); ?></a></li>
-                    <li><a href="public/Webpages/ofertas.php"><?php echo translate('offers', 'Ofertas'); ?></a></li>
-                </ul>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#"><?php echo translate('home', 'Inicio'); ?></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="public/Webpages/servicios.php"><?php echo translate('services', 'Servicios'); ?></a></li>
+                        <li class="nav-item"><a class="nav-link" href="public/Webpages/reservas.php"><?php echo translate('reservations', 'Reservas'); ?></a></li>
+                        <li class="nav-item"><a class="nav-link" href="public/Webpages/ofertas.php"><?php echo translate('offers', 'Ofertas'); ?></a></li>
+                    </ul>
+                    <!-- Dropdown de idioma -->
+                    <div class="dropdown ml-auto">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                            <img src="public/Resources/img/icons/<?php echo $_SESSION['lang']; ?>.png" alt="Idioma" width="20">
+                            <?php 
+                            // Nombre del idioma actual
+                            echo $_SESSION['lang'] === 'es' ? 'Español' : ($_SESSION['lang'] === 'ca' ? 'Catalán' : 'Inglés'); 
+                            ?>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="?lang=es">
+                                <img src="public/Resources/img/icons/es.png" alt="Español" width="20"> Español
+                            </a>
+                            <a class="dropdown-item" href="?lang=ca">
+                                <img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20"> Catalán
+                            </a>
+                            <a class="dropdown-item" href="?lang=en">
+                                <img src="public/Resources/img/icons/en.png" alt="Inglés" width="20"> Inglés
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -103,28 +121,38 @@ function translate($key, $default = '') {
             </div>
         </section>
 
-        <!-- Sección de testimonios -->
+        <!-- !-- Sección de testimonios -->
         <section id="testimonials">
+          <div class="container">
+            <h2><?php echo translate('testimonials', 'Testimonis'); ?></h2>
+              <blockquote>
+               <p>"<?php echo translate('testimonial_quote', 'Just like every other time, an amazing experience! The quality of the service, as well as the staff, is unbeatable!'); ?>"</p>
+              <footer><?php echo translate('testimonial_author', '- Angela'); ?></footer>
+             </blockquote>
+             </div>
+        </section>
+
+        <!-- Sección de suscripción -->
+        <section id="subscribe">
             <div class="container">
-                <h2><?php echo translate('testimonials', 'Testimonios'); ?></h2>
-                <blockquote>
-                    <p>"Just like every other girl, I love spending time doing my nails and looking stylish. So glad I found this place!"</p>
-                    <footer>- Jane Doe</footer>
-                </blockquote>
+                <h2><?php echo translate('special_offers', '¡Obtén todas las ofertas especiales!'); ?></h2>
+                <form action="#" method="POST">
+                    <input type="email" placeholder="<?php echo translate('enter_email', 'Introduce tu correo'); ?>" class="form-control" name="email" required>
+                    <button type="submit" class="btn btn-primary"><?php echo translate('subscribe', 'Suscribirse'); ?></button>
+                </form>
             </div>
         </section>
     </main>
 
     <!-- Pie de página -->
-    <footer class="footer text-center">
+    <footer>
         <div class="container">
-            <h2><?php echo translate('special_offers', '¡Obtén todas las ofertas especiales!'); ?></h2>
-            <form action="submit.php" method="POST">
-                <input type="email" name="email" placeholder="<?php echo translate('enter_email', 'Introduce tu correo'); ?>" required>
-                <button type="submit" class="btn btn-success"><?php echo translate('subscribe', 'Suscribirse'); ?></button>
-            </form>
-            <p>&copy; 2024 Vietnam Nails Echegaray. <?php echo translate('rights_reserved', 'Todos los derechos reservados.'); ?></p>
+            <p><?php echo translate('rights_reserved', 'Todos los derechos reservados.'); ?></p>
         </div>
     </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

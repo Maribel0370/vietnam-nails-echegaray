@@ -20,4 +20,11 @@ return [
     'enter_email' => 'Introduce tu correo',
     'subscribe' => 'Suscribirse',
     'rights_reserved' => 'Todos los derechos reservados.',
+    'date' => 'Fecha',
+    'time' => 'Hora',
+    'service' => 'Servicio',
+    'manicure' => 'Manicura',
+    'pedicure' => 'Pedicura',
+    'submit' => 'Enviar',
+    'name' => 'Nombre'
 ];

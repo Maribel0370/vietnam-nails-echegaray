@@ -28,3 +28,4 @@ return [
     'submit' => 'Submit',
     'name' => 'Name'
 ];
+?>

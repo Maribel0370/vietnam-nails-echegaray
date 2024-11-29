@@ -1,6 +1,6 @@
 <?php
 // Conexion a la base de datos
-require_once '../../connection.php'; // Asegúrate de que la ruta es correcta
+require_once 'connection.php'; // Asegúrate de que la ruta es correcta
 
 // Definir horarios del staff
 $staff_schedule = [

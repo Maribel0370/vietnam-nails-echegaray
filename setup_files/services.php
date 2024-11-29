@@ -10,8 +10,8 @@
     <meta name="author" name="David, Maria Isabel, Cristian, Fernanda Montalvan">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure">
-    <link rel="stylesheet" href="../Resources/css/style.css">
-    <link rel="stylesheet" href="../Resources/css/ofertas.css">
+    <link rel="stylesheet" href="../public/Resources/css/style.css">
+    <link rel="stylesheet" href="../public/Resources/css/servicios.css">
     <title>Vietnam Nails Echegaray</title>
     
 </head>
@@ -31,7 +31,7 @@
     <main>
 
     </main>
-    
+
     <footer class="footer">
         <h2>Get All Special Offers!</h2>
         <form action="submit.php" method="POST">

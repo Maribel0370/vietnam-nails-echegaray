@@ -1,0 +1,25 @@
+El cliente prefiere que todo (reservas y despliege de info a usuarios) esté en la misma página (index.php)
+
+Modal de Reservas está conectado a process_reservations.php que está como configuración a la base de datos. reservations.php está actuando como base de datos a efectos de testing mientras se usa la base de datos real. 
+
+Página admin para que pueda añadir/modificar ofertas, añadir/eliminar/modificar empleados
+
+Página ofertas: Mostrar ofertas validas hasta la fecha y futuras
+
+La carpeta setup_files está para guardar todos los archivos de configuración.
+
+
+
+** Cosas pendientes a resolver por la parte frontal**
+- La función de translate no funciona bien. 
+- Modificaciones del carousel
+- Estilizar el modal de reservas.
+- Seguir buscando los tonos adecuados
+- Comprobar despliegue correcto de las citas y si es posible con el modal + base de datos
+- Responsiveness
+
+
+** Cosas pendientes a resolver por la parte Back**
+- Subir base de datos.
+- Setup con el modal
+- Crear admin para el cliente. (admin.php)

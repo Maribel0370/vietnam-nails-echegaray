@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once '../../connection.php';  // Subir dos niveles para acceder a la raíz
+require_once 'connection.php';  // Subir dos niveles para acceder a la raíz
 
 // Cargar archivo de traducción
 $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'es'; // Por defecto español
-require_once '../../languages/' . $lang . '.php'; // Cargar las traducciones
+require_once 'languages/' . $lang . '.php'; // Cargar las traducciones
 
 // Función para traducir las palabras
 function translate($key, $default = '') {

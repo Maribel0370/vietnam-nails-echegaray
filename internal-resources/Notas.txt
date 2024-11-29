@@ -22,4 +22,10 @@ La carpeta setup_files está para guardar todos los archivos de configuración.
 ** Cosas pendientes a resolver por la parte Back**
 - Subir base de datos.
 - Setup con el modal
-- Crear admin para el cliente. (admin.php)
+- Crear admin para el cliente. (admin.php) Se crea una carpeta para la administracion del cliente, 
+     para que el cliente tenga acceso a la tabla de personal y pueda modificar,llamada admin con los siguientes archivos:
+         admin.php
+         add:staff.php
+         delete_staff.php
+         edit_staff.php
+    Habrá que crear un perfil solo para el

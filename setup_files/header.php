@@ -42,64 +42,64 @@
 
 <<!-- Modal de Reservas -->
 <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="reservations.php" method="POST">
+                    <!-- Campos para el nombre y móvil -->
+                    <div class="form-group">
+                        <label for="name"><?php echo translate('your_name', 'Tu nombre'); ?></label>
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
-                    <div class="modal-body">
-                        <form action="reservations.php" method="POST">
-                            <!-- Campos para el nombre y móvil -->
-                            <div class="form-group">
-                                <label for="name"><?php echo translate('your_name', 'Tu nombre'); ?></label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone"><?php echo translate('your_phone', 'Tu teléfono'); ?></label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
-                            </div>
-                            <!-- Campo para seleccionar el servicio -->
-                            <div class="form-group">
-                                <label for="service"><?php echo translate('select_service', 'Selecciona el servicio'); ?></label>
-                                <select class="form-control" id="service" name="service" required>
-                                    <option value="gel"><?php echo translate('gel_nails', 'Uñas gel'); ?></option>
-                                    <option value="semi-capa"><?php echo translate('semi_capa', 'Semi Capa'); ?></option>
-                                    <option value="semi-permanente"><?php echo translate('semi_permanent', 'Semi permanente'); ?></option>
-                                    <option value="manicura"><?php echo translate('manicure', 'Manicura'); ?></option>
-                                    <option value="pedicura"><?php echo translate('pedicure', 'Pedicura'); ?></option>
-                                    <option value="masajes"><?php echo translate('massages', 'Masajes'); ?></option>
-                                </select>
-                            </div>
-                            <!-- Campo para seleccionar el personal -->
-                            <div class="form-group">
-                                <label for="staff"><?php echo translate('select_staff', 'Selecciona al personal'); ?></label>
-                                <select class="form-control" id="staff" name="staff" required>
-                                    <option value="Georgina"><?php echo translate('georgina', 'Georgina'); ?></option>
-                                    <option value="Yulia"><?php echo translate('yulia', 'Yulia'); ?></option>
-                                    <option value="Heip"><?php echo translate('heip', 'Heip'); ?></option>
-                                    <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
-                                    <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
-                                </select>
-                            </div>
-                            <!-- Campo para seleccionar la fecha -->
-                            <div class="form-group">
-                                <label for="date"><?php echo translate('select_date', 'Selecciona la fecha'); ?></label>
-                                <input type="date" class="form-control" id="date" name="date" required>
-                            </div>
-                            <!-- Campo para seleccionar la hora -->
-                            <div class="form-group">
-                                <label for="time"><?php echo translate('select_time', 'Selecciona la hora'); ?></label>
-                                <input type="time" class="form-control" id="time" name="time" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary"><?php echo translate('book_now', 'Reservar ahora'); ?></button>
-                        </form>
+                    <div class="form-group">
+                        <label for="phone"><?php echo translate('your_phone', 'Tu teléfono'); ?></label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
                     </div>
-                </div>
+                    <!-- Campo para seleccionar el servicio -->
+                    <div class="form-group">
+                        <label for="service"><?php echo translate('select_service', 'Selecciona el servicio'); ?></label>
+                        <select class="form-control" id="service" name="service" required>
+                            <option value="gel"><?php echo translate('gel_nails', 'Uñas gel'); ?></option>
+                            <option value="semi-capa"><?php echo translate('semi_capa', 'Semi Capa'); ?></option>
+                            <option value="semi-permanente"><?php echo translate('semi_permanent', 'Semi permanente'); ?></option>
+                            <option value="manicura"><?php echo translate('manicure', 'Manicura'); ?></option>
+                            <option value="pedicura"><?php echo translate('pedicure', 'Pedicura'); ?></option>
+                            <option value="masajes"><?php echo translate('massages', 'Masajes'); ?></option>
+                        </select>
+                    </div>
+                    <!-- Campo para seleccionar el personal -->
+                    <div class="form-group">
+                        <label for="staff"><?php echo translate('select_staff', 'Selecciona al personal'); ?></label>
+                        <select class="form-control" id="staff" name="staff" required>
+                            <option value="Georgina"><?php echo translate('georgina', 'Georgina'); ?></option>
+                            <option value="Yulia"><?php echo translate('yulia', 'Yulia'); ?></option>
+                            <option value="Heip"><?php echo translate('heip', 'Heip'); ?></option>
+                            <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
+                            <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
+                        </select>
+                    </div>
+                    <!-- Campo para seleccionar la fecha -->
+                    <div class="form-group">
+                        <label for="date"><?php echo translate('select_date', 'Selecciona la fecha'); ?></label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <!-- Campo para seleccionar la hora -->
+                    <div class="form-group">
+                        <label for="time"><?php echo translate('select_time', 'Selecciona la hora'); ?></label>
+                        <input type="time" class="form-control" id="time" name="time" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><?php echo translate('book_now', 'Reservar ahora'); ?></button>
+                </form>
             </div>
         </div>
+    </div>
+</div>
 
 <!-- Modal de Ubicación -->
 <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">

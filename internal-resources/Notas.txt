@@ -13,7 +13,6 @@ La carpeta setup_files está para guardar todos los archivos de configuración.
 ** Cosas pendientes a resolver por la parte frontal**
 - La función de translate no funciona bien. 
 - Estilizar el modal de reservas.
-- Seguir buscando los tonos adecuados
 - Comprobar despliegue correcto de las citas y si es posible con el modal + base de datos
 - Responsiveness
 

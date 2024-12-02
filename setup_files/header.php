@@ -40,7 +40,7 @@
     </nav>
 </header>
 
-<<!-- Modal de Reservas -->
+<!-- Modal de Reservas -->
 <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

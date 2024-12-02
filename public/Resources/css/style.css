@@ -4,6 +4,7 @@
 }
 
 
+
 @keyframes rotar {
     from {
         transform: rotateY(0deg);
@@ -85,8 +86,12 @@ section:nth-child(even) {
     h1 {
         font-size: 2.5rem;
         padding: .5rem 0;
-        color: #d1a7a0;
-        text-shadow: var(--white-glow);
+        background: linear-gradient(150deg, #e69f92, #e4b8c2, #b1867d,  #915a50); 
+        background-size: 200% 200%; 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        font-weight: bold; 
+        animation: shine ;
     }
 
     nav {

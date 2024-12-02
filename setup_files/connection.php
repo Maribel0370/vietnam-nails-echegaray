@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost'; // Nombre del servidor
-$dbname = 'nombre_de_base_de_datos';
+$dbname = 'VietnamNails'; // Nombre de la base de datos
 $username = 'root';
 $password = '';
 

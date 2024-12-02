@@ -29,3 +29,10 @@ La carpeta setup_files está para guardar todos los archivos de configuración.
          delete_staff.php
          edit_staff.php
     Habrá que crear un perfil solo para el
+
+02/12/24
+Maribel 
+creo archivos header y footer fuera del indez para aprovecharlo en otros archivos
+Creo boton UBICACION en header con modal a la ubicacion, se crea un estilo en css para 
+     modal para no generar conflictos con boodstrap
+Se conecta a la DB llamada VietnamNails.sql

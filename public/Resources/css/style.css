@@ -354,6 +354,13 @@ section:nth-child(even) {
     width: 80%; /* Puede ajustar el ancho */
     max-width: 500px; /* Ancho máximo */
 }
+.modal-dialog.modal-small-custom {
+    max-width: 300px; /* Ajusta el ancho según tus necesidades */
+}
+.modal-body iframe {
+    height: 150px; /* Ajusta la altura del mapa */
+}
+
 
 /* Botón de cierre */
 .close-btn {

@@ -1,6 +1,6 @@
 <?php  
 session_start();
-require_once 'setup_files/connection.php';
+require_once 'setup_files/connection.php'; // Configuración de la conexión a la base de datos
 include_once 'setup_files/init.php';
 
 $langFile = "setup_files/languages/{$_SESSION['lang']}.php";
@@ -16,6 +16,8 @@ function translate($key, $default = '') {
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+include 'setup_files/header.php'; // Incluir el header
 ?>
 
 
@@ -26,7 +28,7 @@ ini_set('display_errors', 1);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="David, Maribel García, Fernanda Montalvan, Cristian Gómez">
+    <meta name="author" content="David Gutierrez, Maribel García, Fernanda Montalvan, Cristian Gómez">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure, Salon uñas Badalona">
     <link rel="stylesheet" href="public/Resources/css/style.css">
@@ -37,51 +39,7 @@ ini_set('display_errors', 1);
 </head>  
 <body>
     <!-- Encabezado del sitio -->
-    <header class="header">
-        <h1>Vietnam Nails Echegaray</h1>
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><?php echo translate('home', 'Inicio'); ?></a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="setup_files/services.php"><?php echo translate('services', 'Servicios'); ?></a></li>
-                    <!-- Aquí el enlace para abrir el modal de reservas -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#reservationModal"><?php echo translate('reservations', 'Reservas'); ?></a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="setup_files/ofertas.php"><?php echo translate('offers', 'Ofertas'); ?></a></li>
-                </ul>
-
-                <!-- Dropdown de idioma -->
-                <div class="dropdown ml-auto">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                        <img src="public/Resources/img/icons/<?php echo $_SESSION['lang']; ?>.png" alt="Idioma" width="20">
-                        <?php 
-                        // Nombre del idioma actual
-                        echo $_SESSION['lang'] === 'es' ? 'Español' : ($_SESSION['lang'] === 'ca' ? 'Catalán' : 'Inglés'); 
-                        ?>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="?lang=es">
-                            <img src="public/Resources/img/icons/es.png" alt="Español" width="20"> Español
-                        </a>
-                        <a class="dropdown-item" href="?lang=ca">
-                            <img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20"> Català
-                        </a>
-                        <a class="dropdown-item" href="?lang=en">
-                            <img src="public/Resources/img/icons/en.png" alt="Inglés" width="20"> English
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
+    <!-- El contenido del header se incluirá aquí -->
 
     <!-- Sección de bienvenida -->
     <main>
@@ -219,18 +177,7 @@ ini_set('display_errors', 1);
     </main>
 
     <!-- Pie de página -->
-    <footer>
-            <div>
-                <h2><?php echo translate('special_offers', '¡Obtén todas las ofertas especiales!'); ?></h2>
-                <form action="#" method="POST">
-                    <input type="email" placeholder="<?php echo translate('enter_email', 'Introduce tu correo'); ?>" class="form-control" name="email" required>
-                    <button type="submit" class="btn btn-primary"><?php echo translate('subscribe', 'Suscribirse'); ?></button>
-                </form>
-            </div>
-            <p>&copy; 2024 Vietnam Nails Echegaray. <?php echo translate('rights_reserved', 'Todos los derechos reservados.'); ?></p>
-    </footer>
-
-
+    <?php include 'setup_files/footer.php'; // Incluir el footer ?>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -38,9 +38,6 @@ include 'setup_files/header.php'; // Incluir el header
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>  
 <body>
-    <!-- Encabezado del sitio -->
-    <!-- El contenido del header se incluirá aquí -->
-
     <!-- Sección de bienvenida -->
     <main>
         <section id="home">

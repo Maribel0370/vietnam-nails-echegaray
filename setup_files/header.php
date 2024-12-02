@@ -28,12 +28,12 @@
             <div class="dropdown ml-auto">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                     <img src="public/Resources/img/icons/<?php echo $_SESSION['lang']; ?>.png" alt="Idioma" width="20">
-                    <?php echo $_SESSION['lang'] === 'es' ? 'Español' : ($_SESSION['lang'] === 'ca' ? 'Catalán' : 'Inglés'); ?>
+                    <?php echo $_SESSION['lang'] === 'es' ? 'Esp' : ($_SESSION['lang'] === 'ca' ? 'Cat' : 'Ing'); ?>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="?lang=es"><img src="public/Resources/img/icons/es.png" alt="Español" width="20"> Español</a>
-                    <a class="dropdown-item" href="?lang=ca"><img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20"> Català</a>
-                    <a class="dropdown-item" href="?lang=en"><img src="public/Resources/img/icons/en.png" alt="Inglés" width="20"> English</a>
+                    <a class="dropdown-item" href="?lang=es"><img src="public/Resources/img/icons/es.png" alt="Español" width="20">  Español</a>
+                    <a class="dropdown-item" href="?lang=ca"><img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20">  Catalá</a>
+                    <a class="dropdown-item" href="?lang=en"><img src="public/Resources/img/icons/en.png" alt="Inglés" width="20">  English</a>
                 </div>
             </div>
         </div>
@@ -117,8 +117,8 @@
                     <!-- Google Maps Embed -->
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.411775382113!2d2.2322693153855725!3d41.45011347925821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a499b1b1f0c9f3%3A0x1d7c60e2db5c9db!2sCalle%20Echegaray%2C%2015%2C%20Badalona%2C%20Barcelona%2C%20España!5e0!3m2!1ses!2ses!4v1234567890!5m2!1ses!2ses" 
-                        width="100%" 
-                        height="200" <!-- Ajusta la altura del iframe -->
+                        width="800px" 
+                        height="250px" 
                         frameborder="0" 
                         style="border:0;" 
                         allowfullscreen="" 

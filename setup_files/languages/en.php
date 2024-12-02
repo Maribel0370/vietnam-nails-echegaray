@@ -26,6 +26,7 @@ return [
     'manicure' => 'Manicure',
     'pedicure' => 'Pedicure',
     'submit' => 'Submit',
-    'name' => 'Name'
+    'name' => 'Name',
+    'location' => 'Location'
 ];
 ?>

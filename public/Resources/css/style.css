@@ -352,14 +352,18 @@ section:nth-child(even) {
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Puede ajustar el ancho */
-    max-width: 500px; /* Ancho máximo */
+    max-width: 750px; /* Ancho máximo */
 }
 .modal-dialog.modal-small-custom {
-    max-width: 300px; /* Ajusta el ancho según tus necesidades */
+    max-width: 750px; /* Aumenta el ancho del modal */
+    
 }
+
 .modal-body iframe {
-    height: 150px; /* Ajusta la altura del mapa */
+    height: 250px; /* Incrementa la altura del iframe */
+    width: 100%; /* Asegúrate de que ocupe todo el ancho del modal */
 }
+
 
 
 /* Botón de cierre */

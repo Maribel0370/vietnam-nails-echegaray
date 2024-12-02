@@ -26,6 +26,7 @@
         'manicure' => 'Manicura',
         'pedicure' => 'Pedicura',
         'submit' => 'Enviar',
-        'name' => 'Nom'
+        'name' => 'Nom',
+        'location' => 'Ubicació'
     ];
 ?>

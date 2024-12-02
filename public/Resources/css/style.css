@@ -366,7 +366,7 @@ section:nth-child(even) {
 }
 
 .modal-body iframe {
-    height: 250px; /* Incrementa la altura del iframe */
+    height: 390px; /* Incrementa la altura del iframe */
     width: 100%; /* Asegúrate de que ocupe todo el ancho del modal */
 }
 

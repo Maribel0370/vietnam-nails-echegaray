@@ -86,13 +86,11 @@ section:nth-child(even) {
     h1 {
         font-size: 2.5rem;
         padding: .5rem 0;
-        background: linear-gradient(150deg, #e69f92, #e4b8c2, #b1867d,  #915a50); 
-        background-size: 200% 200%; 
-        -webkit-background-clip: text; 
-        -webkit-text-fill-color: transparent; 
-        font-weight: bold; 
-        animation: shine ;
+        color: #d1a7a0;
+        text-shadow: var(--white-glow);
     }
+
+    
 
     nav {
         background-color: transparent !important;;
@@ -169,13 +167,13 @@ section:nth-child(even) {
     #carrousel {
         text-align: center;
         display: flex;
-        justify-content: flex-start;
+        justify-content:center;
         align-items: center;
         padding: 0;
-        width: 40%;
+        width: 50%;
 
         .content-all {
-            width: 270px;
+            width: 220px;
             margin: 0 auto;
             perspective: 1000px;
             position: relative;
@@ -189,9 +187,9 @@ section:nth-child(even) {
 
             figure {
                 width: 78%;
-                height: 140px;
+                height: 120px;
                 overflow: hidden;
-                position: absolute;
+                position:absolute;
                 box-shadow: 0px 0px 20px 0px black;
                 transition: all 300ms;
 
@@ -206,38 +204,46 @@ section:nth-child(even) {
             }
 
             figure:nth-child(2) {
-                transform: rotateY(40deg) translateZ(300px);
+                transform: rotateY(32.72deg) translateZ(300px);
             }
 
             figure:nth-child(3) {
-                transform: rotateY(80deg) translateZ(300px);
+                transform: rotateY(65.45deg) translateZ(300px);
             }
 
             figure:nth-child(4) {
-                transform: rotateY(120deg) translateZ(300px);
+                transform: rotateY(98.18deg) translateZ(300px);
             }
 
             figure:nth-child(5) {
-                transform: rotateY(160deg) translateZ(300px);
+                transform: rotateY(130.90deg) translateZ(300px);
             }
 
             figure:nth-child(6) {
-                transform: rotateY(200deg) translateZ(300px);
+                transform: rotateY(163.63deg) translateZ(300px);
             }
 
             figure:nth-child(7) {
-                transform: rotateY(240deg) translateZ(300px);
+                transform: rotateY(196.36deg) translateZ(300px);
             }
 
             figure:nth-child(8) {
-                transform: rotateY(280deg) translateZ(300px);
+                transform: rotateY(229.09deg) translateZ(300px);
             }
 
             figure:nth-child(9) {
-                transform: rotateY(320deg) translateZ(300px);
+                transform: rotateY(261.81deg) translateZ(300px);
             }
 
             figure:nth-child(10) {
+                transform: rotateY(294.54deg) translateZ(300px);
+            }
+
+            figure:nth-child(11) {
+                transform: rotateY(327.27deg) translateZ(300px);
+            }
+
+            figure:nth-child(12) {
                 transform: rotateY(360deg) translateZ(300px);
             }
 
@@ -546,43 +552,52 @@ footer {
                 }
             }
 
+           
             figure:nth-child(1) {
                 transform: rotateY(0deg) translateZ(300px);
             }
 
             figure:nth-child(2) {
-                transform: rotateY(40deg) translateZ(300px);
+                transform: rotateY(32.72deg) translateZ(300px);
             }
 
             figure:nth-child(3) {
-                transform: rotateY(80deg) translateZ(300px);
+                transform: rotateY(65.45deg) translateZ(300px);
             }
 
             figure:nth-child(4) {
-                transform: rotateY(120deg) translateZ(300px);
+                transform: rotateY(98.18deg) translateZ(300px);
             }
 
             figure:nth-child(5) {
-                transform: rotateY(160deg) translateZ(300px);
+                transform: rotateY(130.90deg) translateZ(300px);
             }
 
             figure:nth-child(6) {
-                transform: rotateY(200deg) translateZ(300px);
+                transform: rotateY(163.63deg) translateZ(300px);
             }
 
             figure:nth-child(7) {
-                transform: rotateY(240deg) translateZ(300px);
+                transform: rotateY(196.36deg) translateZ(300px);
             }
 
             figure:nth-child(8) {
-                transform: rotateY(280deg) translateZ(300px);
+                transform: rotateY(229.09deg) translateZ(300px);
             }
 
             figure:nth-child(9) {
-                transform: rotateY(320deg) translateZ(300px);
+                transform: rotateY(261.81deg) translateZ(300px);
             }
 
             figure:nth-child(10) {
+                transform: rotateY(294.54deg) translateZ(300px);
+            }
+
+            figure:nth-child(11) {
+                transform: rotateY(327.27deg) translateZ(300px);
+            }
+
+            figure:nth-child(12) {
                 transform: rotateY(360deg) translateZ(300px);
             }
 

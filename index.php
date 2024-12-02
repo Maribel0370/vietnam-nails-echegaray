@@ -139,6 +139,10 @@ include 'setup_files/header.php'; // Incluir el header
                         <figure><img src="public/Resources/img/unas/nails7.jpg" alt=".."></figure>
                         <figure><img src="public/Resources/img/unas/nails8.jpg" alt=".."></figure>
                         <figure><img src="public/Resources/img/unas/nails9.jpg" alt=".."></figure>
+                        <figure><img src="public/Resources/img/unas/nails10.jpg" alt=".."></figure>
+                        <figure><img src="public/Resources/img/unas/nails11.jpg" alt=".."></figure>
+                        <figure><img src="public/Resources/img/unas/nails12.jpg" alt=".."></figure>
+
 
                         </div>
                     </div> 

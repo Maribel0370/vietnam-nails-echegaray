@@ -14,6 +14,14 @@
     }
 }
 
+@font-face{
+    font-family: 'garderegular';
+    src: url('/public/Resources/fonts/garde-webfont.woff2') format('woff2'),
+    url('/public/Resources/fonts/garde-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* General Styles */
 :root {
     --background-body: linear-gradient(145deg, #d1a7a0, #f5d0d8, #d1a7a0);
@@ -32,6 +40,18 @@ body {
     color: var(--font-color);
     background-color: #e6e4e4; /* Añadí un fondo claro para una mejor lectura */
 }
+
+.texto-imagen{
+    font-family: 'garderegular';
+    font-size: 25px;
+    background-image: url('/public/Resources/img/oro_rosa.png');
+    background-size: cover;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    
+}
+
 
  h2, h3 {
     margin: 0;
@@ -83,12 +103,12 @@ section:nth-child(even) {
     animation: shine;
     font-size: 1.2rem;
 
-    h1 {
+    /* h1 {
         font-size: 2.5rem;
         padding: .5rem 0;
         color: #d1a7a0;
         text-shadow: var(--white-glow);
-    }
+    } */
 
     
 

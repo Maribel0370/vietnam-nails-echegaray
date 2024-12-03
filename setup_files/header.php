@@ -3,6 +3,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+// Incluir el archivo que contiene la función translate
+include '../languages/init.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,10 +17,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
 </head>
 <body>
-    
-</body>
-</html>
-<header class="header">
+    <header class="header">
     <h1>Vietnam Nails Echegaray</h1>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -153,3 +152,6 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
+</body>
+</html>
+

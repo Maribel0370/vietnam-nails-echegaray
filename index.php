@@ -1,11 +1,22 @@
 <?php  
 session_start();
 require_once 'setup_files/connection.php'; // Configuración de la conexión a la base de datos
-include_once 'setup_files/languages/init.php';
+
+// Verificar si el archivo init.php existe y actualizar la ruta si es necesario
+if (file_exists('setup_files/init.php')) {
+    include_once 'setup_files/init.php';
+} else {
+    die('El archivo init.php no se encuentra en la ruta especificada.');
+}
+
+// Verificar si la variable de sesión 'lang' está definida
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Establecer un valor predeterminado si no está definido
+}
 
 $langFile = "setup_files/languages/{$_SESSION['lang']}.php";
 if (!file_exists($langFile)) {
-    $langFile = "setup_files/languages/en.php";
+    $langFile = "setup_files/languages/es.php"; // Cambiar a español si el archivo no existe
 }
 $lang = file_exists($langFile) ? include $langFile : [];
 
@@ -14,6 +25,7 @@ function translate($key, $default = '') {
     return $lang[$key] ?? $default;
 }
 
+// Mostrar errores para depuración
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

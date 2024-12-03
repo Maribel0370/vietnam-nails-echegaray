@@ -47,3 +47,9 @@ Se modifica los tonos para el Header, el Body y el Footer. y para los botones, y
                      Body: #d1a7a0, #f5d0d8, #d1a7a0
 		     Head: rgb(22, 22, 22, 25%),  #cecdcd, #2120205c, #4f4d4d8f
 
+
+03/12/24
+Maribel
+se han actualizado las rutas de reservations y connection, 
+ya que al moverlas a otra carpeta no se estaba haciendo correctamente la llamada
+

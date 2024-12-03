@@ -79,7 +79,7 @@ include 'setup_files/header.php'; // Incluir el header
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="reservations.php" method="POST">
+                        <form action="setup_files/reservations.php" method="POST">
                             <!-- Campos para el nombre y móvil -->
                             <div class="form-group">
                                 <label for="name"><?php echo translate('your_name', 'Tu nombre'); ?></label>

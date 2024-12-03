@@ -5,7 +5,7 @@ return [
     'services' => 'Servicios',
     'reservations' => 'Reservas',
     'offers' => 'Ofertas',
-    'home_highlight' => '¡Toneladas de colores Pintura de Uñas Orgánica!',
+    'home_highlight' => "Ofrecemos una amplia gama de tonos de esmaltes de uñas para adaptarse a cada estilo.",
     'home_description' => 'Con una obsesión por los momentos, servicio personalizado y muchos colores.',
     'book_now' => 'Reserva ahora',
     'about_us' => 'Nuestro Trabajo...',

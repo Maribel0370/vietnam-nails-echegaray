@@ -1,7 +1,7 @@
 <?php  
 session_start();
 require_once 'setup_files/connection.php'; // Configuración de la conexión a la base de datos
-include_once 'setup_files/init.php';
+include_once 'setup_files/languages/init.php';
 
 $langFile = "setup_files/languages/{$_SESSION['lang']}.php";
 if (!file_exists($langFile)) {

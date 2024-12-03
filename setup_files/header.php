@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 // Incluir el archivo que contiene la función translate
-include '../languages/init.php';
+include_once 'setup_files/init.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -5,7 +5,7 @@ return [
     'services' => 'Services',
     'reservations' => 'Reservations',
     'offers' => 'Offers',
-    'home_highlight' => 'Tons of colors Organic Nail Polish!',
+    'home_highlight' => "We offer a wide range of nail polish tones to suit every style.",
     'home_description' => 'With an obsession for moments, personalized service, and lots of colors.',
     'book_now' => 'Book Now',
     'about_us' => 'Our Work...',

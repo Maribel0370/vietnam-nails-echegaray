@@ -5,7 +5,7 @@
         'services' => 'Serveis',
         'reservations' => 'Reserves',
         'offers' => 'Ofertes',
-        'home_highlight' => 'Deuens de colors ¡Pintura d\'ungles Orgànica!',
+        'home_highlight' => "Oferim una àmplia gamma de tons d'esmalt d'ungles per adaptar-se a cada estil.",
         'home_description' => 'Amb una obsessió per els moments, servei personalitzat, i molts colors.',
         'book_now' => 'Reserva ara',
         'about_us' => 'El nostre treball...',

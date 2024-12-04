@@ -18,10 +18,10 @@ include_once 'setup_files/init.php';
 </head>
 <body>
     <header class="header">
-    <h1>Vietnam Nails Echegaray</h1>
+    <h1 class="texto-imagen">VIETNAM NAILS ECHEGARAY</h1>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><?php echo translate('home', 'Inicio'); ?></a>
+ 
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,6 +29,7 @@ include_once 'setup_files/init.php';
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#"><?php echo translate('home', 'Inicio'); ?></a></li>
                 <li class="nav-item"><a class="nav-link" href="setup_files/services.php"><?php echo translate('services', 'Servicios'); ?></a></li>
                 <li class="nav-item"><a class="nav-link" href="setup_files/ofertas.php"><?php echo translate('offers', 'Ofertas'); ?></a></li>
                 

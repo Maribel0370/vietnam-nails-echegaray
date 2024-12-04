@@ -48,7 +48,7 @@ body {
     background-size: cover;
     -webkit-background-clip: text;
     background-clip: text;
-    color: #d1a7a0;
+    color: transparent;
     
 }
 

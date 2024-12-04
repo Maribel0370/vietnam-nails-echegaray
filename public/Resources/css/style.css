@@ -38,8 +38,13 @@ body {
     padding: 0;
     box-sizing: border-box;
     color: var(--font-color);
-    background-color: #e6e4e4; /* Añadí un fondo claro para una mejor lectura */
+    background: linear-gradient(145deg, #d1a7a0, #f5d0d8, #d1a7a0), 
+                url('public/Resources/img/fondo_body.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;
 }
+
 
 .texto-imagen{
     font-family: 'garderegular';

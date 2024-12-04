@@ -53,3 +53,9 @@ Maribel
 se han actualizado las rutas de reservations y connection, 
 ya que al moverlas a otra carpeta no se estaba haciendo correctamente la llamada
 
+04/12/24
+Maribel 
+se pone imagen de fondo, no se visualiza debajo del resto de secciones.
+Mirar que está pasando
+
+

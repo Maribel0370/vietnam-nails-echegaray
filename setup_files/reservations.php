@@ -1,6 +1,35 @@
-<?php
-// Conexion a la base de datos
-require_once 'setup_files/connection.php'; // Asegúrate de que la ruta es correcta
+<?php  
+session_start();
+require_once 'setup_files/connection.php'; // Configuración de la conexión a la base de datos
+
+// Verificar si el archivo init.php existe y actualizar la ruta si es necesario
+if (file_exists('setup_files/init.php')) {
+    include_once 'setup_files/init.php';
+} else {
+    die('El archivo init.php no se encuentra en la ruta especificada.');
+}
+
+// Verificar si la variable de sesión 'lang' está definida
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'es'; // Establecer un valor predeterminado si no está definido
+}
+
+$langFile = "setup_files/languages/{$_SESSION['lang']}.php";
+if (!file_exists($langFile)) {
+    $langFile = "setup_files/languages/es.php"; // Cambiar a español si el archivo no existe
+}
+$lang = file_exists($langFile) ? include $langFile : [];
+
+function translate($key, $default = '') {
+    global $lang;
+    return $lang[$key] ?? $default;
+}
+
+// Mostrar errores para depuración
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include 'setup_files/header.php'; // Incluir el header
 
 // Definir horarios del staff
 $staff_schedule = [
@@ -75,12 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservaciones</title>
-    <link rel="stylesheet" href="../styles/reservations.css">
+    <link rel="stylesheet" href="public/resources/css/style.css">
 </head>
 <body>
     <div class="reservation-container">
         <h1>Reservar Cita</h1>
-        <form action="reservations.php" method="POST">
+        <form action="setup_files/reservations.php" method="POST">
             <label for="service">Servicio:</label>
             <select name="service" id="service" required>
                 <option value="gel">Uñas gel</option>

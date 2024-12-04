@@ -136,29 +136,29 @@ include 'setup_files/header.php'; // Incluir el header
                     <h2><?php echo translate('about_us', 'Nuestro trabajo...'); ?></h2>
                     <p><?php echo translate('about_quote', 'Cada año ayudamos a que las mujeres de Barcelona se vean y se sientan mejor.'); ?></p>
                     <a href="#more-about" class="btn btn-secondary"><?php echo translate('read_more', 'Leer más'); ?></a>
-                </div>
+            
 
-               <!-- Carrusel de imágenes -->
-               <div id="carrousel">
-                    <div class="content-all">
-                        <div class="content-carrousel">
-                        <figure><img src="public/Resources/img/unas/nails1.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails2.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails3.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails4.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails5.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails6.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails7.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails8.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails9.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails10.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails11.jpg" alt=".."></figure>
-                        <figure><img src="public/Resources/img/unas/nails12.jpg" alt=".."></figure>
+                      <!-- Carrusel de imágenes -->
+                         <div id="carrousel">
+                            <div class="content-all">
+                               <div class="content-carrousel">
+                                  <figure><img src="public/Resources/img/unas/nails1.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails2.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails3.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails4.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails5.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails6.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails7.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails8.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails9.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails10.jpg" alt=".."></figure>
+                                  <figure><img src="public/Resources/img/unas/nails11.jpg" alt=".."></figure>
+                                 <figure><img src="public/Resources/img/unas/nails12.jpg" alt=".."></figure>
 
-
-                        </div>
-                    </div> 
-                </div>
+                                </div>
+                            </div>  
+                       </div> 
+                 </div>
             </div>
         </section>
 

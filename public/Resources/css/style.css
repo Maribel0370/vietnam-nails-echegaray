@@ -164,7 +164,7 @@ section:nth-child(even) {
 
 /* About Section */
 #about {
-    height: 400px;
+    height: 550px;
     text-align: center;
     padding: 50px 0;
 
@@ -183,25 +183,27 @@ section:nth-child(even) {
     }
 
     .container {
-        justify-content: space-around;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         max-width: 90%;
     }
 
     /* Carousel Section */
 
-    #carrousel {
+    .carrousel {
         text-align: center;
         display: flex;
         justify-content:center;
         align-items: center;
-        padding: 0;
+        padding:0;
         width: 50%;
-
+    }
         .content-all {
             width: 220px;
-            margin: 0 auto;
+            margin: 100 100;
             perspective: 1000px;
-            position: relative;
+            position:static;
         }
 
         .content-carrousel {
@@ -288,7 +290,7 @@ section:nth-child(even) {
                 cursor: pointer;
             }
         }
-    } 
+     
 }
 
 /* Services Section */

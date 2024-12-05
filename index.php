@@ -3,11 +3,12 @@ session_start();
 require_once 'setup_files/connection.php'; // Configuración de la conexión a la base de datos
 
 // Verificar si el archivo init.php existe y actualizar la ruta si es necesario
-if (file_exists('setup_files/init.php')) {
-    include_once 'setup_files/init.php';
+if (file_exists(__DIR__ . '/setup_files/init.php')) {
+    include_once __DIR__ . '/setup_files/init.php';
 } else {
     die('El archivo init.php no se encuentra en la ruta especificada.');
 }
+
 
 // Verificar si la variable de sesión 'lang' está definida
 if (!isset($_SESSION['lang'])) {

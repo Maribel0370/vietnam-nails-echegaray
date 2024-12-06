@@ -108,9 +108,9 @@ section:nth-child(even) {
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 20px;
-    background: var(--header-footer);
+    background: rgba(206, 205, 205, 0.7);
     position: fixed;
     top: 0;
     left: 0;
@@ -119,28 +119,30 @@ section:nth-child(even) {
 }
 
 .header-logo {
+    margin-right: auto;
     max-width: 5%;
     width: auto;
+    margin-left: 80px;
 }
 
 nav {
     margin-left: auto;
 }
 
-.header-logo-rotulo {
-    max-width: 30%;
-    width: auto;
-}
-@media (min-width: 768px) {
     .header-logo-rotulo {
         max-width: 30%;
+        width: auto;
     }
-}
+    @media (min-width: 768px) {
+        .header-logo-rotulo {
+            max-width: 30%;
+        }
+    }
 
-.header-logo {
-    max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
-    width: auto;
-}
+    .header-logo {
+        max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+        width: auto;
+    }
 
 @media (min-width: 768px) {
     .header-logo {
@@ -158,7 +160,7 @@ nav {
     padding: 50px 0;
     position: relative;
     margin-top: 150px;
-    margin-bottom: 700px;
+    margin-bottom: 550px;
 
     .container {
         display: flex;
@@ -785,4 +787,69 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.navbar.bg-light {
+    background-color: transparent !important; /* Elimina el color de fondo */
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 767px) {
+    .header {
+        padding: 15px 10px; /* Ajusta el padding para pantallas más pequeñas */
+    }
+
+    .header-logo {
+        max-width: 10%; /* Ajusta el tamaño del logo para pantallas más pequeñas */
+    }
+
+    nav {
+        margin-left: 0; /* Asegura que el nav se alinee correctamente en pantallas pequeñas */
+    }
+
+    #home {
+        margin-top: 130px; /* Ajusta el espacio para pantallas más pequeñas */
+    }
+
+    #map {
+        margin-bottom: 50px; /* Ajusta el espacio para pantallas más pequeñas */
+    }
+}
+
+/* Ajustes para tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header {
+        padding: 18px 15px; /* Ajusta el padding para tablets */
+    }
+
+    .header-logo {
+        max-width: 8%; /* Ajusta el tamaño del logo para tablets */
+    }
+
+    #home {
+        margin-top: 140px; /* Ajusta el espacio para tablets */
+    }
+
+    #map {
+        margin-bottom: 60px; /* Ajusta el espacio para tablets */
+    }
+}
+
+/* Ajustes para pantallas grandes */
+@media (min-width: 1025px) {
+    .header {
+        padding: 20px 30px; /* Mantiene el padding para pantallas grandes */
+    }
+
+    .header-logo {
+        max-width: 5%; /* Mantiene el tamaño del logo para pantallas grandes */
+    }
+
+    #home {
+        margin-top: 151px; /* Mantiene el espacio para pantallas grandes */
+    }
+
+    #map {
+        margin-bottom: 75px; /* Mantiene el espacio para pantallas grandes */
+    }
 }

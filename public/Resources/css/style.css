@@ -123,6 +123,27 @@ section:nth-child(even) {
             justify-content: flex-end;
         }
     }
+
+    .header-logo-rotulo {
+        max-width: 30%;
+        width: auto;
+    }
+    @media (min-width: 768px) {
+        .header-logo-rotulo {
+            max-width: 30%;
+        }
+    }
+
+    .header-logo {
+        max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+        width: auto;
+    }
+
+    @media (min-width: 768px) {
+        .header-logo {
+            max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+        }
+    }
 }
 
 

@@ -18,7 +18,8 @@ include_once 'setup_files/init.php';
 </head>
 <body>
     <header class="header">
-    <h1 class="texto-imagen">VIETNAM NAILS ECHEGARAY</h1>
+    <img src="public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
+    <img src="public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
  

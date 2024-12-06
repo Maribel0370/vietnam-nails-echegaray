@@ -24,11 +24,14 @@
 
 /* General Styles */
 :root {
-    --background-body: linear-gradient(145deg, #d1a7a0, #f5d0d8, #d1a7a0);
-    --background-head: linear-gradient(135deg, rgb(22, 22, 22, 25%), #cecdcd, #2120205c, #4f4d4d8f); 
+    --background-body: linear-gradient(145deg, rgba(209, 167, 160, 0.1), rgba(245, 208, 216, 0.1), rgba(209, 167, 160, 0.1));
+    --background-head: linear-gradient(135deg, rgba(22, 22, 22, 0.25), rgba(206, 205, 205, 0.8), rgba(33, 32, 32, 0.36), rgba(79, 77, 77, 0.56));
     --white-glow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
     --pink-glow: 0 0 42px #d1a7a0, 0 0 82px #d1a7a0,  0 0 92px #d1a7a0,  0 0 102px #d1a7a0,  0 0 151px #d1a7a0;
     --font-color: rgb(95, 70, 7);
+    --gold-pink: rgba(255, 215, 220, 0.9);  /* Opacidad del rosa */
+    --white-transparent: rgba(255, 255, 255, 0.9); /* Opacidad del blanco */
+    --header-footer: linear-gradient(135deg, rgba(22, 22, 22, 0.8), rgba(206, 205, 205, 0.9), rgba(33, 32, 32, 0.8));
 }
 
 body {
@@ -38,11 +41,14 @@ body {
     padding: 0;
     box-sizing: border-box;
     color: var(--font-color);
-    background: linear-gradient(145deg, #d1a7a0, #f5d0d8, #d1a7a0), 
-                url('public/Resources/img/fondo_body.jpg');
+    background: var(--background-body),
+                url('../img/pared_vn.jpg');
     background-size: cover;
+    background-position: left top;  /* Posiciona la imagen arriba y a la izquierda */
     background-repeat: no-repeat;
-    background-blend-mode: overlay;
+    background-attachment: fixed;
+    transform: scaleX(-1);  /* Invierte la imagen horizontalmente */
+    min-height: 100vh;
 }
 
 
@@ -93,19 +99,22 @@ ul {
 
 section:nth-child(even) {
     background: var(--background-body);
+    background-blend-mode: overlay;
     animation: shine 2s infinite linear;
 }
 
 /* Header */
 
 .header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px 0;
-    background: var(--background-head);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--header-footer);
     background-size: 200% 110%; 
     animation: shine;
+<<<<<<< Updated upstream
     font-size: 1.2rem;
 
     /* h1 {
@@ -144,6 +153,9 @@ section:nth-child(even) {
             max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
         }
     }
+=======
+    padding: 20px 0;
+>>>>>>> Stashed changes
 }
 
 
@@ -155,7 +167,15 @@ section:nth-child(even) {
     align-items: center;
     justify-content: space-between;
     padding: 50px 0;
-    background: var(--background-body);
+    position: relative;
+    margin-top: calc(75px + 76px);
+    margin-bottom: 550px;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
     .text-content {
         max-width: 50%;
@@ -166,21 +186,42 @@ section:nth-child(even) {
         margin-bottom: 20px;
     }
 
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #cd557c;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-
     img {
-        max-width: 40%;
+        max-width: 35%;
+        margin-left: auto;
         height: auto;
         border-radius: 25px;
     }
+
+    /* Reemplazar estilos de Bootstrap para el botón */
+    button, .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #cd557c !important;
+        color: #fff !important;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: #b94670 !important;
+            transform: translateY(-2px);
+        }
+    }
+}
+
+#home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gold-pink);
+    z-index: -1;
 }
 
 /* About Section */
@@ -188,6 +229,8 @@ section:nth-child(even) {
     height: 550px;
     text-align: center;
     padding: 50px 0;
+    background: transparent;
+    position: relative;
 
     h2 {
         font-size: 30px;
@@ -314,6 +357,17 @@ section:nth-child(even) {
      
 }
 
+#about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--white-transparent);
+    z-index: -1;
+}
+
 /* Services Section */
 #services {
     text-align: center;
@@ -334,6 +388,19 @@ section:nth-child(even) {
 #testimonials {
     padding: 50px 0;
     text-align: center;
+    position: relative;
+}
+
+#testimonials::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gold-pink);
+    z-index: -1;
+}
 
     h2 {
         margin: 2rem 0
@@ -349,11 +416,10 @@ section:nth-child(even) {
         font-weight: bold;
     }
 
-    blockquote {
-        padding: 2rem;
-        background-color: rgba(211, 211, 211, 0.722);
-        border-radius: 15px;
-    }
+blockquote {
+    padding: 2rem;
+    background-color: rgba(211, 211, 211, 0.722);
+    border-radius: 15px;
 }
 
 
@@ -460,6 +526,10 @@ section:nth-child(even) {
 #map {
     text-align: center;
     background-color: rgba(238, 236, 236, 0.636);
+    background: transparent;
+    position: relative;
+    padding: 50px 0;
+    margin-bottom: 75px;
 
     /* Contenedor para Información y Mapa */
     .infoMapContainer {
@@ -509,13 +579,25 @@ section:nth-child(even) {
     }
 }
 
+#map::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--white-transparent);
+    z-index: -1;
+}
+
 /* Footer */
 footer {
-    background: var(--background-head);
+    background: var(--header-footer);
     background-size: 200% 110%; 
     animation: shine;
     padding: 30px 0;
     text-align: center;
+    margin-top: 0;
 
     h2 {
         font-size: 2rem;
@@ -666,4 +748,45 @@ footer {
             }
         }
     } 
+}
+
+/* Necesario para revertir el contenido ya que invertimos el body */
+main, header, footer {
+    transform: scaleX(-1);
+}
+
+/* Espaciado y tamaño uniforme para secciones */
+section {
+    height: 550px; /* Altura fija para todas las secciones */
+    margin: 550px 0; /* El espacio entre secciones es igual a la altura de las secciones */
+    padding: 100px 0;
+    position: relative;
+}
+
+/* Home section */
+#home {
+    margin-top: 0; /* Primera sección sin margen superior */
+}
+
+/* About section */
+#about {
+    /* La altura y el margen ya están definidos en la regla general de section */
+}
+
+/* Testimonials section */
+#testimonials {
+    /* La altura y el margen ya están definidos en la regla general de section */
+}
+
+/* Map section */
+#map {
+    margin-bottom: 150px; /* Añadimos espacio específico antes del footer */
+}
+
+/* Ajuste del contenedor para centrar contenido verticalmente */
+.container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

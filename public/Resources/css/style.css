@@ -106,58 +106,47 @@ section:nth-child(even) {
 /* Header */
 
 .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: var(--header-footer);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--header-footer);
-    background-size: 200% 110%; 
-    animation: shine;
-<<<<<<< Updated upstream
-    font-size: 1.2rem;
-
-    /* h1 {
-        font-size: 2.5rem;
-        padding: .5rem 0;
-        color: #d1a7a0;
-        text-shadow: var(--white-glow);
-    } */
-
-    
-
-    nav {
-        background-color: transparent !important;;
-        ul {
-            justify-content: flex-end;
-        }
-    }
-
-    .header-logo-rotulo {
-        max-width: 30%;
-        width: auto;
-    }
-    @media (min-width: 768px) {
-        .header-logo-rotulo {
-            max-width: 30%;
-        }
-    }
-
-    .header-logo {
-        max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
-        width: auto;
-    }
-
-    @media (min-width: 768px) {
-        .header-logo {
-            max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
-        }
-    }
-=======
-    padding: 20px 0;
->>>>>>> Stashed changes
 }
 
+.header-logo {
+    max-width: 5%;
+    width: auto;
+}
+
+nav {
+    margin-left: auto;
+}
+
+.header-logo-rotulo {
+    max-width: 30%;
+    width: auto;
+}
+@media (min-width: 768px) {
+    .header-logo-rotulo {
+        max-width: 30%;
+    }
+}
+
+.header-logo {
+    max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+    width: auto;
+}
+
+@media (min-width: 768px) {
+    .header-logo {
+        max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+    }
+}
 
 /* Hero Section */
 
@@ -168,8 +157,8 @@ section:nth-child(even) {
     justify-content: space-between;
     padding: 50px 0;
     position: relative;
-    margin-top: calc(75px + 76px);
-    margin-bottom: 550px;
+    margin-top: 150px;
+    margin-bottom: 700px;
 
     .container {
         display: flex;
@@ -251,6 +240,8 @@ section:nth-child(even) {
         align-items: center;
         justify-content: center;
         max-width: 90%;
+        padding-top: 15px;
+        padding-bottom: 230px;
     }
 
     /* Carousel Section */
@@ -765,7 +756,7 @@ section {
 
 /* Home section */
 #home {
-    margin-top: 0; /* Primera sección sin margen superior */
+    margin-top: 150px; /* Primera sección sin margen superior */
 }
 
 /* About section */
@@ -780,7 +771,12 @@ section {
 
 /* Map section */
 #map {
-    margin-bottom: 150px; /* Añadimos espacio específico antes del footer */
+    margin-bottom: 75px; /* Espacio de 75px entre map y footer */
+}
+
+#map .contenedCor_principal {
+    padding-top: 0px; /* Padding superior de 0px */
+    padding-bottom: 0px; /* Padding inferior de 0px */
 }
 
 /* Ajuste del contenedor para centrar contenido verticalmente */

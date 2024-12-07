@@ -108,7 +108,7 @@ section:nth-child(even) {
 .header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     padding: 20px;
     background: rgba(206, 205, 205, 0.7);
     position: fixed;
@@ -116,13 +116,6 @@ section:nth-child(even) {
     left: 0;
     right: 0;
     z-index: 1000;
-}
-
-.header-logo {
-    margin-right: auto;
-    max-width: 5%;
-    width: auto;
-    margin-left: 80px;
 }
 
 nav {
@@ -140,6 +133,7 @@ nav {
     }
 
     .header-logo {
+        margin-left: 15%;
         max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
         width: auto;
     }

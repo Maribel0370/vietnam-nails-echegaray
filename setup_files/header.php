@@ -17,9 +17,10 @@ include_once __DIR__ . '/init.php';
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
 </head>
 <body>
-    <header class="header">
-    <img src="public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
-    <img src="public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
+
+    <header class="header" id="header">
+        <img src="public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
+        <img src="public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
     
@@ -154,6 +155,20 @@ include_once __DIR__ . '/init.php';
             </div>
         </div>
     </div>
+    
 </body>
+<script> 
+    document.addEventListener("DOMContentLoaded", function() {
+        window.onscroll = function() {
+            var header = document.getElementById("header");
+            var scrollPosition = window.scrollY;
+            if (scrollPosition > 50) {
+                header.style.backgroundColor = "rgba(206, 205, 205)"; // Change to your desired color
+            } else {
+                header.style.backgroundColor = "rgba(206, 205, 205, 0.7)"; // Original color
+            }
+        };
+    });
+</script>
 </html>
 

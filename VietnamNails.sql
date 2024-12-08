@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 08-12-2024 a las 02:12:21
+-- Tiempo de generación: 08-12-2024 a las 21:31:43
 -- Versión del servidor: 8.0.40-0ubuntu0.22.04.1
 -- Versión de PHP: 8.1.2-1ubuntu2.19
 
@@ -119,6 +119,21 @@ CREATE TABLE `reservationServices` (
   `id_reservationService` int NOT NULL,
   `id_reservation` int NOT NULL,
   `id_service` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `serviceImages`
+--
+
+DROP TABLE IF EXISTS `serviceImages`;
+CREATE TABLE `serviceImages` (
+  `id_serviceImage` int NOT NULL,
+  `id_service` int NOT NULL,
+  `imageUrl` varchar(2083) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'URL asociada a la imagen',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

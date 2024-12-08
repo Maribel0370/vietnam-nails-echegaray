@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 29-11-2024 a las 16:01:07
+-- Tiempo de generación: 08-12-2024 a las 02:12:21
 -- Versión del servidor: 8.0.40-0ubuntu0.22.04.1
 -- Versión de PHP: 8.1.2-1ubuntu2.19
 
@@ -55,6 +55,19 @@ INSERT INTO `companyHours` (`id_companyHour`, `dayOfWeek`, `startTime`, `endTime
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `customersDetails`
+--
+
+DROP TABLE IF EXISTS `customersDetails`;
+CREATE TABLE `customersDetails` (
+  `id_customer` int NOT NULL,
+  `fullName` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `phoneNumber` varchar(15) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `employees`
 --
 
@@ -82,16 +95,30 @@ INSERT INTO `employees` (`id_employee`, `firstName`, `lastName`, `phone`, `dataC
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `serviceImages`
+-- Estructura de tabla para la tabla `reservations`
 --
 
-DROP TABLE IF EXISTS `serviceImages`;
-CREATE TABLE `serviceImages` (
-  `id_serviceImage` int NOT NULL,
-  `id_service` int NOT NULL,
-  `imageUrl` varchar(2083) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'URL asociada a la imagen',
-  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS `reservations`;
+CREATE TABLE `reservations` (
+  `id_reservation` int NOT NULL,
+  `id_customer` int NOT NULL,
+  `reservationDate` datetime NOT NULL,
+  `id_employee` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reservationServices`
+--
+
+DROP TABLE IF EXISTS `reservationServices`;
+CREATE TABLE `reservationServices` (
+  `id_reservationService` int NOT NULL,
+  `id_reservation` int NOT NULL,
+  `id_service` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -214,16 +241,32 @@ ALTER TABLE `companyHours`
   ADD PRIMARY KEY (`id_companyHour`);
 
 --
+-- Indices de la tabla `customersDetails`
+--
+ALTER TABLE `customersDetails`
+  ADD PRIMARY KEY (`id_customer`),
+  ADD UNIQUE KEY `phoneNumber` (`phoneNumber`);
+
+--
 -- Indices de la tabla `employees`
 --
 ALTER TABLE `employees`
   ADD PRIMARY KEY (`id_employee`);
 
 --
--- Indices de la tabla `serviceImages`
+-- Indices de la tabla `reservations`
 --
-ALTER TABLE `serviceImages`
-  ADD PRIMARY KEY (`id_serviceImage`),
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id_reservation`),
+  ADD KEY `id_customer` (`id_customer`),
+  ADD KEY `id_employee` (`id_employee`);
+
+--
+-- Indices de la tabla `reservationServices`
+--
+ALTER TABLE `reservationServices`
+  ADD PRIMARY KEY (`id_reservationService`),
+  ADD KEY `id_reservation` (`id_reservation`),
   ADD KEY `id_service` (`id_service`);
 
 --
@@ -256,16 +299,28 @@ ALTER TABLE `companyHours`
   MODIFY `id_companyHour` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT de la tabla `customersDetails`
+--
+ALTER TABLE `customersDetails`
+  MODIFY `id_customer` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `employees`
 --
 ALTER TABLE `employees`
   MODIFY `id_employee` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `serviceImages`
+-- AUTO_INCREMENT de la tabla `reservations`
 --
-ALTER TABLE `serviceImages`
-  MODIFY `id_serviceImage` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `reservations`
+  MODIFY `id_reservation` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `reservationServices`
+--
+ALTER TABLE `reservationServices`
+  MODIFY `id_reservationService` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `services`
@@ -290,10 +345,18 @@ ALTER TABLE `workSchedules`
 --
 
 --
--- Filtros para la tabla `serviceImages`
+-- Filtros para la tabla `reservations`
 --
-ALTER TABLE `serviceImages`
-  ADD CONSTRAINT `serviceImages_ibfk_1` FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE;
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_customer`) REFERENCES `customersDetails` (`id_customer`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id_employee`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `reservationServices`
+--
+ALTER TABLE `reservationServices`
+  ADD CONSTRAINT `reservationServices_ibfk_1` FOREIGN KEY (`id_reservation`) REFERENCES `reservations` (`id_reservation`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservationServices_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `workSchedules`

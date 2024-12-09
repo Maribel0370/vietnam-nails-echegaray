@@ -175,6 +175,7 @@ include 'setup_files/header.php'; // Incluir el header
             </div>
         </section>
 
+        <!-- Sección Ubicación -->
         <section id="map">
             <div class="contenedCor_principal">
                 <h2><?php echo translate('our_location', 'Ubicación');?></h2>

@@ -130,38 +130,42 @@ include 'setup_files/header.php'; // Incluir el header
             </div>
         </div>
 
-        <!-- Sección sobre nosotros -->
-        <section id="about">
+           <!-- Sección sobre nosotros -->
+    <section id="about">
             <div class="container">
                 <div>
                     <h2><?php echo translate('about_us', 'Nuestro trabajo...'); ?></h2>
                     <p><?php echo translate('about_quote', 'Cada año ayudamos a que las mujeres de Barcelona se vean y se sientan mejor.'); ?></p>
                     <a href="#more-about" class="btn btn-secondary"><?php echo translate('read_more', 'Leer más'); ?></a>
-            
+              
 
-                      <!-- Carrusel de imágenes -->
-                         <div id="carrousel">
-                            <div class="content-all">
-                               <div class="content-carrousel">
-                                  <figure><img src="public/Resources/img/unas/nails1.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails2.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails3.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails4.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails5.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails6.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails7.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails8.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails9.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails10.jpg" alt=".."></figure>
-                                  <figure><img src="public/Resources/img/unas/nails11.jpg" alt=".."></figure>
-                                 <figure><img src="public/Resources/img/unas/nails12.jpg" alt=".."></figure>
+          
 
-                                </div>
-                            </div>  
-                       </div> 
-                 </div>
+                    <!-- Carrusel de imágenes -->
+                    <!--<div id="carrousel"> -->
+                        <div class="banner">
+                            <div class="slider" style="--quantity: 10">
+                                <div class="item" style="--position: 1"><img src="public/Resources/img/unas/nails1.jpg" alt=""></div>
+                                <div class="item" style="--position: 2"><img src="public/Resources/img/unas/nails2.jpg" alt=""></div>
+                                <div class="item" style="--position: 3"><img src="public/Resources/img/unas/nails3.jpg" alt=""></div>
+                                <div class="item" style="--position: 4"><img src="public/Resources/img/unas/nails4.jpg" alt=""></div>
+                                <div class="item" style="--position: 5"><img src="public/Resources/img/unas/nails5.jpg" alt=""></div>
+                                <div class="item" style="--position: 6"><img src="public/Resources/img/unas/nails6.jpg" alt=""></div>
+                                <div class="item" style="--position: 7"><img src="public/Resources/img/unas/nails7.jpg" alt=""></div>
+                                <div class="item" style="--position: 8"><img src="public/Resources/img/unas/nails8.jpg" alt=""></div>
+                                <div class="item" style="--position: 9"><img src="public/Resources/img/unas/nails9.jpg" alt=""></div>
+                                <div class="item" style="--position: 10"><img src="public/Resources/img/unas/nails10.jpg" alt=""></div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                </div>
             </div>
-        </section>
+            
+    </section>        
+
+
+
+        
 
         
 

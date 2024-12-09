@@ -4,16 +4,6 @@
 }
 
 
-
-@keyframes rotar {
-    from {
-        transform: rotateY(0deg);
-    }
-    to {
-        transform: rotateY(360deg);
-    }
-}
-
 @font-face{
     font-family: 'garderegular';
     src: url('/public/Resources/fonts/garde-webfont.woff2') format('woff2'),
@@ -170,6 +160,7 @@ nav {
         margin-left: auto;
         height: auto;
         border-radius: 25px;
+        
     }
 
     /* Reemplazar estilos de Bootstrap para el botón */
@@ -192,7 +183,7 @@ nav {
     }
 }
 
-#home::before {
+#home:before {
     content: '';
     position: absolute;
     top: 0;
@@ -234,120 +225,138 @@ nav {
         padding-bottom: 230px;
     }
 
-    /* Carousel Section */
+    #about::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--white-transparent);
+        z-index: -1;
+    }
 
-    .carrousel {
+}
+   /* Carrousel Section */
+
+    .banner {
+
         text-align: center;
         display: flex;
-        justify-content:center;
+        justify-content: center;
         align-items: center;
-        padding:0;
+        padding: 0;
         width: 50%;
+
+
+
+        width: 100%; /* Ancho de donde se van a poner las fotos del carrousel */
+        height: 100vh; /*Alto de donde se van a poner las fotos del carrousel */
+        text-align: center;
+        overflow: hidden;
+        
     }
-        .content-all {
-            width: 220px;
-            margin: 100 100;
-            perspective: 1000px;
-            position:static;
+
+    .banner .slider {
+        position: absolute;
+        width: 210px;  /*Ancho de foto carrousel pantalla principal */
+        height: 150px; /*Alto de foto carrousel pantalla principal */
+        top: 10%;
+        left: calc(50% - 100px); /* poscicion del carrousel a la izquierda */
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+        animation: autoRun 20s linear infinite;  /* Velocidad del giro del carrousel */
+        z-index: 2;
+    }
+
+    @keyframes autoRun {
+        from {
+            transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);  /*Calculo de inicio para el giro del carrousel 0 */
         }
 
-        .content-carrousel {
-            width: 100%;
-            position: absolute;
-            animation: rotar 20s infinite linear;
-            transform-style: preserve-3d;
-
-            figure {
-                width: 78%;
-                height: 120px;
-                overflow: hidden;
-                position:absolute;
-                box-shadow: 0px 0px 20px 0px black;
-                transition: all 300ms;
-
-                &:hover {
-                    box-shadow: 0px 0px 20px 0px black;
-                    transition: all 300ms;
-                }
-            }
-
-            figure:nth-child(1) {
-                transform: rotateY(0deg) translateZ(300px);
-            }
-
-            figure:nth-child(2) {
-                transform: rotateY(32.72deg) translateZ(300px);
-            }
-
-            figure:nth-child(3) {
-                transform: rotateY(65.45deg) translateZ(300px);
-            }
-
-            figure:nth-child(4) {
-                transform: rotateY(98.18deg) translateZ(300px);
-            }
-
-            figure:nth-child(5) {
-                transform: rotateY(130.90deg) translateZ(300px);
-            }
-
-            figure:nth-child(6) {
-                transform: rotateY(163.63deg) translateZ(300px);
-            }
-
-            figure:nth-child(7) {
-                transform: rotateY(196.36deg) translateZ(300px);
-            }
-
-            figure:nth-child(8) {
-                transform: rotateY(229.09deg) translateZ(300px);
-            }
-
-            figure:nth-child(9) {
-                transform: rotateY(261.81deg) translateZ(300px);
-            }
-
-            figure:nth-child(10) {
-                transform: rotateY(294.54deg) translateZ(300px);
-            }
-
-            figure:nth-child(11) {
-                transform: rotateY(327.27deg) translateZ(300px);
-            }
-
-            figure:nth-child(12) {
-                transform: rotateY(360deg) translateZ(300px);
-            }
-
-            img {
-                width: 180px;
-                height: 170px;
-                transition: all 300ms;
-
-                &:hover {
-                    transform: scale(1.3);
-                    transition: all 300ms;
-                }
-            }
-
-            &:hover {
-                animation-play-state: paused;
-                cursor: pointer;
-            }
+        to {
+            transform: perspective(1000px) rotateX(-16deg) rotateY(360deg); /* Calulo de fin para el giro del carrousel  360 */
         }
-     
-}
+    }
 
-#about::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--white-transparent);
-    z-index: -1;
-}
+    .banner .slider:hover {
+        animation-play-state: paused;   /* Sirve para que al poner el cursor en la foto se pare */
+    }
+
+    .banner .slider .item {
+        position: absolute;
+        inset: 0 0 0 0;
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(360px); /* translateZ sirve para desplazar las fotos a lo ancho */
+        transition: transform 0.3s ease;
+    }
+
+    .banner .slider .item:hover {
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.0); /* TranslateZ sirve para el hover se amplie la foto */
+        z-index: 5;
+    }
+
+    .banner .slider .item img {
+        width: 90%;   /* ancho de las fotos principales */
+        height: 90%;  /* alto de las fotos principales */
+        object-fit:cover;
+        transition: transform 0.3s ease; 
+    }
+
+    .banner .content {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1400px, 100vw);
+        height: max-content;
+        padding-bottom: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1;
+    }
+
+
+  /* -----MEDIAS QUIERIES para responsive del carrousel----- */
+
+    @media screen and (max-width: 1023px) {
+          .banner .slider {
+            width: 160px;
+            height: 200px;
+            left: calc(50% - 80px);
+        } 
+
+        .banner .slider .item {
+            transform:
+                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(330px);
+        }
+
+        .banner .slider .item:hover {
+            transform:
+                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.2);
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .banner .slider {
+            width: 85px;
+            height: 85px;
+            left: calc(50% - 45px);
+        }
+
+        .banner .slider .item {
+            transform:
+                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(170px);
+        }
+
+        .banner .slider .item:hover {
+            transform:
+                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(250px) scale(1.15);
+        }
+    }
 
 /* Services Section */
 #services {
@@ -363,7 +372,9 @@ nav {
     span {
         color: #d13c6c;
     }
+
 }
+
 
 /* Testimonials */
 #testimonials {
@@ -628,110 +639,6 @@ footer {
     }
 }
 
-@media only screen and (max-width: 600px)  {
-
-    #carrousel {
-        text-align: center;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 0;
-        width: 10%;
-
-        .content-all {
-            width: 10px;
-            margin: 0 auto;
-            perspective: 2000px;
-            position: relative;
-        }
-
-        .content-carrousel {
-            width: 100%;
-            position: absolute;
-            animation: rotar 20s infinite linear;
-            transform-style: preserve-3d;
-
-            figure {
-                width: 40%;
-                height: 100px;
-                overflow: hidden;
-                position: absolute;
-                box-shadow: 0px 0px 20px 0px black;
-                transition: all 300ms;
-
-                &:hover {
-                    box-shadow: 0px 0px 20px 0px black;
-                    transition: all 300ms;
-                }
-            }
-
-           
-            figure:nth-child(1) {
-                transform: rotateY(0deg) translateZ(300px);
-            }
-
-            figure:nth-child(2) {
-                transform: rotateY(32.72deg) translateZ(300px);
-            }
-
-            figure:nth-child(3) {
-                transform: rotateY(65.45deg) translateZ(300px);
-            }
-
-            figure:nth-child(4) {
-                transform: rotateY(98.18deg) translateZ(300px);
-            }
-
-            figure:nth-child(5) {
-                transform: rotateY(130.90deg) translateZ(300px);
-            }
-
-            figure:nth-child(6) {
-                transform: rotateY(163.63deg) translateZ(300px);
-            }
-
-            figure:nth-child(7) {
-                transform: rotateY(196.36deg) translateZ(300px);
-            }
-
-            figure:nth-child(8) {
-                transform: rotateY(229.09deg) translateZ(300px);
-            }
-
-            figure:nth-child(9) {
-                transform: rotateY(261.81deg) translateZ(300px);
-            }
-
-            figure:nth-child(10) {
-                transform: rotateY(294.54deg) translateZ(300px);
-            }
-
-            figure:nth-child(11) {
-                transform: rotateY(327.27deg) translateZ(300px);
-            }
-
-            figure:nth-child(12) {
-                transform: rotateY(360deg) translateZ(300px);
-            }
-
-            img {
-                width: 220px;
-                height: 170px;
-                transition: all 300ms;
-
-                &:hover {
-                    transform: scale(1.3);
-                    transition: all 300ms;
-                }
-            }
-
-            &:hover {
-                animation-play-state: paused;
-                cursor: pointer;
-            }
-        }
-    } 
-}
 
 /* Necesario para revertir el contenido ya que invertimos el body */
 main, header, footer {
@@ -798,8 +705,9 @@ section {
     }
 
     #home {
-        margin-top: 50px; /* Ajusta el espacio para pantallas más pequeñas */
-    }
+        margin-top: 130px; /* Ajusta el espacio para pantallas más pequeñas */      
+        }
+      
 
     #map {
         margin-bottom: 50px; /* Ajusta el espacio para pantallas más pequeñas */
@@ -817,8 +725,10 @@ section {
     }
 
     #home {
-        margin-top: 60px; /* Ajusta el espacio para tablets */
+        margin-top: 140px; /* Ajusta el espacio para tablets */
     }
+    
+
 
     #map {
         margin-bottom: 60px; /* Ajusta el espacio para tablets */
@@ -836,7 +746,7 @@ section {
     }
 
     #home {
-        margin-top: 75px; /* Mantiene el espacio para pantallas grandes */
+        margin-top: 151px; /* Mantiene el espacio para pantallas grandes */
     }
 
     #map {

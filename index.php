@@ -188,6 +188,15 @@ include 'setup_files/header.php'; // Incluir el header
                 </div>
             </div>
         </section>
+
+        <section id="videoPresentacion">
+            <div>
+                <h2><?php echo translate('Come visit us', 'Ven a visitar nuestras instalaciones');?></h2>
+                <video width="90%" height="80%" controls>
+                    <source src="public/Resources/video/vietnam_nail_editado (1).mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
     </main>
 
     <!-- Pie de página -->

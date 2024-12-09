@@ -222,7 +222,7 @@ nav {
         align-items: center;
         justify-content: center;
         max-width: 90%;
-        padding-top: 75px;
+        padding-top: 500px;
         padding-bottom: 0px;
     }
 
@@ -249,9 +249,6 @@ nav {
         align-items: center;
         margin-top: 200px;
         width: 50%;
-
-
-
         width: 100%; /* Ancho de donde se van a poner las fotos del carrousel */
         height: 100vh; /*Alto de donde se van a poner las fotos del carrousel */
         text-align: center;
@@ -263,7 +260,7 @@ nav {
         position: absolute;
         width: 210px;  /*Ancho de foto carrousel pantalla principal */
         height: 150px; /*Alto de foto carrousel pantalla principal */
-        top: 10%;
+        top: 50%;
         left: calc(50% - 100px); /* poscicion del carrousel a la izquierda */
         transform-style: preserve-3d;
         transform: perspective(1000px);

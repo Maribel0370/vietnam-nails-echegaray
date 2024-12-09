@@ -594,12 +594,12 @@ footer {
     .contentFooter {
         display: flex;
         margin: 0 auto;
-        width: 90%;
+        width: 50%;
         justify-content: space-between;
 
         .redes, .contacto {
             img {
-                width: 50px;
+                width: 60px;
                 height: auto;
                 margin: 0 5px;
             }

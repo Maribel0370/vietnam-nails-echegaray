@@ -32,8 +32,13 @@ include_once __DIR__ . '/init.php';
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#"><?php echo translate('home', 'Inicio'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link" href="setup_files/services.php"><?php echo translate('services', 'Servicios'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link" href="setup_files/ofertas.php"><?php echo translate('offers', 'Ofertas'); ?></a></li>
+                    <!-- Enlace al Modal de Servicios -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#servicesModal"><?php echo translate('services', 'Servicios'); ?></a></li>
+                    
+                        <!-- Enlace al Modal de Ofertas -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#offersModal"><?php echo translate('offers', 'Ofertas'); ?></a></li>
                     
                     <!-- Enlace al Modal de Reservas -->
                     <li class="nav-item">
@@ -61,6 +66,36 @@ include_once __DIR__ . '/init.php';
             </div>
         </nav>
     </header>
+
+    <!-- Modal de Servicios -->
+    <div class="modal fade" id="servicesModal" tabindex="-1" aria-labelledby="servicesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="servicesModalLabel"><?php echo translate('services', 'Servicios'); ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Ofertas -->
+    <div class="modal fade" id="offersModal" tabindex="-1" aria-labelledby="offersModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="offersModalLabel"><?php echo translate('offers', 'Ofertas'); ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     
 
     <!-- Modal de Reservas -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">

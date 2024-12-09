@@ -70,7 +70,7 @@ body {
     color: #8a200f;
 }
 
-.container {
+.container {      color: #d1a7a0;
     width: 90%;
     max-width: 1300px;
     margin: 0 auto;
@@ -91,8 +91,7 @@ ul {
     
         a {
             text-decoration: none;
-            /* color: #d1a7a0; */
-            text-shadow: var(--white-glow), var(--pink-glow);
+             text-shadow: var(--white-glow), var(--pink-glow);
             font-weight: bold;
         }
     }

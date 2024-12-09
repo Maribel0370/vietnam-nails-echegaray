@@ -1,7 +1,6 @@
 
 <footer>
     <div class="contentFooter">
-        
         <div class="contacto">
             <h2><?php echo translate('<strong>contact_us</strong>', 'Contáctanos');?></h2>
             <a href="https://wa.link/lr6hiq" target="_blank"><img src="../public/Resources/img/icons/whatsapp.png" alt="whatsapp link"></a>

@@ -69,13 +69,44 @@ include_once __DIR__ . '/init.php';
 
     <!-- Modal de Servicios -->
     <div class="modal fade" id="servicesModal" tabindex="-1" aria-labelledby="servicesModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="servicesModalLabel"><?php echo translate('services', 'Servicios'); ?></h5>
+                    <h5 class="modal-title" id="servicesModalLabel">Servicios</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="services-container">
+                        <?php
+                        try {
+                            // Asegúrate de que la conexión a la base de datos esté disponible
+                            global $pdo;
+                            if (!isset($pdo)) {
+                                require_once 'init.php';
+                            }
+                            
+                            $stmt = $pdo->query("SELECT nameService, description FROM services");
+                            $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            
+                            foreach ($services as $service) {
+                                ?>
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo htmlspecialchars($service['nameService']); ?></h5>
+                                            <p class="card-text"><?php echo htmlspecialchars($service['description']); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        } catch (PDOException $e) {
+                            echo "Error al obtener los servicios: " . $e->getMessage();
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -204,6 +235,34 @@ include_once __DIR__ . '/init.php';
             }
         };
     });
+</script>
+<script>
+// Obtener el modal
+var modal = document.getElementById("servicesModal");
+
+// Obtener el botón que abre el modal
+var btn = document.querySelector("a[href='#'][data-target='#servicesModal']");
+
+// Obtener el elemento <span> que cierra el modal
+var span = document.getElementsByClassName("close")[0];
+
+// Cuando el usuario hace clic en el botón, abrir el modal
+btn.onclick = function(e) {
+    e.preventDefault();
+    modal.style.display = "block";
+}
+
+// Cuando el usuario hace clic en <span> (x), cerrar el modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Cuando el usuario hace clic fuera del modal, cerrarlo
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 </script>
 </html>
 

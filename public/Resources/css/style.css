@@ -196,10 +196,11 @@ nav {
 
 /* About Section */
 #about {
-    height: 550px;
+    height: 700px;
     text-align: center;
-    padding: 50px 0;
+    padding: 100px 0;
     background: transparent;
+    background-color: rgba(238, 236, 236, 0.636);
     position: relative;
 
     h2 {
@@ -221,8 +222,8 @@ nav {
         align-items: center;
         justify-content: center;
         max-width: 90%;
-        padding-top: 15px;
-        padding-bottom: 230px;
+        padding-top: 75px;
+        padding-bottom: 0px;
     }
 
     #about::before {
@@ -232,7 +233,8 @@ nav {
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--white-transparent);
+        background: transparent;
+        background-color: rgba(238, 236, 236, 0.636);  
         z-index: -1;
     }
 
@@ -245,7 +247,7 @@ nav {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0;
+        margin-top: 200px;
         width: 50%;
 
 
@@ -705,7 +707,7 @@ section {
     }
 
     #home {
-        margin-top: 130px; /* Ajusta el espacio para pantallas más pequeñas */      
+        margin-top: 60px; /* Ajusta el espacio para pantallas más pequeñas */      
         }
       
 
@@ -725,7 +727,7 @@ section {
     }
 
     #home {
-        margin-top: 140px; /* Ajusta el espacio para tablets */
+        margin-top: 75px; /* Ajusta el espacio para tablets */
     }
     
 
@@ -746,7 +748,7 @@ section {
     }
 
     #home {
-        margin-top: 151px; /* Mantiene el espacio para pantallas grandes */
+        margin-top: 75px; /* Mantiene el espacio para pantallas grandes */
     }
 
     #map {

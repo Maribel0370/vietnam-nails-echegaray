@@ -137,12 +137,7 @@ include 'setup_files/header.php'; // Incluir el header
                     <h2><?php echo translate('about_us', 'Nuestro trabajo...'); ?></h2>
                     <p><?php echo translate('about_quote', 'Cada año ayudamos a que las mujeres de Barcelona se vean y se sientan mejor.'); ?></p>
                     <a href="#more-about" class="btn btn-secondary"><?php echo translate('read_more', 'Leer más'); ?></a>
-              
-
-          
-
                     <!-- Carrusel de imágenes -->
-                    <!--<div id="carrousel"> -->
                         <div class="banner">
                             <div class="slider" style="--quantity: 10">
                                 <div class="item" style="--position: 1"><img src="public/Resources/img/unas/nails1.jpg" alt=""></div>
@@ -157,7 +152,7 @@ include 'setup_files/header.php'; // Incluir el header
                                 <div class="item" style="--position: 10"><img src="public/Resources/img/unas/nails10.jpg" alt=""></div>
                             </div>
                         </div>
-                    <!-- </div> -->
+                  
                 </div>
             </div>
             

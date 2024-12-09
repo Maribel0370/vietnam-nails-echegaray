@@ -596,6 +596,20 @@ footer {
         margin: 0 auto;
         width: 90%;
         justify-content: space-between;
+
+        .redes, .contacto {
+            img {
+                width: 50px;
+                height: auto;
+                margin: 0 5px;
+            }
+        }
+
+        .contacto {
+            a {
+                color: #0056b3;
+            }
+        }
     }
 
     h2 {
@@ -661,16 +675,6 @@ section {
 /* Home section */
 #home {
     margin-top: 75px; /* Primera sección sin margen superior */
-}
-
-/* About section */
-#about {
-    /* La altura y el margen ya están definidos en la regla general de section */
-}
-
-/* Testimonials section */
-#testimonials {
-    /* La altura y el margen ya están definidos en la regla general de section */
 }
 
 /* Map section */

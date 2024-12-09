@@ -590,7 +590,13 @@ footer {
     animation: shine;
     padding: 30px 0;
     text-align: center;
-    margin-top: 0;
+
+    .contentFooter {
+        display: flex;
+        margin: 0 auto;
+        width: 90%;
+        justify-content: space-between;
+    }
 
     h2 {
         font-size: 2rem;

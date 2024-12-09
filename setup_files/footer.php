@@ -11,8 +11,10 @@
         </div>
         <div>
             <h2><?php echo translate('<strong>Follow Us</strong>', 'Siguenos');?></h2>
-            <p><?php echo translate('<strong>phone</strong>', '<strong>Teléfono:</strong> 608268978');?></p>
-            <p><?php echo translate('<strong>email</strong>', '<strong>Correo electrónico:</strong>  info@vietnamnails.com');?></p>
+            <div>
+                <a href="https://www.facebook.com/share/1LQa8SVbLd/"><img src="../public/Resources/img/icons/facebook.png" alt="Facebook"></a>
+                <a href=""><img src="" alt=""></a>
+            </div>
         </div>
         <div>
             <h2><?php echo translate('<strong>contact_us</strong>', 'Contáctenos');?></h2>

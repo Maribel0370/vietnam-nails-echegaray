@@ -594,12 +594,12 @@ footer {
     .contentFooter {
         display: flex;
         margin: 0 auto;
-        width: 90%;
+        width: 50%;
         justify-content: space-between;
 
         .redes, .contacto {
             img {
-                width: 50px;
+                width: 60px;
                 height: auto;
                 margin: 0 5px;
             }
@@ -720,6 +720,33 @@ section {
 
     #map {
         margin-bottom: 50px; /* Ajusta el espacio para pantallas más pequeñas */
+    }
+
+    footer {
+        .contentFooter {
+            flex-direction: column;
+            gap: 2rem;
+
+            .redes, .contacto {
+                flex-direction: column;
+                align-items: center;
+
+                img {
+                    width: 30px;
+                    height: auto;
+                }
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        p {
+            width: 80%;
+            font-size: 0.7rem;
+            margin: 0 auto;
+        }
     }
 }
 

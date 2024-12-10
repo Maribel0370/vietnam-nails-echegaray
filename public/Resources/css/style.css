@@ -138,8 +138,8 @@ nav {
     justify-content: space-between;
     padding: 50px 0;
     position: relative;
-    margin-top: 75px;
-    margin-bottom: 550px;
+    margin-top: 70px;
+    margin-bottom: 70px;
 
     .container {
         display: flex;
@@ -540,7 +540,7 @@ blockquote {
     background: transparent;
     position: relative;
     padding: 50px 0;
-    margin-bottom: 75px;
+    margin-bottom: 70px;
 
     /* Contenedor para Información y Mapa */
     .infoMapContainer {
@@ -684,20 +684,21 @@ main, header, footer {
 
 /* Espaciado y tamaño uniforme para secciones */
 section {
-    height: 550px; /* Altura fija para todas las secciones */
-    margin: 550px 0; /* El espacio entre secciones es igual a la altura de las secciones */
-    padding: 100px 0;
+    height: auto; /* Cambiado de 550px a auto para mejor adaptabilidad */
+    margin: 70px 0; /* Cambiado de 550px a 70px */
+    padding: 50px 0; /* Ajustado de 100px a 50px para mejor proporción */
     position: relative;
 }
 
 /* Home section */
 #home {
-    margin-top: 75px; /* Primera sección sin margen superior */
+    margin-top: 75px; /* Mantener el espacio superior del home */
+    margin-bottom: 70px; /* Ajustado para consistencia */
 }
 
 /* Map section */
 #map {
-    margin-bottom: 75px; /* Espacio de 75px entre map y footer */
+    margin-bottom: 70px; /* Ajustado para consistencia */
 }
 
 #map .contenedCor_principal {

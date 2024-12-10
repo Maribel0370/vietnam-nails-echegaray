@@ -383,3 +383,42 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Tabla de Ofertas
+DROP TABLE IF EXISTS `offers`;
+CREATE TABLE `offers` (
+  `id_offer` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `offer_type` ENUM('weekly', 'monthly', 'blackfriday', 'special') NOT NULL,
+  `start_date` DATE NOT NULL,
+  `end_date` DATE NOT NULL,
+  `final_price` DECIMAL(10,2) NOT NULL,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_offer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla intermedia para relacionar ofertas con servicios
+DROP TABLE IF EXISTS `offer_services`;
+CREATE TABLE `offer_services` (
+  `id_offer_service` INT NOT NULL AUTO_INCREMENT,
+  `id_offer` INT NOT NULL,
+  `id_service` INT NOT NULL,
+  PRIMARY KEY (`id_offer_service`),
+  FOREIGN KEY (`id_offer`) REFERENCES `offers` (`id_offer`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insertar una oferta de ejemplo
+INSERT INTO `offers` 
+(`title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`) 
+VALUES 
+('Oferta de Verano', 'Descuento especial en servicios de manicura', 'special', '2024-06-01', '2024-08-31', 12.00);
+
+-- Relacionar la oferta con servicios
+INSERT INTO `offer_services` (`id_offer`, `id_service`) 
+VALUES 
+(1, 4),  -- Manicura
+(1, 5);  -- Pedicura

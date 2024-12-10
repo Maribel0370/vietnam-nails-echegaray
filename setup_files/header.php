@@ -15,36 +15,6 @@ include_once __DIR__ . '/init.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css" href="public/resources/css/styles.css"> <!-- Archivo de estilos -->
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
-    <style>
-    /* Estilos específicos para el modal de ofertas */
-    #offersModal .modal-content {
-        transform: none;
-    }
-
-    #offersModal .offer-card {
-        background-color: #fff;
-        border: 1px solid rgba(0,0,0,.125);
-        border-radius: .25rem;
-        height: 100%;
-    }
-
-    #offersModal .modal-body {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    #offersModal .card-body {
-        padding: 1.25rem;
-    }
-
-    #offersModal .card-title {
-        margin-bottom: 1rem;
-    }
-
-    #offersModal .card-text {
-        margin-bottom: 0.5rem;
-    }
-    </style>
 </head>
 <body>
 
@@ -95,6 +65,26 @@ include_once __DIR__ . '/init.php';
                 </div>
             </div>
         </nav>
+        <div class="admin-access">
+            <?php if(isset($_SESSION['admin_id'])): ?>
+                <!-- Icono de logout cuando está logueado -->
+                <a href="/admin/logout.php" title="Cerrar sesión" class="admin-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </a>
+            <?php else: ?>
+                <!-- Icono de login cuando no está logueado -->
+                <a href="/admin/login.php" title="Acceso administrador" class="admin-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            <?php endif; ?>
+        </div>
     </header>
 
     <!-- Modal de Servicios -->

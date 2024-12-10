@@ -589,72 +589,114 @@ body.modal-open {
 
 /* Maps section*/
 
-.contenedCor_principal {
-    padding: 20px;
-    max-width: 1440px;
-    margin: 0 auto;
-    /* Estilos para secciones internas */
-    > * {
-        margin-bottom: 20px;
-    }
-    
-    @media (min-width: 1024px) {
-        padding: 40px;
-    }
-}
-
 #map {
     text-align: center;
     background-color: rgba(238, 236, 236, 0.636);
     background: transparent;
     position: relative;
-    padding: 50px 0;
-    margin-bottom: 70px;
+    margin: 20rem 0;
 
-    /* Contenedor para Información y Mapa */
-    .infoMapContainer {
+    h2 {
+        margin-bottom: 30px;
+        text-align: center;
+        width: 45%;
+        padding-left: 0;
+        z-index: 2;
+        left: 52.7%;
+    }
+
+    .contenedor_principal {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: stretch;
+        gap: 30px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        max-width: 1440px;
+        margin: 0 auto;
         
-        @media (min-width: 768px) {
-            flex-direction: row;
-            gap: 30px;
-        }
-
-        /* Estilos específicos para OperatingHours */
-        .operatingHours {
-            flex: 0 0 250px; /* Alineado con el max-width de OperatingHours.module.scss*/
-            max-width: 250px;
-        }
-
-        /* Estilos para el iframe del mapa */
-        iframe {
-            flex: 1; /* El mapa ocupa el espacio restante*/
+        
+        /* Contenedor izquierdo para el mapa */
+        .map-container {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin: 0 auto;
-            max-width: 80%;
-            height: 250px;
-            border: 1.5px solid black;
-            border-radius: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 0;
 
-            @media (min-width: 768px) {
+           div {
+            width: 100%;
+                iframe {
+                    z-index: 1;
+                    width: 100%;
+                    height: 350px;
+                    position: relative;
+                    border: 1.5px solid black;
+                    border-radius: 15px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    display: block;
+                }
+           }
+        }
+
+        /* Contenedor derecho para el video */
+        
+        .video-container {
+            max-width: 45%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            h2 {
+                position: static;
+                left: 0;
+                margin-bottom: 20px;
+                text-align: center;
+                width: 100%;
+                padding-left: 0;
+            }
+
+            video {
+                width: 100%;
+                height: 350px;
+                border-radius: 15px;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            padding: 40px;
+        }
+    }
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    #map {
+        h2 {
+            text-align: center;
+            padding-left: 0;
+            width: 100%;
+            position: static;
+            left: 0;
+            margin-top: 0;
+        }
+
+        .contenedor_principal {
+            flex-direction: column;
+            margin-top: 10px;
+            
+            .map-container,
+            .video-container {
+                max-width: 100%;
+            }
+
+            iframe,
+            video {
                 height: 300px;
             }
-
-            @media (min-width: 1024px) {
-                height: 400px;
-            }
-        }
-
-        /* Estilo para el mensaje de dirección no disponible */
-        p {
-            flex: 1;
-            font-size: 0.9rem;
-            color: #ff4d4f;
-            text-align: center;
-            align-self: center;
         }
     }
 }
@@ -771,10 +813,6 @@ section {
     margin-bottom: 70px; /* Ajustado para consistencia */
 }
 
-#map .contenedCor_principal {
-    padding-top: 0px; /* Padding superior de 0px */
-    padding-bottom: 0px; /* Padding inferior de 0px */
-}
 
 /* Ajuste del contenedor para centrar contenido verticalmente */
 .container {

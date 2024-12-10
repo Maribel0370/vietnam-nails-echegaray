@@ -221,9 +221,7 @@ include_once __DIR__ . '/init.php';
             </div>
         </div>
     </div>
-    
-</body>
-<script> 
+    <script> 
     document.addEventListener("DOMContentLoaded", function() {
         window.onscroll = function() {
             var header = document.getElementById("header");
@@ -264,5 +262,7 @@ window.onclick = function(event) {
     }
 }
 </script>
+</body>
+
 </html>
 

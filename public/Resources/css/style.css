@@ -469,39 +469,65 @@ blockquote {
 
 /* El modal está oculto por defecto */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 50%;
+    position: fixed !important;
+    top: 55% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 85vh !important;
+    z-index: 9999 !important;
+    overflow-y: auto !important;
+}
+
+/* Estilo específico para el contenido de todos los modales */
+.modal-dialog {
+    margin: 0 auto !important;
+    max-width: 900px !important;
+    transform: scaleX(-1) !important; /* Esto corregirá el efecto espejo en todos los modales */
+}
+
+/* Estilo específico para el modal del mapa */
+#mapModal .modal-dialog {
+    margin: 0 auto !important;
+    max-width: 850px !important;
+    height: 80vh !important;
+}
+
+#mapModal .modal-body {
+    height: calc(75vh) !important;
+    padding: 10px !important;
+}
+
+#mapModal .modal-body iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Prevenir el scroll del body cuando el modal está abierto */
+body.modal-open {
+    overflow: hidden !important;
+    padding-right: 0 !important;
+}
+
+/* Resto de los estilos del modal permanecen igual */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 9998 !important;
+}
+
+.header {
+    z-index: 1000;
+}
+
+.modal-body {
+    max-height: 800px;
     overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    transform: scaleX(-1);
-}
-
-/* Contenido del modal */
-.modal-content {
-    background-color: rgba(227, 226, 226, 0.85)!important;
-    margin: 5% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 750px;
-    position: relative;
 }
-.modal-dialog.modal-small-custom {
-    max-width: 750px; /* Aumenta el ancho del modal */
-    
-}
-
-.modal-body iframe {
-    height: 390px; /* Incrementa la altura del iframe */
-    width: 100%; /* Asegúrate de que ocupe todo el ancho del modal */
-}
-
-
 
 /* Botón de cierre */
 .close-btn {

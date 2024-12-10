@@ -422,3 +422,14 @@ INSERT INTO `offer_services` (`id_offer`, `id_service`)
 VALUES 
 (1, 4),  -- Manicura
 (1, 5);  -- Pedicura
+
+-- Insertar una oferta de ejemplo
+INSERT INTO `offers` 
+(`title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`) 
+VALUES 
+('Oferta de Invierno', 'Descuento especial en servicios de pedicura', 'special', '2024-12-01', '2025-02-28', 15.00);
+
+-- Relacionar la oferta con servicios
+INSERT INTO `offer_services` (`id_offer`, `id_service`) 
+VALUES 
+(2, 5);  -- Pedicura

@@ -15,6 +15,36 @@ include_once __DIR__ . '/init.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css" href="public/resources/css/styles.css"> <!-- Archivo de estilos -->
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
+    <style>
+    /* Estilos específicos para el modal de ofertas */
+    #offersModal .modal-content {
+        transform: none;
+    }
+
+    #offersModal .offer-card {
+        background-color: #fff;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .25rem;
+        height: 100%;
+    }
+
+    #offersModal .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    #offersModal .card-body {
+        padding: 1.25rem;
+    }
+
+    #offersModal .card-title {
+        margin-bottom: 1rem;
+    }
+
+    #offersModal .card-text {
+        margin-bottom: 0.5rem;
+    }
+    </style>
 </head>
 <body>
 
@@ -114,13 +144,60 @@ include_once __DIR__ . '/init.php';
 
     <!-- Modal de Ofertas -->
     <div class="modal fade" id="offersModal" tabindex="-1" aria-labelledby="offersModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="offersModalLabel"><?php echo translate('offers', 'Ofertas'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="offers-container">
+                        <?php
+                        try {
+                            // Consulta para obtener ofertas activas
+                            $stmt = $pdo->prepare("
+                                SELECT o.*, GROUP_CONCAT(s.nameService SEPARATOR ', ') as services
+                                FROM offers o
+                                LEFT JOIN offer_services os ON o.id_offer = os.id_offer
+                                LEFT JOIN services s ON os.id_service = s.id_service
+                                WHERE o.is_active = 1 AND o.end_date >= CURDATE()
+                                GROUP BY o.id_offer
+                            ");
+                            $stmt->execute();
+                            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            
+                            if (count($offers) > 0) {
+                                foreach ($offers as $offer) {
+                                    ?>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card offer-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?php echo htmlspecialchars($offer['title']); ?></h5>
+                                                <p class="card-text"><?php echo htmlspecialchars($offer['description']); ?></p>
+                                                <p class="card-text">
+                                                    <strong>Precio:</strong> <?php echo number_format($offer['final_price'], 2); ?>€<br>
+                                                    <strong>Servicios:</strong> <?php echo htmlspecialchars($offer['services']); ?><br>
+                                                    <strong>Válido hasta:</strong> <?php echo date('d/m/Y', strtotime($offer['end_date'])); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            } else {
+                                ?>
+                                <div class="col-12 text-center">
+                                    <p class="alert alert-info"><?php echo translate('no_offers_available', 'Lo sentimos, en estos momentos no hay ofertas disponibles.'); ?></p>
+                                </div>
+                                <?php
+                            }
+                        } catch (PDOException $e) {
+                            echo "Error al obtener las ofertas: " . $e->getMessage();
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>

@@ -169,6 +169,7 @@ include 'setup_files/header.php'; // Incluir el header
             </div>
         </section>
 
+        <!-- Sección Ubicación -->
         <section id="map">
             <div class="contenedCor_principal">
                 <h2><?php echo translate('our_location', 'Ubicación');?></h2>
@@ -179,6 +180,15 @@ include 'setup_files/header.php'; // Incluir el header
                         loading="lazy">
                     </iframe>
                 </div>
+            </div>
+        </section>
+
+        <section id="videoPresentacion">
+            <div>
+                <h2><?php echo translate('Come visit us', 'Ven a visitar nuestras instalaciones');?></h2>
+                <video width="90%" height="80%" controls>
+                    <source src="public/Resources/video/vietnam_nail_editado (1).mp4" type="video/mp4">
+                </video>
             </div>
         </section>
     </main>

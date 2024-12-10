@@ -201,10 +201,10 @@ include_once __DIR__ . '/init.php';
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <p><?php echo translate('location_info', 'Nos encontramos en: Calle Echegaray, 15, Badalona, España'); ?></p>
+                        <p><?php echo translate('location_info', 'Nos encontramos en: Calle Echegaray, 18, Badalona, España'); ?></p>
                         <!-- Google Maps Embed -->
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.411775382113!2d2.2322693153855725!3d41.45011347925821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a499b1b1f0c9f3%3A0x1d7c60e2db5c9db!2sCalle%20Echegaray%2C%2015%2C%20Badalona%2C%20Barcelona%2C%20España!5e0!3m2!1ses!2ses!4v1234567890!5m2!1ses!2ses" 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.411775382113!2d2.2322693153855725!3d41.45011347925821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a499b1b1f0c9f3%3A0x1d7c60e2db5c9db!2sCalle%20Echegaray%2C%2018%2C%20Badalona%2C%20Barcelona%2C%20España!5e0!3m2!1ses!2ses!4v1234567890!5m2!1ses!2ses" 
                             width="800px" 
                             height="250px" 
                             frameborder="0" 

@@ -54,7 +54,7 @@ body {
 }
 
 
- h2, h3 {
+h2, h3 {
     margin: 0;
     padding: 0;
     color: #8a200f;
@@ -106,23 +106,24 @@ nav {
     margin-left: auto;
 }
 
+.header-logo-rotulo {
+    max-width: 30%;
+    width: auto;
+}
+
+@media (min-width: 768px) {
     .header-logo-rotulo {
         max-width: 30%;
-        width: auto;
     }
-    @media (min-width: 768px) {
-        .header-logo-rotulo {
-            max-width: 30%;
-        }
-    }
+}
 
-    .header-logo {
-        margin-left: 15%;
-        max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
-        width: auto;
-    }
+.header-logo {
+    margin-left: 15%;
+    max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
+    width: auto;
+}
 
-    @media (min-width: 768px) {
+@media (min-width: 768px) {
     .header-logo {
         max-width: 5%; /* Ajusta el tamaño máximo según sea necesario */
     }
@@ -239,123 +240,123 @@ nav {
     }
 
 }
-   /* Carrousel Section */
+/* Carrousel Section */
 
-    .banner {
+.banner {
 
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 100px;
-        width: 50%;
-        width: 100%; /* Ancho de donde se van a poner las fotos del carrousel */
-        height: 100vh; /*Alto de donde se van a poner las fotos del carrousel */
-        text-align: center;
-        overflow: hidden;
-        
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    width: 50%;
+    width: 100%; /* Ancho de donde se van a poner las fotos del carrousel */
+    height: 100vh; /*Alto de donde se van a poner las fotos del carrousel */
+    text-align: center;
+    overflow: hidden;
+    
+}
+
+.banner .slider {
+    position: absolute;
+    width: 210px;  /*Ancho de foto carrousel pantalla principal */
+    height: 150px; /*Alto de foto carrousel pantalla principal */
+    top: 40%;
+    left: calc(50% - 100px); /* poscicion del carrousel a la izquierda */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    animation: autoRun 20s linear infinite;  /* Velocidad del giro del carrousel */
+    z-index: 2;
+}
+
+@keyframes autoRun {
+    from {
+        transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);  /*Calculo de inicio para el giro del carrousel 0 */
     }
 
-    .banner .slider {
-        position: absolute;
-        width: 210px;  /*Ancho de foto carrousel pantalla principal */
-        height: 150px; /*Alto de foto carrousel pantalla principal */
-        top: 40%;
-        left: calc(50% - 100px); /* poscicion del carrousel a la izquierda */
-        transform-style: preserve-3d;
-        transform: perspective(1000px);
-        animation: autoRun 20s linear infinite;  /* Velocidad del giro del carrousel */
-        z-index: 2;
+    to {
+        transform: perspective(1000px) rotateX(-16deg) rotateY(360deg); /* Calulo de fin para el giro del carrousel  360 */
     }
+}
 
-    @keyframes autoRun {
-        from {
-            transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);  /*Calculo de inicio para el giro del carrousel 0 */
-        }
+.banner .slider:hover {
+    animation-play-state: paused;   /* Sirve para que al poner el cursor en la foto se pare */
+}
 
-        to {
-            transform: perspective(1000px) rotateX(-16deg) rotateY(360deg); /* Calulo de fin para el giro del carrousel  360 */
-        }
-    }
+.banner .slider .item {
+    position: absolute;
+    inset: 0 0 0 0;
+    transform:
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(360px); /* translateZ sirve para desplazar las fotos a lo ancho */
+    transition: transform 0.3s ease;
+}
 
-    .banner .slider:hover {
-        animation-play-state: paused;   /* Sirve para que al poner el cursor en la foto se pare */
-    }
+.banner .slider .item:hover {
+    transform:
+        rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.0); /* TranslateZ sirve para el hover se amplie la foto */
+    z-index: 5;
+}
+
+.banner .slider .item img {
+    width: 90%;   /* ancho de las fotos principales */
+    height: 90%;  /* alto de las fotos principales */
+    object-fit:cover;
+    transition: transform 0.3s ease; 
+}
+
+.banner .content {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1400px, 100vw);
+    height: max-content;
+    padding-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+
+/* -----MEDIAS QUIERIES para responsive del carrousel----- */
+
+@media screen and (max-width: 1023px) {
+        .banner .slider {
+        width: 160px;
+        height: 200px;
+        left: calc(50% - 80px);
+    } 
 
     .banner .slider .item {
-        position: absolute;
-        inset: 0 0 0 0;
         transform:
-            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(360px); /* translateZ sirve para desplazar las fotos a lo ancho */
-        transition: transform 0.3s ease;
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(330px);
     }
 
     .banner .slider .item:hover {
         transform:
-            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.0); /* TranslateZ sirve para el hover se amplie la foto */
-        z-index: 5;
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.2);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .banner .slider {
+        width: 85px;
+        height: 85px;
+        left: calc(50% - 45px);
     }
 
-    .banner .slider .item img {
-        width: 90%;   /* ancho de las fotos principales */
-        height: 90%;  /* alto de las fotos principales */
-        object-fit:cover;
-        transition: transform 0.3s ease; 
+    .banner .slider .item {
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(170px);
     }
 
-    .banner .content {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(1400px, 100vw);
-        height: max-content;
-        padding-bottom: 100px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1;
+    .banner .slider .item:hover {
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(250px) scale(1.15);
     }
-
-
-  /* -----MEDIAS QUIERIES para responsive del carrousel----- */
-
-    @media screen and (max-width: 1023px) {
-          .banner .slider {
-            width: 160px;
-            height: 200px;
-            left: calc(50% - 80px);
-        } 
-
-        .banner .slider .item {
-            transform:
-                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(330px);
-        }
-
-        .banner .slider .item:hover {
-            transform:
-                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(400px) scale(1.2);
-        }
-    }
-
-    @media screen and (max-width: 767px) {
-        .banner .slider {
-            width: 85px;
-            height: 85px;
-            left: calc(50% - 45px);
-        }
-
-        .banner .slider .item {
-            transform:
-                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(170px);
-        }
-
-        .banner .slider .item:hover {
-            transform:
-                rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(250px) scale(1.15);
-        }
-    }
+}
 
 /* Services Section */
 #services {
@@ -447,6 +448,23 @@ blockquote {
     button:hover {
         background-color: #0056b3;
     }
+}
+
+/* Sección video*/
+
+#videoPresentacion {
+    background-color: #d1a8a0d6;
+    height: fit-content;
+    display: flex;
+    text-align: center;
+    div {
+        width: 90%;
+        margin: 0 auto;
+        video {
+            margin: 0 auto;
+        }
+    }
+    
 }
 
 /* El modal está oculto por defecto */

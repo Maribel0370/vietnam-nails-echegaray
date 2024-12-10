@@ -213,21 +213,23 @@ include 'setup_files/header.php'; // Incluir el header
             <div class="contenedCor_principal">
                 <h2><?php echo translate('our_location', 'Ubicación');?></h2>
                 <div class="infoMapContainer">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d747.7193510581494!2d2.22627066965649!3d41.441881703534875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bb60e4593303%3A0x3607ecd8f3fc6ad2!2sCarrer%20d&#39;Echegaray%2C%2018%2C%2008914%20Santa%20Coloma%20de%20Gramenet%2C%20Barcelona!5e0!3m2!1ses!2ses!4v1732925196997!5m2!1ses!2ses" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                    </iframe>
+                    <!-- Contenedor del video (ahora a la izquierda) -->
+                    <div class="video-container">
+                        <h2><?php echo translate('Come visit us', 'Ven a visitar nuestras instalaciones');?></h2>
+                        <video controls>
+                            <source src="public/Resources/video/vietnam_nail_editado (1).mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <!-- Contenedor del mapa (ahora a la derecha) -->
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d747.7193510581494!2d2.22627066965649!3d41.441881703534875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4bb60e4593303%3A0x3607ecd8f3fc6ad2!2sCarrer%20d&#39;Echegaray%2C%2018%2C%2008914%20Santa%20Coloma%20de%20Gramenet%2C%20Barcelona!5e0!3m2!1ses!2ses!4v1732925196997!5m2!1ses!2ses" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="videoPresentacion">
-            <div>
-                <h2><?php echo translate('Come visit us', 'Ven a visitar nuestras instalaciones');?></h2>
-                <video width="90%" height="80%" controls>
-                    <source src="public/Resources/video/vietnam_nail_editado (1).mp4" type="video/mp4">
-                </video>
             </div>
         </section>
     </main>

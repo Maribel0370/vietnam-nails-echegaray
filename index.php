@@ -158,12 +158,6 @@ include 'setup_files/header.php'; // Incluir el header
             
     </section>        
 
-
-
-        
-
-        
-
         <!-- Sección de testimonios -->
         <section id="testimonials">
             <div class="container">

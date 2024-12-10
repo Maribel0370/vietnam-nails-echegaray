@@ -136,7 +136,7 @@ include 'setup_files/header.php'; // Incluir el header
                 <div>
                     <h2><?php echo translate('about_us', 'Nuestro trabajo...'); ?></h2>
                     <p><?php echo translate('about_quote', 'Cada año ayudamos a que las mujeres de Barcelona se vean y se sientan mejor.'); ?></p>
-                    <a href="#more-about" class="btn btn-secondary"><?php echo translate('read_more', 'Leer más'); ?></a>
+                    <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#servicesModalAbout"><?php echo translate('read_more', 'Leer más'); ?></a>
                     <!-- Carrusel de imágenes -->
                         <div class="banner">
                             <div class="slider" style="--quantity: 10">
@@ -157,6 +157,45 @@ include 'setup_files/header.php'; // Incluir el header
             </div>
             
     </section>        
+
+        <!-- Añadir el modal de servicios justo después de la sección about -->
+        <div class="modal fade" id="servicesModalAbout" tabindex="-1" aria-labelledby="servicesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="servicesModalLabel">Servicios</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="services-container">
+                            <?php
+                            try {
+                                $stmt = $pdo->query("SELECT nameService, description FROM services");
+                                $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                foreach ($services as $service) {
+                                    ?>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?php echo htmlspecialchars($service['nameService']); ?></h5>
+                                                <p class="card-text"><?php echo htmlspecialchars($service['description']); ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            } catch (PDOException $e) {
+                                echo "Error al obtener los servicios: " . $e->getMessage();
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Sección de testimonios -->
         <section id="testimonials">

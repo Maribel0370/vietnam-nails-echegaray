@@ -885,35 +885,45 @@ section {
     border: 1px solid #888 !important;
 }
 
-/* Estilos para centrar el modal de ofertas */
-#offersModal .modal-dialog {
-    display: flex;
-    align-items: center;
-    min-height: calc(100% - 1rem);
-    margin: 1rem auto;
+/* Estilos para las pestañas del panel de administración */
+#adminTabs {
+    border-bottom: none;
 }
 
-#offersModal .modal-content {
-    transform: none;
-    margin: auto;
-    width: 100%;
+#adminTabs .nav-link {
+    color: #495057;
+    background-color: transparent;
+    border: none;
+    padding: 1rem 2rem;
+    font-weight: 500;
 }
 
-#offersModal.modal {
-    display: flex !important;
-    align-items: center;
-    padding-right: 0 !important; /* Elimina el padding que puede causar descentrado */
+#adminTabs .nav-link.active {
+    color: #007bff;
+    background-color: transparent;
+    border-bottom: 3px solid #007bff;
 }
 
-/* Ajustes adicionales para mejorar la presentación */
-#offersModal .modal-body {
-    max-height: 70vh;
-    overflow-y: auto;
-    padding: 1.5rem;
+#adminTabs .nav-link:hover {
+    border-color: transparent;
+    color: #007bff;
 }
 
-#offersModal .offer-card {
-    height: 100%;
-    margin: 0;
+/* Estilos para las tablas */
+.table {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table thead th {
+    border-top: none;
+    background-color: #f8f9fa;
+}
+
+/* Estilos para los botones */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
 }
 

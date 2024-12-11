@@ -1,36 +1,30 @@
 <?php
-session_start();
-require_once '../setup_files/connection.php';
-
-if (!isset($_SESSION['admin_id'])) {
-    echo json_encode(['success' => false, 'message' => 'No autorizado']);
-    exit();
-}
+require_once '../../setup_files/db_connection.php';
+header('Content-Type: application/json');
 
 try {
-    $firstName = trim($_POST['firstName'] ?? '');
-    $lastName = trim($_POST['lastName'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
-    $isActive = $_POST['isActive'] ?? '1';
-
-    if (empty($firstName) || empty($lastName) || empty($phone)) {
+    // Validar campos requeridos
+    if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['phone'])) {
         throw new Exception('Todos los campos son obligatorios');
     }
 
     // Validar formato del teléfono
-    if (!preg_match("/^[0-9]{9}$/", $phone)) {
-        throw new Exception('El número de teléfono debe tener 9 dígitos');
+    if (!preg_match('/^[0-9]{9}$/', $_POST['phone'])) {
+        throw new Exception('El formato del teléfono no es válido');
     }
 
-    $stmt = $pdo->prepare("
-        INSERT INTO employees (firstName, lastName, phone, isActive) 
-        VALUES (?, ?, ?, ?)
-    ");
+    $sql = "INSERT INTO employees (firstName, lastName, phone, isActive) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        trim($_POST['firstName']),
+        trim($_POST['lastName']),
+        $_POST['phone'],
+        isset($_POST['isActive']) ? 1 : 0
+    ]);
     
-    $stmt->execute([$firstName, $lastName, $phone, $isActive]);
-
     echo json_encode(['success' => true]);
-
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 } 

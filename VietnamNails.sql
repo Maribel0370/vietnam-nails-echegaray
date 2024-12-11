@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 08-12-2024 a las 21:31:43
--- Versión del servidor: 8.0.40-0ubuntu0.22.04.1
--- Versión de PHP: 8.1.2-1ubuntu2.19
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 11-12-2024 a las 14:02:03
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,33 +18,34 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `VietnamNails`
+-- Base de datos: `vietnamnails`
 --
-CREATE DATABASE IF NOT EXISTS `VietnamNails` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `VietnamNails`;
+CREATE DATABASE IF NOT EXISTS `vietnamnails` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `vietnamnails`;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `companyHours`
+-- Estructura de tabla para la tabla `companyhours`
 --
 
-DROP TABLE IF EXISTS `companyHours`;
-CREATE TABLE `companyHours` (
-  `id_companyHour` int NOT NULL,
-  `dayOfWeek` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') COLLATE utf8mb4_general_ci NOT NULL,
+DROP TABLE IF EXISTS `companyhours`;
+CREATE TABLE IF NOT EXISTS `companyhours` (
+  `id_companyHour` int(11) NOT NULL AUTO_INCREMENT,
+  `dayOfWeek` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
   `startTime` time NOT NULL,
   `endTime` time NOT NULL,
-  `isTemporary` tinyint(1) DEFAULT '0',
+  `isTemporary` tinyint(1) DEFAULT 0,
   `startDate` date DEFAULT NULL,
-  `endDate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `endDate` date DEFAULT NULL,
+  PRIMARY KEY (`id_companyHour`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `companyHours`
+-- Volcado de datos para la tabla `companyhours`
 --
 
-INSERT INTO `companyHours` (`id_companyHour`, `dayOfWeek`, `startTime`, `endTime`, `isTemporary`, `startDate`, `endDate`) VALUES
+INSERT INTO `companyhours` (`id_companyHour`, `dayOfWeek`, `startTime`, `endTime`, `isTemporary`, `startDate`, `endDate`) VALUES
 (1, 'Monday', '09:30:00', '20:30:00', 0, NULL, NULL),
 (2, 'Tuesday', '09:30:00', '20:30:00', 0, NULL, NULL),
 (3, 'Wednesday', '09:30:00', '20:30:00', 0, NULL, NULL),
@@ -55,14 +56,16 @@ INSERT INTO `companyHours` (`id_companyHour`, `dayOfWeek`, `startTime`, `endTime
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `customersDetails`
+-- Estructura de tabla para la tabla `customersdetails`
 --
 
-DROP TABLE IF EXISTS `customersDetails`;
-CREATE TABLE `customersDetails` (
-  `id_customer` int NOT NULL,
-  `fullName` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `phoneNumber` varchar(15) COLLATE utf8mb4_general_ci NOT NULL
+DROP TABLE IF EXISTS `customersdetails`;
+CREATE TABLE IF NOT EXISTS `customersdetails` (
+  `id_customer` int(11) NOT NULL AUTO_INCREMENT,
+  `fullName` varchar(100) NOT NULL,
+  `phoneNumber` varchar(15) NOT NULL,
+  PRIMARY KEY (`id_customer`),
+  UNIQUE KEY `phoneNumber` (`phoneNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -72,25 +75,82 @@ CREATE TABLE `customersDetails` (
 --
 
 DROP TABLE IF EXISTS `employees`;
-CREATE TABLE `employees` (
-  `id_employee` int NOT NULL,
-  `firstName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `lastName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
-  `dataCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isActive` tinyint(1) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS `employees` (
+  `id_employee` int(11) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(50) NOT NULL,
+  `lastName` varchar(50) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `dataCreated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `isActive` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`id_employee`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `employees`
 --
 
 INSERT INTO `employees` (`id_employee`, `firstName`, `lastName`, `phone`, `dataCreated`, `isActive`) VALUES
-(1, 'Hiep', 'Cao', '123456789', '2024-11-29 11:57:57', 1),
-(2, 'Georgina', '', '234567890', '2024-11-29 12:02:30', 1),
+(1, 'Hiep', 'Cao', '123456789', '2024-12-10 22:35:29', 1),
+(2, 'Georgina', 'colacao', '234567890', '2024-12-10 23:21:27', 1),
 (3, 'Yulia', '', '345678901', '2024-11-29 12:02:30', 1),
 (4, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1),
 (5, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `offers`
+--
+
+DROP TABLE IF EXISTS `offers`;
+CREATE TABLE IF NOT EXISTS `offers` (
+  `id_offer` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `offer_type` enum('weekly','monthly','blackfriday','special') NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `final_price` decimal(10,2) NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id_offer`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `offers`
+--
+
+INSERT INTO `offers` (`id_offer`, `title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Oferta de Navidad', 'Descuento especial en servicios de manicura\r\n\r\nManicura Manos Semipermantente y Pies solo pintar', 'special', '2024-12-02', '2024-12-09', 20.00, 1, '2024-12-10 15:55:32', '2024-12-10 22:43:08'),
+(2, 'Oferta de la Semana', 'Manos Semi permanente y pies semi permanente', 'weekly', '2024-12-11', '2024-12-18', 25.00, 1, '2024-12-11 12:51:33', '2024-12-11 12:51:33'),
+(3, 'Oferta de la Semana', 'Mano y pies semi permanente', 'weekly', '2024-12-11', '2024-12-18', 25.00, 1, '2024-12-11 12:53:44', '2024-12-11 12:53:44');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `offer_services`
+--
+
+DROP TABLE IF EXISTS `offer_services`;
+CREATE TABLE IF NOT EXISTS `offer_services` (
+  `id_offer_service` int(11) NOT NULL AUTO_INCREMENT,
+  `id_offer` int(11) NOT NULL,
+  `id_service` int(11) NOT NULL,
+  PRIMARY KEY (`id_offer_service`),
+  KEY `id_offer` (`id_offer`),
+  KEY `id_service` (`id_service`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `offer_services`
+--
+
+INSERT INTO `offer_services` (`id_offer_service`, `id_offer`, `id_service`) VALUES
+(3, 2, 3),
+(4, 2, 5),
+(5, 3, 3),
+(6, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -99,41 +159,47 @@ INSERT INTO `employees` (`id_employee`, `firstName`, `lastName`, `phone`, `dataC
 --
 
 DROP TABLE IF EXISTS `reservations`;
-CREATE TABLE `reservations` (
-  `id_reservation` int NOT NULL,
-  `id_customer` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `reservations` (
+  `id_reservation` int(11) NOT NULL AUTO_INCREMENT,
+  `id_customer` int(11) NOT NULL,
   `reservationDate` datetime NOT NULL,
-  `id_employee` int DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id_employee` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id_reservation`),
+  KEY `id_customer` (`id_customer`),
+  KEY `id_employee` (`id_employee`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reservationServices`
+-- Estructura de tabla para la tabla `reservationservices`
 --
 
-DROP TABLE IF EXISTS `reservationServices`;
-CREATE TABLE `reservationServices` (
-  `id_reservationService` int NOT NULL,
-  `id_reservation` int NOT NULL,
-  `id_service` int NOT NULL
+DROP TABLE IF EXISTS `reservationservices`;
+CREATE TABLE IF NOT EXISTS `reservationservices` (
+  `id_reservationService` int(11) NOT NULL AUTO_INCREMENT,
+  `id_reservation` int(11) NOT NULL,
+  `id_service` int(11) NOT NULL,
+  PRIMARY KEY (`id_reservationService`),
+  KEY `id_reservation` (`id_reservation`),
+  KEY `id_service` (`id_service`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `serviceImages`
+-- Estructura de tabla para la tabla `serviceimages`
 --
 
-DROP TABLE IF EXISTS `serviceImages`;
-CREATE TABLE `serviceImages` (
-  `id_serviceImage` int NOT NULL,
-  `id_service` int NOT NULL,
-  `imageUrl` varchar(2083) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'URL asociada a la imagen',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS `serviceimages`;
+CREATE TABLE IF NOT EXISTS `serviceimages` (
+  `id_serviceImage` int(11) NOT NULL,
+  `id_service` int(11) NOT NULL,
+  `imageUrl` varchar(2083) NOT NULL COMMENT 'URL asociada a la imagen',
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -143,30 +209,60 @@ CREATE TABLE `serviceImages` (
 --
 
 DROP TABLE IF EXISTS `services`;
-CREATE TABLE `services` (
-  `id_service` int NOT NULL,
-  `nameService` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `duration` int NOT NULL COMMENT 'Duración en minutos',
+CREATE TABLE IF NOT EXISTS `services` (
+  `id_service` int(11) NOT NULL AUTO_INCREMENT,
+  `nameService` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `duration` int(11) NOT NULL COMMENT 'Duración en minutos',
   `price` decimal(10,2) NOT NULL,
   `availableFrom` date DEFAULT NULL COMMENT 'Fecha de inicio de la disponibilidad del servicio',
   `availableUntil` date DEFAULT NULL COMMENT 'Fecha de finalización de la disponibilidad del servicio',
-  `isActive` tinyint(1) DEFAULT '1' COMMENT 'Indica si el servicio está activo actualmente (1: activo, 0: inactivo)',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `isActive` tinyint(1) DEFAULT 1 COMMENT 'Indica si el servicio está activo actualmente (1: activo, 0: inactivo)',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id_service`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `services`
 --
 
 INSERT INTO `services` (`id_service`, `nameService`, `description`, `duration`, `price`, `availableFrom`, `availableUntil`, `isActive`, `created_at`, `update_at`) VALUES
-(1, 'Uñas de gel', 'Prótesis creadas especialmente para las uñas a partir de un gel acrílico que se moldea en la uña natural', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
-(2, 'Semi capa', 'Tiene que ser un tratamiento de uñas que no es una capa completa', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
-(3, 'Semi permanente', 'Un tipo de manicura que se hace cada 2-3 semanas', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
-(4, 'Manicura', 'Tratamiento cosmético en el que se da la forma deseada a las uñas de las manos, y se maquillan con un esmalte', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
-(5, 'Pedicura', 'Tratamiento cosmético superficial de las uñas de los pies', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
-(6, 'Masajes', 'Manipulación de las capas superficiales y profundas de los músculos del cuerpo', 75, '15.00', NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41');
+(1, 'Uñas de gel', 'Prótesis creadas especialmente para las uñas a partir de un gel acrílico que se moldea en la uña natural', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
+(2, 'Semi capa', 'Tiene que ser un tratamiento de uñas que no es una capa completa', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
+(3, 'Semi permanente', 'Un tipo de manicura que se hace cada 2-3 semanas', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
+(4, 'Manicura', 'Tratamiento cosmético en el que se da la forma deseada a las uñas de las manos, y se maquillan con un esmalte', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
+(5, 'Pedicura', 'Tratamiento cosmético superficial de las uñas de los pies', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41'),
+(6, 'Masajes', 'Manipulación de las capas superficiales y profundas de los músculos del cuerpo', 75, 15.00, NULL, NULL, 1, '2024-11-29 12:21:41', '2024-11-29 12:21:41');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `special_days`
+--
+
+DROP TABLE IF EXISTS `special_days`;
+CREATE TABLE IF NOT EXISTS `special_days` (
+  `id_special_day` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `opening_time` time NOT NULL,
+  `closing_time` time NOT NULL,
+  `is_open` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_special_day`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `special_days`
+--
+
+INSERT INTO `special_days` (`id_special_day`, `date`, `description`, `opening_time`, `closing_time`, `is_open`, `created_at`) VALUES
+(1, '2024-12-24', 'Nochebuena', '09:00:00', '14:00:00', 1, '2024-12-10 21:13:15'),
+(2, '2024-12-25', 'Navidad', '00:00:00', '00:00:00', 0, '2024-12-10 21:13:15'),
+(3, '2024-12-31', 'Nochevieja', '09:00:00', '15:00:00', 1, '2024-12-10 21:13:15'),
+(4, '2024-01-01', 'Año Nuevo', '00:00:00', '00:00:00', 0, '2024-12-10 21:13:15'),
+(5, '2024-12-14', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35');
 
 -- --------------------------------------------------------
 
@@ -175,14 +271,15 @@ INSERT INTO `services` (`id_service`, `nameService`, `description`, `duration`, 
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `id_user` int NOT NULL,
-  `userName` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `isActive` tinyint(1) DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(10) NOT NULL,
+  `password` varchar(10) NOT NULL,
+  `isActive` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -195,25 +292,27 @@ INSERT INTO `users` (`id_user`, `userName`, `password`, `isActive`, `created_at`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `workSchedules`
+-- Estructura de tabla para la tabla `workschedules`
 --
 
-DROP TABLE IF EXISTS `workSchedules`;
-CREATE TABLE `workSchedules` (
-  `id_workSchedule` int NOT NULL,
-  `id_employee` int NOT NULL,
-  `dayOfWeek` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') COLLATE utf8mb4_general_ci NOT NULL,
-  `blockType` enum('Morning','Afternoon','Full Day') COLLATE utf8mb4_general_ci NOT NULL,
+DROP TABLE IF EXISTS `workschedules`;
+CREATE TABLE IF NOT EXISTS `workschedules` (
+  `id_workSchedule` int(11) NOT NULL AUTO_INCREMENT,
+  `id_employee` int(11) NOT NULL,
+  `dayOfWeek` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+  `blockType` enum('Morning','Afternoon','Full Day') NOT NULL,
   `startTime` time NOT NULL,
   `endTime` time NOT NULL,
-  `isActive` tinyint(1) DEFAULT '1' COMMENT 'Indica si el servicio está activo actualmente (1: activo, 0: inactivo)'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `isActive` tinyint(1) DEFAULT 1 COMMENT 'Indica si el servicio está activo actualmente (1: activo, 0: inactivo)',
+  PRIMARY KEY (`id_workSchedule`),
+  KEY `id_employee` (`id_employee`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `workSchedules`
+-- Volcado de datos para la tabla `workschedules`
 --
 
-INSERT INTO `workSchedules` (`id_workSchedule`, `id_employee`, `dayOfWeek`, `blockType`, `startTime`, `endTime`, `isActive`) VALUES
+INSERT INTO `workschedules` (`id_workSchedule`, `id_employee`, `dayOfWeek`, `blockType`, `startTime`, `endTime`, `isActive`) VALUES
 (1, 1, 'Monday', 'Full Day', '09:30:00', '20:30:00', 1),
 (2, 1, 'Tuesday', 'Full Day', '09:30:00', '20:30:00', 1),
 (3, 1, 'Wednesday', 'Full Day', '09:30:00', '20:30:00', 1),
@@ -246,190 +345,37 @@ INSERT INTO `workSchedules` (`id_workSchedule`, `id_employee`, `dayOfWeek`, `blo
 (30, 5, 'Friday', 'Full Day', '09:30:00', '20:30:00', 1);
 
 --
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `companyHours`
---
-ALTER TABLE `companyHours`
-  ADD PRIMARY KEY (`id_companyHour`);
-
---
--- Indices de la tabla `customersDetails`
---
-ALTER TABLE `customersDetails`
-  ADD PRIMARY KEY (`id_customer`),
-  ADD UNIQUE KEY `phoneNumber` (`phoneNumber`);
-
---
--- Indices de la tabla `employees`
---
-ALTER TABLE `employees`
-  ADD PRIMARY KEY (`id_employee`);
-
---
--- Indices de la tabla `reservations`
---
-ALTER TABLE `reservations`
-  ADD PRIMARY KEY (`id_reservation`),
-  ADD KEY `id_customer` (`id_customer`),
-  ADD KEY `id_employee` (`id_employee`);
-
---
--- Indices de la tabla `reservationServices`
---
-ALTER TABLE `reservationServices`
-  ADD PRIMARY KEY (`id_reservationService`),
-  ADD KEY `id_reservation` (`id_reservation`),
-  ADD KEY `id_service` (`id_service`);
-
---
--- Indices de la tabla `services`
---
-ALTER TABLE `services`
-  ADD PRIMARY KEY (`id_service`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`);
-
---
--- Indices de la tabla `workSchedules`
---
-ALTER TABLE `workSchedules`
-  ADD PRIMARY KEY (`id_workSchedule`),
-  ADD KEY `id_employee` (`id_employee`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `companyHours`
---
-ALTER TABLE `companyHours`
-  MODIFY `id_companyHour` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT de la tabla `customersDetails`
---
-ALTER TABLE `customersDetails`
-  MODIFY `id_customer` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `employees`
---
-ALTER TABLE `employees`
-  MODIFY `id_employee` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de la tabla `reservations`
---
-ALTER TABLE `reservations`
-  MODIFY `id_reservation` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `reservationServices`
---
-ALTER TABLE `reservationServices`
-  MODIFY `id_reservationService` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `services`
---
-ALTER TABLE `services`
-  MODIFY `id_service` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `workSchedules`
---
-ALTER TABLE `workSchedules`
-  MODIFY `id_workSchedule` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `offer_services`
+--
+ALTER TABLE `offer_services`
+  ADD CONSTRAINT `offer_services_ibfk_1` FOREIGN KEY (`id_offer`) REFERENCES `offers` (`id_offer`) ON DELETE CASCADE,
+  ADD CONSTRAINT `offer_services_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `reservations`
 --
 ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_customer`) REFERENCES `customersDetails` (`id_customer`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_customer`) REFERENCES `customersdetails` (`id_customer`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id_employee`) ON DELETE SET NULL;
 
 --
--- Filtros para la tabla `reservationServices`
+-- Filtros para la tabla `reservationservices`
 --
-ALTER TABLE `reservationServices`
+ALTER TABLE `reservationservices`
   ADD CONSTRAINT `reservationServices_ibfk_1` FOREIGN KEY (`id_reservation`) REFERENCES `reservations` (`id_reservation`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservationServices_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `workSchedules`
+-- Filtros para la tabla `workschedules`
 --
-ALTER TABLE `workSchedules`
+ALTER TABLE `workschedules`
   ADD CONSTRAINT `workSchedules_ibfk_1` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id_employee`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- Tabla de Ofertas
-DROP TABLE IF EXISTS `offers`;
-CREATE TABLE `offers` (
-  `id_offer` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(255) NOT NULL,
-  `description` TEXT,
-  `offer_type` ENUM('weekly', 'monthly', 'blackfriday', 'special') NOT NULL,
-  `start_date` DATE NOT NULL,
-  `end_date` DATE NOT NULL,
-  `final_price` DECIMAL(10,2) NOT NULL,
-  `is_active` TINYINT(1) DEFAULT 1,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_offer`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Tabla intermedia para relacionar ofertas con servicios
-DROP TABLE IF EXISTS `offer_services`;
-CREATE TABLE `offer_services` (
-  `id_offer_service` INT NOT NULL AUTO_INCREMENT,
-  `id_offer` INT NOT NULL,
-  `id_service` INT NOT NULL,
-  PRIMARY KEY (`id_offer_service`),
-  FOREIGN KEY (`id_offer`) REFERENCES `offers` (`id_offer`) ON DELETE CASCADE,
-  FOREIGN KEY (`id_service`) REFERENCES `services` (`id_service`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Insertar una oferta de ejemplo
-INSERT INTO `offers` 
-(`title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`) 
-VALUES 
-('Oferta de Verano', 'Descuento especial en servicios de manicura', 'special', '2024-06-01', '2024-08-31', 12.00);
-
--- Relacionar la oferta con servicios
-INSERT INTO `offer_services` (`id_offer`, `id_service`) 
-VALUES 
-(1, 4),  -- Manicura
-(1, 5);  -- Pedicura
-
--- Insertar una oferta de ejemplo
-INSERT INTO `offers` 
-(`title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`) 
-VALUES 
-('Oferta de Invierno', 'Descuento especial en servicios de pedicura', 'special', '2024-12-01', '2025-02-28', 15.00);
-
--- Relacionar la oferta con servicios
-INSERT INTO `offer_services` (`id_offer`, `id_service`) 
-VALUES 
-(2, 5);  -- Pedicura

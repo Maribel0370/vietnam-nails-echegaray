@@ -1,14 +1,9 @@
 <?php
 session_start();
 require_once '../setup_files/connection.php';
+require_once '../setup_files/init.php';
 
-// Verificar si el usuario está autenticado como administrador
-if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../login.php');
-    exit();
-}
-
-// Incluir archivos de idioma y configuración
+// Añadir la configuración de idioma y función de traducción
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es';
 }
@@ -24,583 +19,502 @@ function translate($key, $default = '') {
     return $lang[$key] ?? $default;
 }
 
-include '../setup_files/header.php';
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+// Después de la verificación de autenticación y antes del manejo de ofertas
+if (isset($_SESSION['error'])) {
+    echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+            {$_SESSION['error']}
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>";
+    unset($_SESSION['error']);
+}
+if (isset($_SESSION['message'])) {
+    echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+            {$_SESSION['message']}
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>";
+    unset($_SESSION['message']);
+}
+
+// Código para manejar las ofertas
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'add_offer':
+                try {
+                    $pdo->beginTransaction();
+                    
+                    $sql = "INSERT INTO offers (title, description, offer_type, final_price, start_date, end_date, is_active) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([
+                        $_POST['title'],
+                        $_POST['description'],
+                        $_POST['offer_type'],
+                        $_POST['final_price'],
+                        $_POST['start_date'],
+                        $_POST['end_date'],
+                        isset($_POST['is_active']) ? 1 : 0
+                    ]);
+                    
+                    $offerId = $pdo->lastInsertId();
+                    
+                    if (isset($_POST['services']) && is_array($_POST['services'])) {
+                        $sqlService = "INSERT INTO offer_services (id_offer, id_service) VALUES (?, ?)";
+                        $stmtService = $pdo->prepare($sqlService);
+                        
+                        foreach ($_POST['services'] as $serviceId) {
+                            $stmtService->execute([$offerId, $serviceId]);
+                        }
+                    }
+                    
+                    $pdo->commit();
+                    
+                    // En lugar de redirigir, devolvemos JSON
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true]);
+                    exit;
+                    
+                } catch (PDOException $e) {
+                    $pdo->rollBack();
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                    exit;
+                }
+                break;
+        }
+    }
+}
+
+// Obtener todas las ofertas con sus servicios asociados
+$offers = $pdo->query("
+    SELECT o.id_offer, 
+           o.title,
+           o.description,
+           o.final_price,
+           o.start_date,
+           o.end_date,
+           o.is_active,
+           o.offer_type,
+           GROUP_CONCAT(DISTINCT s.nameService SEPARATOR ', ') as services,
+           GROUP_CONCAT(DISTINCT s.id_service) as service_ids
+    FROM offers o
+    LEFT JOIN offer_services os ON o.id_offer = os.id_offer
+    LEFT JOIN services s ON os.id_service = s.id_service
+    GROUP BY o.id_offer, o.title, o.description, o.final_price, o.start_date, o.end_date, o.is_active, o.offer_type
+    ORDER BY o.start_date DESC
+")->fetchAll(PDO::FETCH_ASSOC);
+
+// Obtener los servicios para el formulario y la tabla
+$services = $pdo->query("SELECT * FROM services WHERE isActive = 1")->fetchAll();
+
+// Obtener todo el personal
+$staff = $pdo->query("
+    SELECT id_employee, 
+           firstName, 
+           lastName, 
+           phone, 
+           isActive, 
+           DATE_FORMAT(dataCreated, '%Y-%m-%d') as dataCreated 
+    FROM employees 
+    ORDER BY firstName ASC
+")->fetchAll(PDO::FETCH_ASSOC);
+
+// Debug para ver qué contiene $staff
+echo "<!-- Debug: ";
+var_dump($staff);
+echo " -->";
+
+try {
+    $staff = $pdo->query("
+        SELECT id_employee, 
+               firstName, 
+               lastName, 
+               phone, 
+               isActive, 
+               DATE_FORMAT(dataCreated, '%Y-%m-%d') as dataCreated 
+        FROM employees 
+        ORDER BY firstName ASC
+    ")->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "<!-- Error en la consulta: " . $e->getMessage() . " -->";
+    $staff = [];
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="<?php echo $_SESSION['lang']; ?>">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo translate('admin_panel', 'Panel de Administración'); ?></title>
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
-    <!-- CSS común del sitio -->
+    <title>Panel de Administración - Vietnam Nails</title>
+    <!-- Incluir los mismos estilos que el index -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/Resources/css/style.css">
-    
-    <!-- CSS específico para admin -->
     <link rel="stylesheet" href="assets/css/admin.css">
-    
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/admin.js"></script>
 </head>
 <body>
-    <main class="container mt-4">
-        <h1 class="text-center mb-4"><?php echo translate('admin_panel', 'Panel de Administración'); ?></h1>
+    <?php include '../setup_files/header.php'; ?>
 
-        <!-- Pestañas de navegación -->
-        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link" id="offers-tab" data-toggle="tab" href="#offers" role="tab">
-                    <?php echo translate('offers_management', 'Gestión de Ofertas'); ?>
-                </a>
+    <div class="container admin-container">
+        <h2 class="mb-4">Panel de Administración</h2>
+
+        <!-- Sistema de pestañas -->
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="offers-tab" data-bs-toggle="tab" data-bs-target="#offers" type="button" role="tab">
+                    Ofertas
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" id="staff-tab" data-toggle="tab" href="#staff" role="tab">
-                    <?php echo translate('staff_management', 'Gestión de Personal'); ?>
-                </a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab">
+                    Gestión Personal
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab">
-                    <?php echo translate('schedule_management', 'Gestión de Horarios'); ?>
-                </a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab">
+                    Gestión Horarios
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="special-days-tab" data-toggle="tab" href="#special-days" role="tab">
-                    <?php echo translate('special_days', 'Días Especiales'); ?>
-                </a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="special-days-tab" data-bs-toggle="tab" data-bs-target="#special-days" type="button" role="tab">
+                    Días Especiales
+                </button>
             </li>
         </ul>
 
         <!-- Contenido de las pestañas -->
-        <div class="tab-content" id="adminTabContent">
+        <div class="tab-content" id="adminTabsContent">
             <!-- Pestaña de Ofertas -->
             <div class="tab-pane fade" id="offers" role="tabpanel">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h3>Gestión de Ofertas</h3>
-                        
-                        <div class="table-responsive">
-                            <table class="table" id="offersTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Título</th>
-                                        <th>Descripción</th>
-                                        <th>Tipo</th>
-                                        <th>Servicios</th>
-                                        <th>Precio</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Fila para añadir nueva oferta -->
-                                    <tr>
-                                        <td><input type="text" class="form-control" id="new_title"></td>
-                                        <td><textarea class="form-control" id="new_description"></textarea></td>
-                                        <td>
-                                            <select class="form-control" id="new_offer_type">
-                                                <option value="weekly">Semanal</option>
-                                                <option value="monthly">Mensual</option>
-                                                <option value="blackfriday">Black Friday</option>
-                                                <option value="special">Especial</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            $stmt = $pdo->query("SELECT id_service, nameService FROM services WHERE isActive = 1");
-                                            while ($service = $stmt->fetch()) {
-                                                echo "<div class='custom-control custom-checkbox'>";
-                                                echo "<input type='checkbox' class='custom-control-input' 
-                                                      id='new_service_{$service['id_service']}' 
-                                                      name='new_services[]' value='{$service['id_service']}'>";
-                                                echo "<label class='custom-control-label' for='new_service_{$service['id_service']}'>" . 
-                                                     htmlspecialchars($service['nameService']) . "</label>";
-                                                echo "</div>";
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><input type="number" step="0.01" class="form-control" id="new_price"></td>
-                                        <td><input type="date" class="form-control" id="new_start_date"></td>
-                                        <td><input type="date" class="form-control" id="new_end_date"></td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm" id="saveNewOffer">
-                                                <i class="fas fa-save"></i> Guardar
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Ofertas existentes -->
-                                    <?php
-                                    try {
-                                        $stmt = $pdo->query("
-                                            SELECT o.*, GROUP_CONCAT(s.nameService SEPARATOR ', ') as services
-                                            FROM offers o
-                                            LEFT JOIN offer_services os ON o.id_offer = os.id_offer
-                                            LEFT JOIN services s ON os.id_service = s.id_service
-                                            GROUP BY o.id_offer
-                                            ORDER BY o.is_active DESC, o.end_date DESC
-                                        ");
-                                        
-                                        while ($offer = $stmt->fetch()) {
-                                            echo "<tr" . ($offer['is_active'] ? "" : " class='table-secondary'") . ">";
-                                            echo "<td>" . htmlspecialchars($offer['title']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($offer['description']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($offer['offer_type']) . "</td>";
-                                            echo "<td>" . htmlspecialchars($offer['services']) . "</td>";
-                                            echo "<td>" . number_format($offer['final_price'], 2) . "€</td>";
-                                            echo "<td>" . date('d/m/Y', strtotime($offer['start_date'])) . "</td>";
-                                            echo "<td>" . date('d/m/Y', strtotime($offer['end_date'])) . "</td>";
-                                            echo "<td>";
-                                            if ($offer['is_active']) {
-                                                echo "<button class='btn btn-warning btn-sm modify-offer' 
-                                                        data-id='{$offer['id_offer']}'
-                                                        data-title='" . htmlspecialchars($offer['title']) . "'
-                                                        data-description='" . htmlspecialchars($offer['description']) . "'
-                                                        data-type='{$offer['offer_type']}'
-                                                        data-price='{$offer['final_price']}'
-                                                        data-start='" . date('Y-m-d', strtotime($offer['start_date'])) . "'
-                                                        data-end='" . date('Y-m-d', strtotime($offer['end_date'])) . "'
-                                                        data-services='" . htmlspecialchars($offer['services']) . "'>
-                                                        <i class='fas fa-edit'></i> Modificar
-                                                    </button>
-                                                    <button class='btn btn-danger btn-sm delete-offer' 
-                                                            data-id='{$offer['id_offer']}'>
-                                                        <i class='fas fa-trash'></i> Eliminar
-                                                    </button>";
-                                            } else {
-                                                echo "<button class='btn btn-success btn-sm reactivate-offer' 
-                                                        data-id='{$offer['id_offer']}'>
-                                                        <i class='fas fa-redo'></i> Reactivar
-                                                    </button>";
-                                            }
-                                            echo "</td></tr>";
-                                        }
-                                    } catch (PDOException $e) {
-                                        echo '<tr><td colspan="8" class="text-danger">Error al cargar las ofertas</td></tr>';
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                <h3>Gestión de Ofertas</h3>
+                <!-- Formulario para añadir nueva oferta -->
+                <form method="POST" class="mb-4" id="addOfferForm">
+                    <input type="hidden" name="action" value="add_offer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Título</label>
+                                <input type="text" name="title" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Tipo de oferta</label>
+                                <select name="offer_type" class="form-control" required>
+                                    <option value="Seman">Semanal</option>
+                                    <option value="Mens">Mensual</option>
+                                    <option value="Temp">Temporal</option>
+                                    <option value="Temp">Black Friday</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="form-group mb-3">
+                        <label>Descripción</label>
+                        <textarea name="description" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Servicios incluidos</label>
+                        <div class="services-list">
+                            <?php
+                            $services = $pdo->query("SELECT * FROM services WHERE isActive = 1")->fetchAll();
+                            foreach ($services as $service): ?>
+                                <div class="form-check">
+                                    <input type="checkbox" name="services[]" class="form-check-input" 
+                                           value="<?= $service['id_service'] ?>">
+                                    <label class="form-check-label">
+                                        <?= htmlspecialchars($service['nameService']) ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Precio final (€)</label>
+                                <input type="number" step="0.01" name="final_price" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Fecha inicio</label>
+                                <input type="datetime-local" name="start_date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Fecha fin</label>
+                                <input type="datetime-local" name="end_date" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="is_active" class="form-check-input" id="offerActive" checked>
+                        <label class="form-check-label" for="offerActive">Activa</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Oferta</button>
+                </form>
+
+                <!-- Lista de ofertas -->
+                <div class="table-responsive mt-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Servicios</th>
+                                <th>Tipo</th>
+                                <th>Precio</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($offers as $offer): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($offer['title']) ?></td>
+                                <td><?= htmlspecialchars($offer['description']) ?></td>
+                                <td><?= htmlspecialchars($offer['services']) ?></td>
+                                <td>
+                                    <?php
+                                    $tipo = '';
+                                    switch($offer['offer_type']) {
+                                        case 'Seman': $tipo = 'Semanal'; break;
+                                        case 'Mens': $tipo = 'Mensual'; break;
+                                        case 'Temp': $tipo = 'Temporal'; break;
+                                    }
+                                    echo $tipo;
+                                    ?>
+                                </td>
+                                <td><?= number_format($offer['final_price'], 2) ?>€</td>
+                                <td><?= date('d/m/Y', strtotime($offer['start_date'])) ?></td>
+                                <td><?= date('d/m/Y', strtotime($offer['end_date'])) ?></td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input toggle-offer-status" 
+                                               data-id="<?= $offer['id_offer'] ?>" 
+                                               <?= $offer['is_active'] ? 'checked' : '' ?>>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-primary edit-offer" data-id="<?= $offer['id_offer'] ?>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger delete-offer" data-id="<?= $offer['id_offer'] ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Pestaña de Personal -->
+            <!-- Pestaña de Gestión Personal -->
             <div class="tab-pane fade show active" id="staff" role="tabpanel">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h3>Gestión de Personal</h3>
-                        
-                        <div class="table-responsive">
-                            <table class="table" id="staffTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Apellidos</th>
-                                        <th>Teléfono</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Fila para añadir nuevo personal -->
-                                    <tr>
-                                        <td><input type="text" class="form-control" id="new_firstName"></td>
-                                        <td><input type="text" class="form-control" id="new_lastName"></td>
-                                        <td><input type="tel" class="form-control" id="new_phone" pattern="[0-9]{9}"></td>
-                                        <td>
-                                            <select class="form-control" id="new_status">
-                                                <option value="1">Activo</option>
-                                                <option value="0">Inactivo</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm" id="saveNewStaff">
-                                                <i class="fas fa-save"></i> Guardar
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Personal existente -->
-                                    <?php
-                                    try {
-                                        // Prueba de conexión y consulta directa
-                                        $query = "SELECT * FROM employees";
-                                        $result = $pdo->query($query);
-                                        
-                                        if ($result === false) {
-                                            echo "<tr><td colspan='5'>Error en la consulta</td></tr>";
-                                            var_dump($pdo->errorInfo());
-                                        } else {
-                                            $employees = $result->fetchAll(PDO::FETCH_ASSOC);
-                                            
-                                            if (empty($employees)) {
-                                                echo "<tr><td colspan='5'>No hay empleados registrados</td></tr>";
-                                            } else {
-                                                foreach ($employees as $employee) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $employee['firstName'] . "</td>";
-                                                    echo "<td>" . $employee['lastName'] . "</td>";
-                                                    echo "<td>" . $employee['phone'] . "</td>";
-                                                    echo "<td>" . ($employee['isActive'] ? 'Activo' : 'Inactivo') . "</td>";
-                                                    if ($employee['isActive']) {
-                                                        echo "<td>
-                                                                <button class='btn btn-warning btn-sm modify-staff' 
-                                                                        data-id='{$employee['id_employee']}'
-                                                                        data-firstname='" . htmlspecialchars($employee['firstName']) . "'
-                                                                        data-lastname='" . htmlspecialchars($employee['lastName']) . "'
-                                                                        data-phone='{$employee['phone']}'
-                                                                        data-active='{$employee['isActive']}'>
-                                                                    <i class='fas fa-edit'></i> Editar
-                                                                </button>
-                                                                <button class='btn btn-danger btn-sm delete-staff' 
-                                                                        data-id='{$employee['id_employee']}'>
-                                                                    <i class='fas fa-trash'></i> Eliminar
-                                                                </button>
-                                                              </td>";
-                                                    } else {
-                                                        echo "<td>
-                                                                <button class='btn btn-success btn-sm reactivate-staff' 
-                                                                        data-id='{$employee['id_employee']}'>
-                                                                    <i class='fas fa-redo'></i> Reactivar
-                                                                </button>
-                                                              </td>";
-                                                    }
-                                                    echo "</tr>";
-                                                }
-                                            }
-                                        }
-                                    } catch (Exception $e) {
-                                        echo "<tr><td colspan='5'>Error: " . $e->getMessage() . "</td></tr>";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                <h3>Gestión de Personal</h3>
+                
+                <!-- Formulario para añadir nuevo personal -->
+                <form method="POST" id="addStaffForm" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Nombre *</label>
+                                <input type="text" name="firstName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Apellidos *</label>
+                                <input type="text" name="lastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Teléfono *</label>
+                                <input type="tel" name="phone" class="form-control" pattern="[0-9]{9}" 
+                                       title="Introduce un número de teléfono válido de 9 dígitos" required>
+                            </div>
                         </div>
                     </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isActive" class="form-check-input" id="staffActive" checked>
+                        <label class="form-check-label" for="staffActive">Activo</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Añadir Personal</button>
+                </form>
+
+                <!-- Lista de personal -->
+                <div class="table-responsive mt-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Teléfono</th>
+                                <th>Fecha Alta</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($staff)): ?>
+                                <?php foreach ($staff as $employee): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($employee['firstName']) ?></td>
+                                    <td><?= htmlspecialchars($employee['lastName']) ?></td>
+                                    <td><?= htmlspecialchars($employee['phone']) ?></td>
+                                    <td><?= isset($employee['dataCreated']) && !empty($employee['dataCreated']) ? 
+                                            date('d/m/Y', strtotime($employee['dataCreated'])) : 'N/A' ?></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input toggle-staff-status" 
+                                                   data-id="<?= $employee['id_employee'] ?>" 
+                                                   <?= $employee['isActive'] ? 'checked' : '' ?>>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-primary edit-staff" data-id="<?= $employee['id_employee'] ?>">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger delete-staff" data-id="<?= $employee['id_employee'] ?>">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" class="text-center">No hay personal registrado</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Pestaña de Gestión de Horarios -->
+            <!-- Pestaña de Gestión Horarios -->
             <div class="tab-pane fade" id="schedule" role="tabpanel">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h3>Gestión de Horarios</h3>
-                        
-                        <div class="form-group mb-3">
-                            <select class="form-control" id="employee_filter">
-                                <option value="">Seleccionar empleado...</option>
-                                <?php
-                                try {
-                                    $stmt = $pdo->query("SELECT id_employee, firstName, lastName FROM employees WHERE isActive = 1 ORDER BY firstName");
-                                    while ($employee = $stmt->fetch()) {
-                                        echo "<option value='" . $employee['id_employee'] . "'>" . 
-                                             htmlspecialchars($employee['firstName'] . ' ' . $employee['lastName']) . 
-                                             "</option>";
-                                    }
-                                } catch (PDOException $e) {
-                                    echo "<option value=''>Error al cargar empleados</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-
-                        <div class="table-responsive mt-3">
-                            <table class="table" id="scheduleTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Empleado</th>
-                                        <th>Día</th>
-                                        <th>Tipo</th>
-                                        <th>Hora Inicio</th>
-                                        <th>Hora Fin</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Fila de añadir al principio -->
-                                    <tr>
-                                        <td>
-                                            <select class="form-control" id="new_employee">
-                                                <option value="">Seleccionar empleado...</option>
-                                                <?php
-                                                try {
-                                                    $stmt = $pdo->query("SELECT id_employee, firstName, lastName FROM employees WHERE isActive = 1");
-                                                    while ($employee = $stmt->fetch()) {
-                                                        echo "<option value='" . $employee['id_employee'] . "'>" . 
-                                                             htmlspecialchars($employee['firstName'] . ' ' . $employee['lastName']) . 
-                                                             "</option>";
-                                                    }
-                                                } catch (PDOException $e) {
-                                                    echo "<option value=''>Error al cargar empleados</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-control" id="new_day">
-                                                <option value="Monday">Lunes</option>
-                                                <option value="Tuesday">Martes</option>
-                                                <option value="Wednesday">Miércoles</option>
-                                                <option value="Thursday">Jueves</option>
-                                                <option value="Friday">Viernes</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-control" id="new_blockType">
-                                                <option value="Morning">Mañana</option>
-                                                <option value="Afternoon">Tarde</option>
-                                                <option value="Full Day">Jornada Completa</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" id="new_startTime">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" id="new_endTime">
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm" id="saveNewSchedule">
-                                                <i class="fas fa-save"></i> Guardar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <h3>Gestión de Horarios</h3>
+                <!-- Contenido de horarios -->
             </div>
 
             <!-- Pestaña de Días Especiales -->
             <div class="tab-pane fade" id="special-days" role="tabpanel">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h3>Gestión de Días Especiales</h3>
-                        
-                        <div class="table-responsive">
-                            <table class="table" id="specialDaysTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Descripción</th>
-                                        <th>Hora Apertura</th>
-                                        <th>Hora Cierre</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Fila para añadir nuevo día especial -->
-                                    <tr>
-                                        <td><input type="date" class="form-control" id="new_special_date"></td>
-                                        <td><input type="text" class="form-control" id="new_special_description"></td>
-                                        <td><input type="time" class="form-control" id="new_special_opening"></td>
-                                        <td><input type="time" class="form-control" id="new_special_closing"></td>
-                                        <td>
-                                            <select class="form-control" id="new_special_status">
-                                                <option value="1">Abierto</option>
-                                                <option value="0">Cerrado</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm" id="saveNewSpecialDay">
-                                                <i class="fas fa-save"></i> Guardar
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Días especiales existentes -->
-                                    <?php
-                                    try {
-                                        $stmt = $pdo->query("SELECT * FROM special_days ORDER BY date DESC");
-                                        $specialDays = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                        
-                                        if (empty($specialDays)) {
-                                            echo '<tr><td colspan="6" class="text-center">No hay días especiales registrados</td></tr>';
-                                        } else {
-                                            foreach ($specialDays as $day) {
-                                                echo "<tr>";
-                                                echo "<td>" . date('d/m/Y', strtotime($day['date'])) . "</td>";
-                                                echo "<td>" . htmlspecialchars($day['description']) . "</td>";
-                                                echo "<td>" . substr($day['opening_time'], 0, 5) . "</td>";
-                                                echo "<td>" . substr($day['closing_time'], 0, 5) . "</td>";
-                                                echo "<td>" . ($day['is_open'] ? 'Abierto' : 'Cerrado') . "</td>";
-                                                echo "<td>
-                                                        <button class='btn btn-warning btn-sm modify-special-day' 
-                                                                data-id='{$day['id_special_day']}'
-                                                                data-date='{$day['date']}'
-                                                                data-description='" . htmlspecialchars($day['description']) . "'
-                                                                data-opening='{$day['opening_time']}'
-                                                                data-closing='{$day['closing_time']}'
-                                                                data-status='{$day['is_open']}'>
-                                                            <i class='fas fa-edit'></i> Modificar
-                                                        </button>
-                                                        <button class='btn btn-danger btn-sm delete-special-day' 
-                                                                data-id='{$day['id_special_day']}'>
-                                                            <i class='fas fa-trash'></i> Eliminar
-                                                        </button>
-                                                      </td>";
-                                                echo "</tr>";
-                                            }
-                                        }
-                                    } catch (PDOException $e) {
-                                        echo '<tr><td colspan="6" class="text-danger">Error al cargar los días especiales: ' . $e->getMessage() . '</td></tr>';
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <h3>Días Especiales</h3>
+                <!-- Contenido de días especiales -->
             </div>
         </div>
-    </main>
+    </div>
 
     <?php include '../setup_files/footer.php'; ?>
 
-    <!-- Scripts necesarios -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="admin.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin.js"></script>
+
     <script>
-    $(document).ready(function(){
-        $('#adminTabs a').on('click', function (e) {
-            e.preventDefault();
-            $(this).tab('show');
+    $(document).ready(function() {
+        // Mantener la pestaña activa después de recargar
+        var activeTab = localStorage.getItem('activeAdminTab');
+        if (activeTab) {
+            $('#adminTabs a[href="' + activeTab + '"]').tab('show');
+        }
+
+        // Guardar la pestaña activa cuando cambia
+        $('#adminTabs a').on('shown.bs.tab', function (e) {
+            localStorage.setItem('activeAdminTab', $(e.target).attr('href'));
         });
+
+        // Formatear fechas para el formulario de edición
+        function formatDateTimeForInput(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toISOString().slice(0, 16);
+        }
+
+        // Manejar el clic en el botón de editar
+        $('.edit-offer').click(function() {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var description = $(this).data('description');
+            var price = $(this).data('price');
+            var start = $(this).data('start');
+            var end = $(this).data('end');
+            var active = $(this).data('active');
+
+            $('#edit_offer_id').val(id);
+            $('#edit_name').val(name);
+            $('#edit_description').val(description);
+            $('#edit_price').val(price);
+            $('#edit_start_date').val(formatDateTimeForInput(start));
+            $('#edit_end_date').val(formatDateTimeForInput(end));
+            $('#edit_is_active').prop('checked', active == 1);
+
+            $('#editOfferModal').modal('show');
+        });
+
+        // Manejar el clic en el botón de eliminar
+        $('.delete-offer').click(function() {
+            if (confirm('¿Estás seguro de que deseas eliminar esta oferta?')) {
+                var id = $(this).data('id');
+                var form = $('<form method="POST">')
+                    .append($('<input type="hidden" name="action" value="delete_offer">'))
+                    .append($('<input type="hidden" name="offer_id">').val(id));
+                $('body').append(form);
+                form.submit();
+            }
+        });
+
+        // Validación del formulario de nueva oferta
+        $('form[action=""]').submit(function(e) {
+            var startDate = new Date($('input[name="start_date"]').val());
+            var endDate = new Date($('input[name="end_date"]').val());
+            
+            if (endDate < startDate) {
+                e.preventDefault();
+                alert('La fecha de fin debe ser posterior a la fecha de inicio');
+                return false;
+            }
+        });
+
+        // Mostrar mensajes de éxito o error
+        <?php if (isset($_SESSION['message'])): ?>
+            alert('<?= $_SESSION['message'] ?>');
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+        
+        <?php if (isset($_SESSION['error'])): ?>
+            alert('<?= $_SESSION['error'] ?>');
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
     });
     </script>
-
-    <!-- Modal para añadir ofertas -->
-    <div class="modal fade" id="addOfferModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Añadir Oferta</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addOfferForm">
-                        <div class="form-group">
-                            <label for="title">Título</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Descripción</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="offer_type">Tipo de Oferta</label>
-                            <select class="form-control" id="offer_type" name="offer_type" required>
-                                <option value="weekly">Semanal</option>
-                                <option value="monthly">Mensual</option>
-                                <option value="blackfriday">Black Friday</option>
-                                <option value="special">Especial</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="final_price">Precio Final (€)</label>
-                            <input type="number" step="0.01" class="form-control" id="final_price" name="final_price" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="start_date">Fecha Inicio</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="end_date">Fecha Fin</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Servicios Incluidos</label>
-                            <?php
-                            $stmt = $pdo->query("SELECT id_service, nameService FROM services WHERE isActive = 1");
-                            while ($service = $stmt->fetch()) {
-                                echo "<div class='custom-control custom-checkbox'>";
-                                echo "<input type='checkbox' class='custom-control-input' id='service_{$service['id_service']}' 
-                                      name='services[]' value='{$service['id_service']}'>";
-                                echo "<label class='custom-control-label' for='service_{$service['id_service']}'>" . 
-                                     htmlspecialchars($service['nameService']) . "</label>";
-                                echo "</div>";
-                            }
-                            ?>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para editar ofertas -->
-    <div class="modal fade" id="editOfferModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Oferta</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editOfferForm">
-                        <input type="hidden" id="edit_offer_id" name="id_offer">
-                        <div class="form-group">
-                            <label for="edit_offer_title">Título</label>
-                            <input type="text" class="form-control" id="edit_offer_title" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_offer_description">Descripción</label>
-                            <textarea class="form-control" id="edit_offer_description" name="description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_offer_type">Tipo de Oferta</label>
-                            <select class="form-control" id="edit_offer_type" name="offer_type" required>
-                                <option value="weekly">Semanal</option>
-                                <option value="monthly">Mensual</option>
-                                <option value="blackfriday">Black Friday</option>
-                                <option value="special">Especial</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_offer_price">Precio Final (€)</label>
-                            <input type="number" step="0.01" class="form-control" id="edit_offer_price" name="final_price" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_offer_start_date">Fecha Inicio</label>
-                            <input type="date" class="form-control" id="edit_offer_start_date" name="start_date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_offer_end_date">Fecha Fin</label>
-                            <input type="date" class="form-control" id="edit_offer_end_date" name="end_date" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Servicios Incluidos</label>
-                            <?php
-                            $stmt = $pdo->query("SELECT id_service, nameService FROM services WHERE isActive = 1");
-                            while ($service = $stmt->fetch()) {
-                                echo "<div class='custom-control custom-checkbox'>";
-                                echo "<input type='checkbox' class='custom-control-input' id='edit_service_{$service['id_service']}' 
-                                      name='services[]' value='{$service['id_service']}'>";
-                                echo "<label class='custom-control-label' for='edit_service_{$service['id_service']}'>" . 
-                                     htmlspecialchars($service['nameService']) . "</label>";
-                                echo "</div>";
-                            }
-                            ?>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
+

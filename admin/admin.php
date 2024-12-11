@@ -209,17 +209,16 @@ include '../setup_files/header.php';
                                 </thead>
                                 <tbody>
                                     <!-- Fila para añadir nuevo personal -->
-                                    <tr>
-                                        <td data-label="Nombre"><input type="text" class="form-control" id="new_firstName"></td>
-                                        <td data-label="Apellidos"><input type="text" class="form-control" id="new_lastName"></td>
-                                        <td data-label="Teléfono"><input type="tel" class="form-control" id="new_phone" pattern="[0-9]{9}"></td>
-                                        <td data-label="Estado">
+                                    <td><input type="text" class="form-control" id="new_firstName"></td>
+                                        <td><input type="text" class="form-control" id="new_lastName"></td>
+                                        <td><input type="tel" class="form-control" id="new_phone" pattern="[0-9]{9}"></td>
+                                        <td>
                                             <select class="form-control" id="new_status">
                                                 <option value="1">Activo</option>
                                                 <option value="0">Inactivo</option>
                                             </select>
                                         </td>
-                                        <td data-label="Acciones">
+                                        <td>
                                             <button class="btn btn-success btn-sm" id="saveNewStaff">
                                                 <i class="fas fa-save"></i> Guardar
                                             </button>
@@ -244,12 +243,12 @@ include '../setup_files/header.php';
                                             } else {
                                                 foreach ($employees as $employee) {
                                                     echo "<tr>";
-                                                    echo "<td data-label='Nombre'>" . $employee['firstName'] . "</td>";
-                                                    echo "<td data-label='Apellidos'>" . $employee['lastName'] . "</td>";
-                                                    echo "<td data-label='Teléfono'>" . $employee['phone'] . "</td>";
-                                                    echo "<td data-label='Estado'>" . ($employee['isActive'] ? 'Activo' : 'Inactivo') . "</td>";
+                                                    echo "<td>" . $employee['firstName'] . "</td>";
+                                                    echo "<td>" . $employee['lastName'] . "</td>";
+                                                    echo "<td>" . $employee['phone'] . "</td>";
+                                                    echo "<td>" . ($employee['isActive'] ? 'Activo' : 'Inactivo') . "</td>";
                                                     if ($employee['isActive']) {
-                                                        echo "<td data-label='Acciones'>
+                                                        echo "<td>
                                                                 <button class='btn btn-warning btn-sm modify-staff' 
                                                                         data-id='{$employee['id_employee']}'
                                                                         data-firstname='" . htmlspecialchars($employee['firstName']) . "'
@@ -264,7 +263,7 @@ include '../setup_files/header.php';
                                                                 </button>
                                                               </td>";
                                                     } else {
-                                                        echo "<td data-label='Acciones'>
+                                                        echo "<td>
                                                                 <button class='btn btn-success btn-sm reactivate-staff' 
                                                                         data-id='{$employee['id_employee']}'>
                                                                     <i class='fas fa-redo'></i> Reactivar

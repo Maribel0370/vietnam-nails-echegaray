@@ -1,5 +1,41 @@
 // Crear el archivo admin.js con las funciones necesarias
 $(document).ready(function() {
+    // Prevenir la duplicación de contenido
+    $('.nav-tabs button').on('shown.bs.tab', function (e) {
+        // Remover cualquier contenido duplicado
+        $('.tab-pane').each(function() {
+            $(this).find('.staff-content, .offers-content, .schedule-content, .special-days-content').not(':first').remove();
+        });
+    });
+
+    // Función para limpiar contenido duplicado
+    function cleanDuplicateContent() {
+        $('.tab-pane').each(function() {
+            const $pane = $(this);
+            const $content = $pane.children().first();
+            if ($pane.children().length > 1) {
+                $pane.children().not($content).remove();
+            }
+        });
+    }
+
+    // Limpiar contenido duplicado al cargar
+    cleanDuplicateContent();
+
+    // Manejar cambio de pestañas
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).data('bs-target');
+        localStorage.setItem('activeAdminTab', target);
+        cleanDuplicateContent();
+    });
+
+    // Restaurar última pestaña activa
+    const lastTab = localStorage.getItem('activeAdminTab');
+    if (lastTab) {
+        const tab = new bootstrap.Tab(document.querySelector(`[data-bs-target="${lastTab}"]`));
+        tab.show();
+    }
+
     // Activar/Desactivar oferta
     $('.toggle-offer-status').change(function() {
         const id = $(this).data('id');
@@ -215,25 +251,5 @@ $(document).ready(function() {
                 }
             });
         }
-    });
-
-    // Inicialización de las pestañas
-    $(document).ready(function() {
-        // Activar la pestaña al hacer clic
-        $('.nav-tabs button').on('click', function (e) {
-            e.preventDefault();
-            $(this).tab('show');
-        });
-
-        // Mantener la pestaña activa después de recargar
-        let activeTab = localStorage.getItem('activeTab');
-        if(activeTab){
-            $(`#adminTabs button[data-bs-target="${activeTab}"]`).tab('show');
-        }
-
-        // Guardar la pestaña activa
-        $('.nav-tabs button').on('shown.bs.tab', function (e) {
-            localStorage.setItem('activeTab', $(e.target).data('bs-target'));
-        });
     });
 }); 

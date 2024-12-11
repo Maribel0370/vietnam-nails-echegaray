@@ -419,13 +419,200 @@ try {
             <!-- Pestaña de Gestión Horarios -->
             <div class="tab-pane fade" id="schedule" role="tabpanel">
                 <h3>Gestión de Horarios</h3>
-                <!-- Contenido de horarios -->
+                
+                <!-- Formulario para añadir nuevo horario -->
+                <form method="POST" id="addScheduleForm" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Empleado *</label>
+                                <select name="id_employee" class="form-control" required>
+                                    <?php foreach ($staff as $employee): ?>
+                                        <option value="<?= $employee['id_employee'] ?>">
+                                            <?= htmlspecialchars($employee['firstName'] . ' ' . $employee['lastName']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Día de la semana *</label>
+                                <select name="dayOfWeek" class="form-control" required>
+                                    <option value="Monday">Lunes</option>
+                                    <option value="Tuesday">Martes</option>
+                                    <option value="Wednesday">Miércoles</option>
+                                    <option value="Thursday">Jueves</option>
+                                    <option value="Friday">Viernes</option>
+                                    <option value="Saturday">Sábado</option>
+                                    <option value="Sunday">Domingo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Tipo de Jornada *</label>
+                                <select name="blockType" class="form-control" required>
+                                    <option value="Full Day">Jornada Completa</option>
+                                    <option value="Morning">Mañana</option>
+                                    <option value="Afternoon">Tarde</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Hora inicio *</label>
+                                <input type="time" name="startTime" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Hora fin *</label>
+                                <input type="time" name="endTime" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isActive" class="form-check-input" id="scheduleActive" checked>
+                        <label class="form-check-label" for="scheduleActive">Activo</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Añadir Horario</button>
+                </form>
+
+                <!-- Lista de horarios -->
+                <div class="table-responsive mt-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Empleado</th>
+                                <th>Día</th>
+                                <th>Tipo</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Fin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($schedules as $schedule): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($schedule['employeeName']) ?></td>
+                                <td><?= $diasSemana[$schedule['dayOfWeek']] ?></td>
+                                <td><?= $tiposJornada[$schedule['blockType']] ?></td>
+                                <td><?= date('H:i', strtotime($schedule['startTime'])) ?></td>
+                                <td><?= date('H:i', strtotime($schedule['endTime'])) ?></td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input toggle-schedule-status" 
+                                               data-id="<?= $schedule['id_workSchedule'] ?>" 
+                                               <?= $schedule['isActive'] ? 'checked' : '' ?>>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-primary edit-schedule" 
+                                                data-id="<?= $schedule['id_workSchedule'] ?>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger delete-schedule" 
+                                                data-id="<?= $schedule['id_workSchedule'] ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Pestaña de Días Especiales -->
             <div class="tab-pane fade" id="special-days" role="tabpanel">
                 <h3>Días Especiales</h3>
-                <!-- Contenido de días especiales -->
+                
+                <!-- Formulario para añadir día especial -->
+                <form method="POST" id="addSpecialDayForm" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Fecha *</label>
+                                <input type="date" name="date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Descripción *</label>
+                                <input type="text" name="description" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Estado *</label>
+                                <select name="is_open" class="form-control" required>
+                                    <option value="1">Abierto</option>
+                                    <option value="0">Cerrado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="hoursSection">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Hora apertura *</label>
+                                <input type="time" name="opening_time" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label>Hora cierre *</label>
+                                <input type="time" name="closing_time" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Añadir Día Especial</button>
+                </form>
+
+                <!-- Lista de días especiales -->
+                <div class="table-responsive mt-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Hora Apertura</th>
+                                <th>Hora Cierre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($specialDays as $day): ?>
+                            <tr>
+                                <td><?= date('d/m/Y', strtotime($day['date'])) ?></td>
+                                <td><?= htmlspecialchars($day['description']) ?></td>
+                                <td><?= $day['is_open'] ? 'Abierto' : 'Cerrado' ?></td>
+                                <td><?= $day['is_open'] ? date('H:i', strtotime($day['opening_time'])) : '-' ?></td>
+                                <td><?= $day['is_open'] ? date('H:i', strtotime($day['closing_time'])) : '-' ?></td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-primary edit-special-day" 
+                                                data-id="<?= $day['id_special_day'] ?>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger delete-special-day" 
+                                                data-id="<?= $day['id_special_day'] ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

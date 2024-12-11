@@ -11,16 +11,21 @@ include_once __DIR__ . '/init.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="public/resources/img/icons/favicon_vne.png" type="image/x-icon"> <!-- Añadir favicon -->
+ <?php
+ // Detectar si estamos en la sección de admin
+ $isAdmin = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
+ $basePath = $isAdmin ? '../' : '';
+ ?>
+    <link rel="icon" href="<?php echo $basePath; ?>public/resources/img/icons/favicon_vne.png" type="image/x-icon"> <!-- Añadir favicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="public/resources/css/styles.css"> <!-- Archivo de estilos -->
+    <link rel="stylesheet" type="text/css" href="<?php echo $basePath; ?>public/resources/css/styles.css"> <!-- Archivo de estilos -->
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
 </head>
 <body>
 
     <header class="header" id="header">
-        <img src="public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
-        <img src="public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
+        <img src="<?php echo $basePath; ?>public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
+        <img src="<?php echo $basePath; ?>public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
     
@@ -31,7 +36,7 @@ include_once __DIR__ . '/init.php';
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#"><?php echo translate('home', 'Inicio'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo $isAdmin ? '../': ''; ?>#"><?php echo translate('home', 'Inicio'); ?></a></li>
                     <!-- Enlace al Modal de Servicios -->
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="modal" data-target="#servicesModal"><?php echo translate('services', 'Servicios'); ?></a></li>
@@ -54,13 +59,13 @@ include_once __DIR__ . '/init.php';
                 <!-- Dropdown de Idioma -->
                 <div class="dropdown ml-auto">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                        <img src="public/Resources/img/icons/<?php echo $_SESSION['lang']; ?>.png" alt="Idioma" width="20">
+                        <img src="<?php echo $basePath; ?> public/Resources/img/icons/<?php echo $_SESSION['lang']; ?>.png" alt="Idioma" width="20">
                         <?php echo $_SESSION['lang'] === 'es' ? 'Esp' : ($_SESSION['lang'] === 'ca' ? 'Cat' : 'Ing'); ?>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="?lang=es"><img src="public/Resources/img/icons/es.png" alt="Español" width="20">  Español</a>
-                        <a class="dropdown-item" href="?lang=ca"><img src="public/Resources/img/icons/ca.png" alt="Catalán" width="20">  Catalá</a>
-                        <a class="dropdown-item" href="?lang=en"><img src="public/Resources/img/icons/en.png" alt="Inglés" width="20">  English</a>
+                        <a class="dropdown-item" href="?lang=es"><img src="<?php echo $basePath; ?>public/Resources/img/icons/es.png" alt="Español" width="20">  Español</a>
+                        <a class="dropdown-item" href="?lang=ca"><img src="<?php echo $basePath; ?>public/Resources/img/icons/ca.png" alt="Catalán" width="20">  Catalá</a>
+                        <a class="dropdown-item" href="?lang=en"><img src="<?php echo $basePath; ?>public/Resources/img/icons/en.png" alt="Inglés" width="20">  English</a>
                     </div>
                 </div>
             </div>

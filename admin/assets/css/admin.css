@@ -162,3 +162,123 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Estilos responsivos para móviles */
+@media (max-width: 767px) {
+    /* Ajustes generales */
+    .admin-container {
+        padding: 10px;
+        margin-top: 60px;
+    }
+
+    /* Ajustes para las pestañas */
+    .nav-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: none;
+    }
+
+    .nav-tabs .nav-item {
+        width: 50%;
+        margin-bottom: 5px;
+    }
+
+    .nav-tabs .nav-link {
+        padding: 8px;
+        font-size: 14px;
+        text-align: center;
+        margin: 2px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+
+    /* Ajustes para las tablas */
+    .table {
+        font-size: 14px;
+    }
+
+    .table thead {
+        display: none; /* Ocultar encabezados en móvil */
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    .table tbody td {
+        display: block;
+        text-align: right;
+        padding: 5px;
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    .table tbody td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    /* Ajustes para los formularios */
+    .form-control {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    /* Ajustes para los botones */
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: flex-end;
+    }
+
+    .action-buttons .btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    /* Ajustes para los modales */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    /* Ajustes para las alertas */
+    .alert {
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Ajustes para tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+    .admin-container {
+        padding: 15px;
+        margin-top: 70px;
+    }
+
+    .nav-tabs .nav-link {
+        padding: 10px 15px;
+    }
+
+    .table {
+        font-size: 15px;
+    }
+
+    .action-buttons .btn {
+        padding: 5px 10px;
+    }
+}

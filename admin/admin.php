@@ -33,8 +33,18 @@ include '../setup_files/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo translate('admin_panel', 'Panel de Administración'); ?></title>
-    <link rel="stylesheet" href="../public/Resources/css/style.css">
+    
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- CSS común del sitio -->
+    <link rel="stylesheet" href="../public/Resources/css/style.css">
+    
+    <!-- CSS específico para admin -->
+    <link rel="stylesheet" href="assets/css/admin.css">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <main class="container mt-4">

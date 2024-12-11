@@ -18,12 +18,21 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Función para mostrar una alerta
 function showAlert(type, message) {
     const alertHtml = `
         <div class="alert alert-${type} alert-dismissible fade show" role="alert">
             ${message}
-            <button type="button" class="close" data-dismiss="alert">
-// Funciones auxiliares para traducir días y tipos
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    // Añadir la alerta al DOM (ajusta según dónde desees mostrarla)
+    document.body.insertAdjacentHTML('afterbegin', alertHtml);
+}
+
+// Función para traducir días
 function traducirDia(day) {
     const dias = {
         'Monday': 'Lunes',
@@ -37,6 +46,7 @@ function traducirDia(day) {
     return dias[day] || day;
 }
 
+// Función para traducir tipos
 function traducirTipo(type) {
     const tipos = {
         'Morning': 'Mañana',
@@ -45,6 +55,7 @@ function traducirTipo(type) {
     };
     return tipos[type] || type;
 }
+
 
 function handleModifySchedule() {
     const row = this.closest('tr');

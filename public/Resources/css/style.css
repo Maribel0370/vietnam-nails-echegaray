@@ -37,7 +37,6 @@ body {
     background-position: left top;  /* Posiciona la imagen arriba y a la izquierda */
     background-repeat: no-repeat;
     background-attachment: fixed;
-    transform: scaleX(-1);  /* Invierte la imagen horizontalmente */
     min-height: 100vh;
 }
 
@@ -484,7 +483,7 @@ blockquote {
 .modal-dialog {
     margin: 0 auto !important;
     max-width: 900px !important;
-    transform: scaleX(-1) !important; /* Esto corregirá el efecto espejo en todos los modales */
+    /* transform: scaleX(-1) !important; */ /* Eliminado para quitar el efecto espejo */
 }
 
 /* Estilo específico para el modal del mapa */
@@ -555,7 +554,7 @@ body.modal-open {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    transform: scaleX(1) !important; /* Revertir la transformación global */
+    /* transform: scaleX(1) !important; */ /* Eliminado para quitar el efecto espejo */
 }
 
 #servicesModalAbout .modal.show {
@@ -566,7 +565,7 @@ body.modal-open {
     margin: 30px auto !important;
     max-width: 800px !important;
     position: relative !important;
-    transform: scaleX(1) !important; /* Asegurar que el diálogo no esté en espejo */
+    /* transform: scaleX(1) !important; */ /* Eliminado para quitar el efecto espejo */
 }
 
 #servicesModalAbout .modal-content {
@@ -577,7 +576,7 @@ body.modal-open {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
     max-height: calc(100vh - 60px);
     overflow-y: auto;
-    transform: scaleX(1) !important; /* Asegurar que el contenido no esté en espejo */
+    /* transform: scaleX(1) !important; */ /* Eliminado para quitar el efecto espejo */
 }
 
 #servicesModalAbout .modal-body {
@@ -788,12 +787,6 @@ footer {
     }
 }
 
-
-/* Necesario para revertir el contenido ya que invertimos el body */
-main, header, footer {
-    transform: scaleX(-1);
-}
-
 /* Espaciado y tamaño uniforme para secciones */
 section {
     height: auto; /* Cambiado de 550px a auto para mejor adaptabilidad */
@@ -812,7 +805,6 @@ section {
 #map {
     margin-bottom: 70px; /* Ajustado para consistencia */
 }
-
 
 /* Ajuste del contenedor para centrar contenido verticalmente */
 .container {

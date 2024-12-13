@@ -33,30 +33,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="text-center">Iniciar Sesión</h3>
-                    </div>
-                    <div class="card-body">
-                        <?php if (isset($error)): ?>
-                            <div class="alert alert-danger"><?= $error ?></div>
-                        <?php endif; ?>
-                        <form method="POST">
-                            <div class="mb-3">
-                                <label>Usuario</label>
-                                <input type="text" name="userName" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label>Contraseña</label>
-                                <input type="password" name="password" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                        </form>
-                    </div>
+        <div class="col-md-6">
+    <div class="card login-container">
+        <div class="card-header">
+            <h3 class="login-title">Iniciar Sesión</h3>
+        </div>
+        <div class="card-body">
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger"><?= $error ?></div>
+            <?php endif; ?>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="login-label">Usuario</label>
+                    <input type="text" name="userName" class="login-input" required>
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label class="login-label">Contraseña</label>
+                    <input type="password" name="password" class="login-input" required>
+                </div>
+                <button type="submit" class="login-button">Entrar</button>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html> 

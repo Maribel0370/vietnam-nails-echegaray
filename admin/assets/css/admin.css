@@ -8,24 +8,110 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-   
 }
 
 .container {
-    transform: scaleX(-1);
+    /* transform: scaleX(-1); */ /* Comentado para quitar el efecto espejo */
     width: 90%;
-    max-width: 900px;
+    max-width: 800px; /* Aumentado para un diseño más amplio */
     margin: 40px auto;
-    padding: 15px;
+    padding: 60px; /* Aumentado para más espacio interno */
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+/* Estilo del título */
+.card-header h3 {
+    font-size: 2.5rem; /* Aumentado para mayor visibilidad */
+    color: #6f1855; /* Color atractivo */
+    margin-bottom: 30px; /* Espaciado inferior */
 }
 
-.admin-container {
-    padding: 10px;
+/* Estilo de las etiquetas */
+label {
+    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+    margin-bottom: 10px; /* Espaciado inferior */
 }
 
+/* Estilo de los botones */
+.btn {
+    background-color: #6f1855; /* Color de fondo del botón */
+    border: none; /* Sin borde */
+    transition: background-color 0.3s ease; /* Transición suave */
+    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+    padding: 15px; /* Aumentado para más espacio interno */
+    width: 100%; /* Botón ocupa todo el ancho */
+}
+
+.btn:hover {
+    background-color: #b94670; /* Color al pasar el ratón */
+}
+
+/* Estilo de los inputs */
+.form-control {
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris claro */
+    margin-bottom: 20px; /* Espaciado inferior */
+    padding: 15px; /* Aumentado para más espacio interno */
+    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+}
+
+.form-control:focus {
+    border-color: #6f1855; /* Color del borde al enfocar */
+    box-shadow: 0 0 5px rgba(111, 24, 85, 0.5); /* Sombra al enfocar */
+}
+
+/* Estilo del contenedor de inicio de sesión */
+.login-container {
+    width: 100%;
+    max-width: 800px; /* Aumentado para un diseño más amplio */
+    max-height: 800px;
+    margin: 40px auto;
+    padding: 60px; /* Aumentado para más espacio interno */
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Estilo del título */
+.login-title {
+    font-size: 2.5rem; /* Tamaño del texto */
+    color: #6f1855; /* Color del texto */
+    text-align: center; /* Centrar el texto */
+    margin-bottom: 30px; /* Espaciado inferior */
+}
+
+/* Estilo de las etiquetas */
+.login-label {
+    font-size: 1.5rem; /* Tamaño del texto */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Estilo de los inputs */
+.login-input {
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris claro */
+    margin-bottom: 20px; /* Espaciado inferior */
+    padding: 15px; /* Espacio interno */
+    font-size: 1.5rem; /* Tamaño del texto */
+    width: 100%; /* Ancho completo */
+}
+
+/* Estilo del botón */
+.login-button {
+    font-size: 1.5rem; /* Tamaño del texto */
+    padding: 15px; /* Espacio interno */
+    width: 100%; /* Ancho completo */
+    background-color: #6f1855; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+.login-button:hover {
+    background-color: #b94670; /* Color al pasar el ratón */
+}
 /* Sistema de pestañas */
 .nav-tabs {
     margin-bottom: 1rem;
@@ -37,13 +123,6 @@ body {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#addOfferForm {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
 }
 
 /* Ajustes específicos para la tabla de ofertas */
@@ -352,3 +431,5 @@ select[multiple] {
         padding: 5px 10px;
     }
 }
+
+

@@ -174,7 +174,8 @@ include_once __DIR__ . '/init.php';
                                                 <p class="card-text">
                                                     <strong>Precio:</strong> <?php echo number_format($offer['final_price'], 2); ?>€<br>
                                                     <strong>Servicios:</strong> <?php echo htmlspecialchars($offer['services']); ?><br>
-                                                    <strong>Válido hasta:</strong> <?php echo date('d/m/Y', strtotime($offer['end_date'])); ?>
+                                                    <strong>Válido hasta:</strong> <?php echo date('d/m/Y', strtotime($offer['end_date'])); ?><br>
+                                                    <strong>Tiempo restante:</strong> <span class="offer-timer" id="offerTimer_<?php echo $offer['id_offer']; ?>"></span>
                                                 </p>
                                             </div>
                                         </div>
@@ -333,6 +334,37 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+</script>
+<script>
+    // Función para iniciar el contador
+    function startOfferCountdown(endDate, elementId) {
+        const endTime = new Date(endDate).getTime();
+        
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = endTime - now;
+
+            // Cálculo del tiempo restante
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Mostrar el resultado en el elemento correspondiente
+            document.getElementById(elementId).innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            // Si el tiempo se ha agotado, mostrar un mensaje
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.getElementById(elementId).innerHTML = "¡Oferta expirada!";
+            }
+        }, 1000);
+    }
+
+    // Llamar a la función para cada oferta
+    <?php foreach ($offers as $offer): ?>
+        startOfferCountdown('<?php echo $offer['end_date']; ?>', 'offerTimer_<?php echo $offer['id_offer']; ?>');
+    <?php endforeach; ?>
 </script>
 </body>
 

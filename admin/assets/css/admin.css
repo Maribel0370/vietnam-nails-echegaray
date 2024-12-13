@@ -64,10 +64,9 @@ label {
 /* Estilo del contenedor de inicio de sesión */
 .login-container {
     width: 100%;
-    max-width: 800px; /* Aumentado para un diseño más amplio */
-    max-height: 800px;
-    margin: 40px auto;
-    padding: 60px; /* Aumentado para más espacio interno */
+    max-width: 800px; /* Aumentado para más anchura */
+    margin: 100px auto; /* Más espacio superior */
+    padding: 60px; /* Más padding interno */
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra */
@@ -429,6 +428,14 @@ select[multiple] {
 
     .action-buttons .btn {
         padding: 5px 10px;
+    }
+}
+
+/* Ajustes para tablets y pantallas más grandes */
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 100%; /* Cambiado de 50% a 100% */
     }
 }
 

@@ -26,6 +26,16 @@ function translate($key, $default = '') {
     return $lang[$key] ?? $default;
 }
 
+// Consulta para obtener el día especial actual y el siguiente
+$sql = "SELECT * FROM special_days 
+        WHERE date >= CURDATE() 
+        AND is_open = 1 
+        ORDER BY date ASC LIMIT 2"; // Solo obtenemos los dos primeros
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$specialDays = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 // Mostrar errores para depuración
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -51,6 +61,20 @@ include 'setup_files/header.php'; // Incluir el header
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>  
 <body>
+<?php if (count($specialDays) > 0): ?>
+        <div class="special-opening-banner">
+            <button class="close-banner" onclick="closeBanner()">X</button>
+            <div class="banner-content">
+                <h3>Días Especiales de Apertura</h3>
+                <?php foreach ($specialDays as $specialDay): ?>
+                    <p><strong>Fecha:</strong> <?php echo date("d-m-Y", strtotime($specialDay['date'])); ?></p>
+                    <p><strong>Descripción:</strong> <?php echo htmlspecialchars($specialDay['description']); ?></p>
+                    <p><strong>Horario:</strong> <?php echo date("H:i", strtotime($specialDay['opening_time'])); ?> - <?php echo date("H:i", strtotime($specialDay['closing_time'])); ?></p>
+                    <hr>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
     <!-- Sección de bienvenida -->
     <main>
         <section id="home">
@@ -241,5 +265,11 @@ include 'setup_files/header.php'; // Incluir el header
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    // Función para cerrar el banner cuando el usuario hace clic en el botón de cierre
+    function closeBanner() {
+        document.querySelector('.special-opening-banner').style.display = 'none';
+    }
+    </script>
 </body>
 </html>

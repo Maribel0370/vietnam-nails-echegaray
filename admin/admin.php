@@ -45,57 +45,93 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 
-// Código para manejar las ofertas
+// Función para enviar respuestas JSON
+function jsonResponse($success, $message = '', $data = []) {
+    header('Content-Type: application/json');
+    echo json_encode(array_merge(['success' => $success, 'message' => $message], $data));
+    exit;
+}
+
+// Manejar solicitudes POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'add_offer':
                 try {
+                    // Validar datos
+                    if (empty($_POST['title']) || empty($_POST['description']) || empty($_POST['offer_type']) || 
+                        empty($_POST['final_price']) || empty($_POST['start_date']) || empty($_POST['end_date'])) {
+                        jsonResponse(false, 'Todos los campos son obligatorios');
+                    }
+
+                    // Validar fechas
+                    if (strtotime($_POST['start_date']) > strtotime($_POST['end_date'])) {
+                        jsonResponse(false, 'La fecha de inicio no puede ser mayor que la fecha de fin');
+                    }
+
                     $pdo->beginTransaction();
-                    
+
+                    // Insertar oferta
                     $sql = "INSERT INTO offers (title, description, offer_type, final_price, start_date, end_date, is_active) 
                             VALUES (?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute([
-                        $_POST['title'],
-                        $_POST['description'],
+                        htmlspecialchars(trim($_POST['title'])),
+                        htmlspecialchars(trim($_POST['description'])),
                         $_POST['offer_type'],
                         $_POST['final_price'],
                         $_POST['start_date'],
                         $_POST['end_date'],
                         isset($_POST['is_active']) ? 1 : 0
                     ]);
-                    
+
                     $offerId = $pdo->lastInsertId();
-                    
+
+                    // Insertar servicios
                     if (isset($_POST['services']) && is_array($_POST['services'])) {
                         $sqlService = "INSERT INTO offer_services (id_offer, id_service) VALUES (?, ?)";
                         $stmtService = $pdo->prepare($sqlService);
-                        
                         foreach ($_POST['services'] as $serviceId) {
                             $stmtService->execute([$offerId, $serviceId]);
                         }
                     }
-                    
+
                     $pdo->commit();
-                    
-                    // En lugar de redirigir, devolvemos JSON
-                    header('Content-Type: application/json');
-                    echo json_encode(['success' => true]);
-                    exit;
-                    
+
+    // Redirige a admin.php con el parámetro para seleccionar la pestaña de ofertas
+    header('Location: admin.php?tab=ofertas');
+    exit;
+
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    logError($e->getMessage());
+
+    // Si hay un error, puedes redirigir a la misma página y agregar un mensaje de error
+    header('Location: admin.php?tab=ofertas&error=true');
+    exit;
+}
+                break;
+
+            case 'delete_offer':
+                $offerId = filter_var($_POST['offer_id'], FILTER_VALIDATE_INT);
+                if (!$offerId) jsonResponse(false, 'ID de oferta no válido');
+
+                try {
+                    $sql = "DELETE FROM offers WHERE id_offer = ?";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([$offerId]);
+
+                    jsonResponse(true, 'Oferta eliminada exitosamente');
                 } catch (PDOException $e) {
-                    $pdo->rollBack();
-                    header('Content-Type: application/json');
-                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-                    exit;
+                    logError($e->getMessage());
+                    jsonResponse(false, 'Error al eliminar la oferta');
                 }
                 break;
         }
     }
 }
 
-// Obtener todas las ofertas con sus servicios asociados
+// Obtener todas las ofertas
 $offers = $pdo->query("
     SELECT o.id_offer, 
            o.title,
@@ -105,14 +141,14 @@ $offers = $pdo->query("
            o.end_date,
            o.is_active,
            o.offer_type,
-           GROUP_CONCAT(DISTINCT s.nameService SEPARATOR ', ') as services,
-           GROUP_CONCAT(DISTINCT s.id_service) as service_ids
+           COALESCE(GROUP_CONCAT(DISTINCT s.nameService SEPARATOR ', '), 'Sin servicios') as services
     FROM offers o
     LEFT JOIN offer_services os ON o.id_offer = os.id_offer
     LEFT JOIN services s ON os.id_service = s.id_service
-    GROUP BY o.id_offer, o.title, o.description, o.final_price, o.start_date, o.end_date, o.is_active, o.offer_type
+    GROUP BY o.id_offer
     ORDER BY o.start_date DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Obtener los servicios para el formulario y la tabla
 $services = $pdo->query("SELECT * FROM services WHERE isActive = 1")->fetchAll();
@@ -483,7 +519,7 @@ $tiposJornada = [
                 </div>
             </div>
 
-            <!-- Pestaña de Gesti��n Horarios -->
+            <!-- Pestaña de Gestión Horarios -->
             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
                 <div class="schedule-content">
                     <h3>Gestión de Horarios</h3>

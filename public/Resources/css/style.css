@@ -989,4 +989,36 @@ section {
     margin: 0;
     font-size: 0.55rem;
 }
+.special-opening-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--gold-pink); /* Color de fondo del banner */
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.banner-content h3 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.close-banner {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #cd557c;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-banner:hover {
+    color: red;
+}
+
+
 

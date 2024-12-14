@@ -25,7 +25,7 @@ include_once __DIR__ . '/init.php';
 
     <header class="header" id="header">
         <img src="<?php echo $basePath; ?>public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" class="header-logo-rotulo">
-        <img src="<?php echo $basePath; ?>public/Resources/img/logo_vne-modified-999.png" alt="Vietnam Nails Echegaray" class="header-logo">
+        <img src="<?php echo $basePath; ?>public/Resources/img/logo_vne-modified-999.png" alt="Logo Vietnam Nails Echegaray" class="header-logo">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
     
@@ -175,7 +175,26 @@ include_once __DIR__ . '/init.php';
                                                     <strong>Precio:</strong> <?php echo number_format($offer['final_price'], 2); ?>€<br>
                                                     <strong>Servicios:</strong> <?php echo htmlspecialchars($offer['services']); ?><br>
                                                     <strong>Válido hasta:</strong> <?php echo date('d/m/Y', strtotime($offer['end_date'])); ?><br>
-                                                    <strong>Tiempo restante:</strong> <span class="offer-timer" id="offerTimer_<?php echo $offer['id_offer']; ?>"></span>
+                                                    <strong>Tiempo restante:</strong> 
+<div class="offer-timer-container">
+    <div class="offer-timer-item">
+        <span id="days_<?php echo $offer['id_offer']; ?>">00</span>
+        <p>Días</p>
+    </div>
+    <div class="offer-timer-item">
+        <span id="hours_<?php echo $offer['id_offer']; ?>">00</span>
+        <p>Horas</p>
+    </div>
+    <div class="offer-timer-item">
+        <span id="minutes_<?php echo $offer['id_offer']; ?>">00</span>
+        <p>Minutos</p>
+    </div>
+    <div class="offer-timer-item">
+        <span id="seconds_<?php echo $offer['id_offer']; ?>">00</span>
+        <p>Segundos</p>
+    </div>
+</div>
+
                                                 </p>
                                             </div>
                                         </div>
@@ -203,64 +222,29 @@ include_once __DIR__ . '/init.php';
 
     <!-- Modal de Reservas -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="reservations.php" method="POST">
-                        <!-- Campos para el nombre y móvil -->
-                        <div class="form-group">
-                            <label for="name"><?php echo translate('your_name', 'Tu nombre'); ?></label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone"><?php echo translate('your_phone', 'Tu teléfono'); ?></label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required>
-                        </div>
-                        <!-- Campo para seleccionar el servicio -->
-                        <div class="form-group">
-                            <label for="service"><?php echo translate('select_service', 'Selecciona el servicio'); ?></label>
-                            <select class="form-control" id="service" name="service" required>
-                                <option value="gel"><?php echo translate('gel_nails', 'Uñas gel'); ?></option>
-                                <option value="semi-capa"><?php echo translate('semi_capa', 'Semi Capa'); ?></option>
-                                <option value="semi-permanente"><?php echo translate('semi_permanent', 'Semi permanente'); ?></option>
-                                <option value="manicura"><?php echo translate('manicure', 'Manicura'); ?></option>
-                                <option value="pedicura"><?php echo translate('pedicure', 'Pedicura'); ?></option>
-                                <option value="masajes"><?php echo translate('massages', 'Masajes'); ?></option>
-                            </select>
-                        </div>
-                        <!-- Campo para seleccionar el personal -->
-                        <div class="form-group">
-                            <label for="staff"><?php echo translate('select_staff', 'Selecciona al personal'); ?></label>
-                            <select class="form-control" id="staff" name="staff" required>
-                                <option value="Georgina"><?php echo translate('georgina', 'Georgina'); ?></option>
-                                <option value="Yulia"><?php echo translate('yulia', 'Yulia'); ?></option>
-                                <option value="Heip"><?php echo translate('heip', 'Heip'); ?></option>
-                                <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
-                                <option value="Sin Preferencia"><?php echo translate('no_preference', 'Sin Preferencia'); ?></option>
-                            </select>
-                        </div>
-                        <!-- Campo para seleccionar la fecha -->
-                        <div class="form-group">
-                            <label for="date"><?php echo translate('select_date', 'Selecciona la fecha'); ?></label>
-                            <input type="date" class="form-control" id="date" name="date" required>
-                        </div>
-                        <!-- Campo para seleccionar la hora -->
-                        <div class="form-group">
-                            <label for="time"><?php echo translate('select_time', 'Selecciona la hora'); ?></label>
-                            <input type="time" class="form-control" id="time" name="time" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary"><?php echo translate('book_now', 'Reservar ahora'); ?></button>
-                    </form>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body text-center">
+                <p class="mb-3">
+                    <strong>¡Estamos trabajando para ti!</strong><br>
+                    El sistema de reservas estará disponible muy pronto. Mientras tanto, puedes contactarnos a través de WhatsApp.
+                </p>
+                <a href="https://wa.me/34608268978" target="_blank" class="btn whatsapp-btn d-flex align-items-center justify-content-center">
+                 <img src="../public/Resources/img/icons/whatsapp.png" alt="WhatsApp" style="width: 24px; height: 24px; margin-right: 8px;">
+                 Contactar por WhatsApp
+            </a>
+           </div>
         </div>
     </div>
+</div>
+ 
+
 
     <!-- Modal de Ubicación -->
     <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
@@ -337,29 +321,37 @@ window.onclick = function(event) {
 </script>
 <script>
     // Función para iniciar el contador
-    function startOfferCountdown(endDate, elementId) {
-        const endTime = new Date(endDate).getTime();
-        
-        const countdown = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = endTime - now;
+    document.addEventListener('DOMContentLoaded', function () {
+    const timers = document.querySelectorAll('.offer-timer-container');
 
-            // Cálculo del tiempo restante
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    timers.forEach(timer => {
+        const offerId = timer.querySelector('span').id.split('_')[1];
+        const endDate = new Date(<?php echo json_encode($offer['end_date']); ?>);
 
-            // Mostrar el resultado en el elemento correspondiente
-            document.getElementById(elementId).innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = endDate - now;
 
-            // Si el tiempo se ha agotado, mostrar un mensaje
-            if (distance < 0) {
-                clearInterval(countdown);
-                document.getElementById(elementId).innerHTML = "¡Oferta expirada!";
+            if (timeLeft <= 0) {
+                timer.innerHTML = "Oferta finalizada";
+                return;
             }
-        }, 1000);
-    }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById(`days_${offerId}`).textContent = days.toString().padStart(2, '0');
+            document.getElementById(`hours_${offerId}`).textContent = hours.toString().padStart(2, '0');
+            document.getElementById(`minutes_${offerId}`).textContent = minutes.toString().padStart(2, '0');
+            document.getElementById(`seconds_${offerId}`).textContent = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    });
+});
 
     // Llamar a la función para cada oferta
     <?php foreach ($offers as $offer): ?>

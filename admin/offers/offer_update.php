@@ -32,7 +32,7 @@ try {
     $stmtDelete = $pdo->prepare($sqlDelete);
     $stmtDelete->execute([$_POST['id_offer']]);
 
-    // Luego insertar los nuevos
+    // Insertar los nuevos servicios
     if (isset($_POST['services']) && is_array($_POST['services'])) {
         $sqlService = "INSERT INTO offer_services (id_offer, id_service) VALUES (?, ?)";
         $stmtService = $pdo->prepare($sqlService);
@@ -44,7 +44,6 @@ try {
 
     $pdo->commit();
     echo json_encode(['success' => true]);
-
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);

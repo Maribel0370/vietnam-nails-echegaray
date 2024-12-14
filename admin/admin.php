@@ -197,7 +197,10 @@ $tiposJornada = [
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Maribel García, David Gutierrez,Fernanda Montalvan, Cristian Gómez">
+    <meta name="description" content="Vietnam Nails">
     <title>Panel de Administración - Vietnam Nails</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/Resources/css/style.css">
@@ -219,7 +222,7 @@ $tiposJornada = [
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab" aria-controls="staff" aria-selected="true">
+                <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab" aria-controls="staff" aria-selected="false">
                     Gestión Personal
                 </button>
             </li>
@@ -229,7 +232,7 @@ $tiposJornada = [
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="special-days-tab" data-bs-toggle="tab" data-bs-target="#special-days" type="button" role="tab">
+                <button class="nav-link" id="special-days-tab" data-bs-toggle="tab" data-bs-target="#special-days" type="button" role="tab" aria-controls="special-days" aria-selected="false">
                     Días Especiales
                 </button>
             </li>
@@ -372,7 +375,7 @@ $tiposJornada = [
             </div>
 
             <!-- Pestaña de Gestión Personal -->
-            <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+            <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
                 <div class="staff-content">
                     <h3>Gestión de Personal</h3>
                     

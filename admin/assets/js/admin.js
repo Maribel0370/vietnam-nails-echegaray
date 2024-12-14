@@ -252,4 +252,25 @@ $(document).ready(function() {
             });
         }
     });
+
+    $(document).on('submit', '#addSpecialDayForm', function(e) {
+        e.preventDefault();
+        const formData = $(this).serialize();
+
+        $.ajax({
+            url: 'special_days/special_day_create.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    location.reload(); // Recargar la página para ver los cambios
+                } else {
+                    alert('Error al añadir el día especial: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error en la solicitud: ' + error);
+            }
+        });
+    });
 }); 

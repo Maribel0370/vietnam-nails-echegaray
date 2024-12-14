@@ -134,7 +134,7 @@ nav {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 50px 0;
+    padding: 0px 0;
     position: relative;
     margin-top: 70px;
     margin-bottom: 70px;
@@ -588,7 +588,7 @@ body.modal-open {
     background-color: rgba(238, 236, 236, 0.636);
     background: transparent;
     position: relative;
-    margin: 20rem 0;
+    margin: 75px 0;
 
     h2 {
         margin-bottom: 30px;
@@ -786,7 +786,7 @@ footer {
 section {
     height: auto; /* Cambiado de 550px a auto para mejor adaptabilidad */
     margin: 70px 0; /* Cambiado de 550px a 70px */
-    padding: 50px 0; /* Ajustado de 100px a 50px para mejor proporción */
+    padding: 0px 0; /* Ajustado de 100px a 50px para mejor proporción */
     position: relative;
 }
 
@@ -950,5 +950,43 @@ section {
 .btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
+}
+
+.whatsapp-btn {
+    background-color: #cd557c; /* Color principal */
+    color: #FFFFFF; /* Color del texto */
+    border: none; /* Sin borde */
+}
+
+.whatsapp-btn:hover {
+    background-color: #b04b6d; /* Color más oscuro para el hover */
+}
+
+.offer-timer-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.offer-timer-item {
+    text-align: center;
+    background-color: #cd557c;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 30px;
+}
+
+.offer-timer-item span {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.offer-timer-item p {
+    margin: 0;
+    font-size: 0.55rem;
 }
 

@@ -1,7 +1,7 @@
 /* Estilos base */
 body {
     font-family: 'Roboto', sans-serif;
-    background-image: url('../../../public/Resources/img/background.jpg');
+    background-image: url('../public/resources/images/pared_vn.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -10,12 +10,34 @@ body {
     padding: 0;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgb(94, 94, 94), rgba(206, 205, 205), rgb(152, 151, 151), rgb(173, 173, 173), rgb(103, 103, 103));
+}
+
+.header-title {
+    flex-grow: 1; /* Permite que el título ocupe el espacio disponible */
+    text-align: center; /* Centra el texto */
+    
+} 
+h1 {
+    color: #B76E79;
+}
+h3 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
 .container {
     /* transform: scaleX(-1); */ /* Comentado para quitar el efecto espejo */
-    width: 90%;
-    max-width: 800px; /* Aumentado para un diseño más amplio */
+    width: 95%;
+    max-width: 1000px; /* Aumentado para un diseño más amplio */
     margin: 40px auto;
-    padding: 60px; /* Aumentado para más espacio interno */
+    padding: 0px; /* Aumentado para más espacio interno */
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
@@ -29,7 +51,7 @@ body {
 
 /* Estilo de las etiquetas */
 label {
-    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+    font-size: 1rem; /* Aumentado para mayor legibilidad */
     margin-bottom: 10px; /* Espaciado inferior */
 }
 
@@ -38,7 +60,7 @@ label {
     background-color: #6f1855; /* Color de fondo del botón */
     border: none; /* Sin borde */
     transition: background-color 0.3s ease; /* Transición suave */
-    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+    font-size: 1rem; /* Aumentado para mayor legibilidad */
     padding: 15px; /* Aumentado para más espacio interno */
     width: 100%; /* Botón ocupa todo el ancho */
 }
@@ -53,7 +75,7 @@ label {
     border: 1px solid #ccc; /* Borde gris claro */
     margin-bottom: 20px; /* Espaciado inferior */
     padding: 15px; /* Aumentado para más espacio interno */
-    font-size: 1.5rem; /* Aumentado para mayor legibilidad */
+    font-size: 1rem; /* Aumentado para mayor legibilidad */
 }
 
 .form-control:focus {
@@ -113,7 +135,7 @@ label {
 }
 /* Sistema de pestañas */
 .nav-tabs {
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
 }
 
 /* Estilos específicos para la pestaña de ofertas */
@@ -223,7 +245,7 @@ label {
 
 /* Ajustes para la tabla */
 .table {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .table td, 
@@ -239,19 +261,19 @@ label {
 
 .form-control {
     padding: 0.3rem 0.5rem;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 0;
 }
 
 /* Botones más pequeños */
 .btn {
     padding: 0.25rem 0.5rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .btn-sm {
     padding: 0.2rem 0.4rem;
-    font-size: 0.75rem;
+    font-size: 1rem;
 }
 
 .btn-group {
@@ -437,6 +459,11 @@ select[multiple] {
         flex: 0 0 auto;
         width: 100%; /* Cambiado de 50% a 100% */
     }
+}
+
+.col-md-4 {
+    padding-right: 5px; /* Ajusta el padding derecho */
+    padding-left: 5px;  /* Ajusta el padding izquierdo */
 }
 
 

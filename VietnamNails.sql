@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2024 a las 14:02:03
+-- Tiempo de generación: 13-12-2024 a las 21:38:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `employees` (
   `phone` varchar(15) NOT NULL,
   `dataCreated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `isActive` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_employee`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -89,12 +90,12 @@ CREATE TABLE IF NOT EXISTS `employees` (
 -- Volcado de datos para la tabla `employees`
 --
 
-INSERT INTO `employees` (`id_employee`, `firstName`, `lastName`, `phone`, `dataCreated`, `isActive`) VALUES
-(1, 'Hiep', 'Cao', '123456789', '2024-12-10 22:35:29', 1),
-(2, 'Georgina', 'colacao', '234567890', '2024-12-10 23:21:27', 1),
-(3, 'Yulia', '', '345678901', '2024-11-29 12:02:30', 1),
-(4, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1),
-(5, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1);
+INSERT INTO `employees` (`id_employee`, `firstName`, `lastName`, `phone`, `dataCreated`, `isActive`, `created_at`) VALUES
+(1, 'Hiep', 'Cao', '123456789', '2024-12-10 22:35:29', 1, '2024-12-11 15:24:48'),
+(2, 'Georgina', '', '234567890', '2024-12-11 13:29:43', 1, '2024-12-11 15:24:48'),
+(3, 'Yulia', '', '345678901', '2024-11-29 12:02:30', 1, '2024-12-11 15:24:48'),
+(4, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1, '2024-12-11 15:24:48'),
+(5, 'Anonimo', '', '012345678', '2024-11-29 12:05:23', 1, '2024-12-11 15:24:48');
 
 -- --------------------------------------------------------
 
@@ -115,16 +116,16 @@ CREATE TABLE IF NOT EXISTS `offers` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_offer`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `offers`
 --
 
 INSERT INTO `offers` (`id_offer`, `title`, `description`, `offer_type`, `start_date`, `end_date`, `final_price`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Oferta de Navidad', 'Descuento especial en servicios de manicura\r\n\r\nManicura Manos Semipermantente y Pies solo pintar', 'special', '2024-12-02', '2024-12-09', 20.00, 1, '2024-12-10 15:55:32', '2024-12-10 22:43:08'),
-(2, 'Oferta de la Semana', 'Manos Semi permanente y pies semi permanente', 'weekly', '2024-12-11', '2024-12-18', 25.00, 1, '2024-12-11 12:51:33', '2024-12-11 12:51:33'),
-(3, 'Oferta de la Semana', 'Mano y pies semi permanente', 'weekly', '2024-12-11', '2024-12-18', 25.00, 1, '2024-12-11 12:53:44', '2024-12-11 12:53:44');
+(4, 'Oferta', 'Manos y pies semipermanente', '', '2024-12-11', '2025-04-17', 25.00, 1, '2024-12-11 14:43:05', '2024-12-13 18:50:51'),
+(6, 'Pedicura sin pintura y Manos Semipermanente', 'Pedicura completa, dejando tus pies suaves y cuidados. Para tus manos, un esmaltado semipermanente que garantiza un acabado impecable y duradero', '', '2024-12-13', '2025-04-17', 30.00, 1, '2024-12-13 18:33:25', '2024-12-13 18:51:21'),
+(8, '¡Jubiladas, Uñas de Gel con un Toque de Elegancia!', 'Dale a tus manos el cuidado que merecen con nuestras uñas de gel. Un toque elegante y duradero, diseñado especialmente para ti.\r\n\r\n', '', '2024-12-13', '2025-04-17', 20.00, 1, '2024-12-13 18:44:26', '2024-12-13 18:53:06');
 
 -- --------------------------------------------------------
 
@@ -140,17 +141,18 @@ CREATE TABLE IF NOT EXISTS `offer_services` (
   PRIMARY KEY (`id_offer_service`),
   KEY `id_offer` (`id_offer`),
   KEY `id_service` (`id_service`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `offer_services`
 --
 
 INSERT INTO `offer_services` (`id_offer_service`, `id_offer`, `id_service`) VALUES
-(3, 2, 3),
-(4, 2, 5),
-(5, 3, 3),
-(6, 3, 5);
+(7, 4, 3),
+(8, 4, 5),
+(11, 6, 3),
+(12, 6, 5),
+(15, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -251,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `special_days` (
   `is_open` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_special_day`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `special_days`
@@ -262,7 +264,10 @@ INSERT INTO `special_days` (`id_special_day`, `date`, `description`, `opening_ti
 (2, '2024-12-25', 'Navidad', '00:00:00', '00:00:00', 0, '2024-12-10 21:13:15'),
 (3, '2024-12-31', 'Nochevieja', '09:00:00', '15:00:00', 1, '2024-12-10 21:13:15'),
 (4, '2024-01-01', 'Año Nuevo', '00:00:00', '00:00:00', 0, '2024-12-10 21:13:15'),
-(5, '2024-12-14', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35');
+(5, '2024-12-14', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35'),
+(6, '2024-12-21', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35'),
+(7, '2024-12-28', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35'),
+(8, '2025-01-04', 'Sábado Fiestas Navideñas', '09:00:00', '15:00:00', 1, '2024-12-10 21:19:35');
 
 -- --------------------------------------------------------
 

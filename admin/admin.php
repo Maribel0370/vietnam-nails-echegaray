@@ -253,6 +253,11 @@ $tiposJornada = [
                     Gestión de Reservas
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab" aria-controls="services" aria-selected="false">
+                    Gestión de Servicios
+                </button>
+            </li>
         </ul>
 
         <!-- Contenido de las pestañas -->
@@ -698,6 +703,14 @@ $tiposJornada = [
                 <div class="reservations-content">
                     <h3>Gestión de Reservas</h3>
                     <!-- Contenido de reservas -->
+                </div>
+            </div>
+
+            <!-- Pestaña de Gestión de Servicios -->
+            <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
+                <div class="services-content">
+                    <h3>Gestión de Servicios</h3>
+                    <!-- Contenido de servicios -->
                 </div>
             </div>
         </div>

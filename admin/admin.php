@@ -209,7 +209,19 @@ $tiposJornada = [
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include '../setup_files/header.php'; ?>
+    <header>
+        <div class="d-flex align-items-center">
+        <img src="../public/Resources/img/rotulo_transparente.png" alt="Vietnam Nails Echegaray" style="height: 30px; margin-right: 10px;">
+        </div>
+        <img src="../public/Resources/img/logo_vne-modified-999.png" alt="Logo Vietnam Nails Echegaray" style="height: 50px; margin-right: 10px;">
+        </div>
+        <h1 class="h4 mb-0 header-title">Panel de Administración</h1>
+        <div>
+            <a href="logout.php" class="btn btn-danger" title="Cerrar sesión">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </header>
 
     <div class="container admin-container">
         <h2 class="mb-4">Panel de Administración</h2>
@@ -227,13 +239,18 @@ $tiposJornada = [
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab">
+                <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab" aria-controls="schedule" aria-selected="false">
                     Gestión Horarios
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="special-days-tab" data-bs-toggle="tab" data-bs-target="#special-days" type="button" role="tab" aria-controls="special-days" aria-selected="false">
                     Días Especiales
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reservations-tab" data-bs-toggle="tab" data-bs-target="#reservations" type="button" role="tab" aria-controls="reservations" aria-selected="false">
+                    Gestión de Reservas
                 </button>
             </li>
         </ul>
@@ -461,7 +478,7 @@ $tiposJornada = [
                 </div>
             </div>
 
-            <!-- Pestaña de Gestión Horarios -->
+            <!-- Pestaña de Gesti��n Horarios -->
             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
                 <div class="schedule-content">
                     <h3>Gestión de Horarios</h3>
@@ -675,10 +692,33 @@ $tiposJornada = [
                     </div>
                 </div>
             </div>
+
+            <!-- Pestaña de Gestión de Reservas -->
+            <div class="tab-pane fade" id="reservations" role="tabpanel" aria-labelledby="reservations-tab">
+                <div class="reservations-content">
+                    <h3>Gestión de Reservas</h3>
+                    <!-- Contenido de reservas -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <?php include '../setup_files/footer.php'; ?>
+    <footer>
+    <div class="contentFooter">
+        <div class="contacto">
+            <h2>Contáctanos</h2>
+            <a href="https://wa.link/lr6hiq" target="_blank"><img src="../public/Resources/img/icons/whatsapp.png" alt="whatsapp link"></a>
+        </div>
+        <div class="redes">
+            <h2>Siguenos</h2>
+            <div>
+                <a href="https://www.facebook.com/share/1LQa8SVbLd/" target="_blank"><img src="../public/Resources/img/icons/facebook.png" alt="Facebook"></a>
+                <a href="https://www.instagram.com/vietnamnailsechegaray?igsh=ZDNoeDU3bGswaDJ5" target="_blank"><img src="../public/Resources/img/icons/instagram.png" alt="Instagram Link"></a>
+            </div>
+        </div>
+    </div>
+    <br><p>&copy; 2024 Vietnam Nails Echegaray. Todos los derechos reservados.</p>
+</footer>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -994,7 +994,7 @@ section {
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--gold-pink); /* Color de fondo del banner */
+    background-color: #b04b6d; /* Color de fondo del banner */
     padding: 15px;
     text-align: center;
     z-index: 1000;
@@ -1011,14 +1011,14 @@ section {
     right: 20px;
     background: transparent;
     border: none;
-    color: #cd557c;
+    color: black;
     font-size: 20px;
     cursor: pointer;
 }
 
 .close-banner:hover {
     color: red;
-}
+}   
 
 
 

@@ -1,5 +1,5 @@
 <?php
-$host = 'vietnamnailsechegaray.com'; // Nombre del servidor
+$host = 'localhost'; // Nombre del servidor
 $dbname = 'u480382244_VietnamNails'; // Nombre de la base de datos
 $username = 'u480382244_VNEchegaray';
 $password = '@Vnechagaray18';

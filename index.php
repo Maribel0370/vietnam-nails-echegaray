@@ -51,9 +51,10 @@ include 'setup_files/header.php'; // Incluir el header
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="David Gutierrez, Maribel García, Fernanda Montalvan, Cristian Gómez">
+    <meta name="author" content=" Maribel García, David Gutierrez, Fernanda Montalvan, Cristian Gómez">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure, Salon uñas Badalona">
+    <link rel="icon" href="<?php echo $basePath; ?>public/resources/img/icons/favicon_vne.png" type="image/x-icon"> <!-- Añadir favicon -->
     <link rel="stylesheet" href="public/Resources/css/style.css">
     <title><?php echo translate('welcome_message', 'Vietnam Nails Echegaray'); ?></title>
 

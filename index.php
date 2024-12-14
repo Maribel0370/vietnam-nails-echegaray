@@ -240,7 +240,7 @@ include 'setup_files/header.php'; // Incluir el header
                 <div class="video-container">
                     <h2><?php echo translate('Come visit us', 'Ven a visitar nuestras instalaciones');?></h2>
                     <video controls>
-                        <source src="public/Resources/video/vietnam_nail_editado (1).mp4" type="video/mp4">
+                        <source src="public/Resources/video/vietnamNails.mp4" type="video/mp4">
                     </video>
                 </div>
                 

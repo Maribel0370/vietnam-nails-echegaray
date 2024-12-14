@@ -3,6 +3,11 @@ session_start();
 require_once '../setup_files/connection.php';
 require_once '../setup_files/init.php';
 
+// Función para registrar errores
+function logError($message) {
+    error_log($message); // Registra el mensaje de error en el log de errores
+}
+
 // Añadir la configuración de idioma y función de traducción
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'es';
@@ -228,6 +233,22 @@ $tiposJornada = [
     'Morning' => 'Mañana',
     'Afternoon' => 'Tarde'
 ];
+
+try {
+    // ... código existente ...
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    logError($e->getMessage());
+    // ... código existente ...
+}
+
+// ... código existente ...
+try {
+    // ... código existente ...
+} catch (PDOException $e) {
+    logError($e->getMessage());
+    // ... código existente ...
+}
 ?>
 
 <!DOCTYPE html>

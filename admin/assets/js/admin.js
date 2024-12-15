@@ -149,7 +149,7 @@ $(document).ready(function() {
         e.preventDefault();
         
         $.ajax({
-            url: 'staff/staff_create.php',
+            url: 'employees/employee_create.php',
             type: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -165,69 +165,105 @@ $(document).ready(function() {
         });
     });
 
-    // Editar personal
-    $('.edit-staff').click(function() {
-        const row = $(this).closest('tr');
-        const cells = row.find('td');
-        
-        cells.eq(0).html(`<input type="text" class="form-control" value="${cells.eq(0).text()}" required>`);
-        cells.eq(1).html(`<input type="text" class="form-control" value="${cells.eq(1).text()}" required>`);
-        cells.eq(2).html(`<input type="tel" class="form-control" value="${cells.eq(2).text()}" pattern="[0-9]{9}" required>`);
-
-        $(this).hide();
-        row.find('.delete-staff').hide();
-        row.find('.btn-group').append(`
-            <button type="button" class="btn btn-sm btn-success save-staff" data-id="${$(this).data('id')}">
-                <i class="fas fa-save"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary cancel-edit">
-                <i class="fas fa-times"></i>
-            </button>
-        `);
+ // Editar personal
+$(document).on('click', '.edit-staff', function() {
+    const row = $(this).closest('tr');
+    
+    // Hacer que las celdas sean editables
+    row.find('td').each(function(index) {
+        if (index < 3) { // Solo para Nombre, Apellidos y Teléfono
+            const currentText = $(this).text();
+            $(this).html(`<input type="text" value="${currentText}" class="form-control" />`);
+        }
     });
 
-    // Guardar cambios de personal
-    $(document).on('click', '.save-staff', function() {
-        const row = $(this).closest('tr');
-        const id = $(this).data('id');
-        
-        $.ajax({
-            url: 'staff/staff_update.php',
-            type: 'POST',
-            data: {
-                id_employee: id,
-                firstName: row.find('td:eq(0) input').val(),
-                lastName: row.find('td:eq(1) input').val(),
-                phone: row.find('td:eq(2) input').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    location.reload();
-                } else {
-                    alert('Error al actualizar personal');
-                }
+    // Ocultar los botones de editar y eliminar
+    $(this).hide(); // Ocultar el botón de editar
+    row.find('.delete-staff').hide(); // Ocultar el botón de eliminar
+
+    // Mostrar los botones de guardar y cancelar
+    row.find('.save-staff').show(); // Mostrar el botón de guardar
+    row.find('.cancel-edit').show(); // Mostrar el botón de cancelar
+});
+
+// Guardar cambios de personal
+$(document).on('click', '.save-staff', function() {
+    const row = $(this).closest('tr');
+    const id = $(this).data('id');
+    
+    // Obtener los valores de los inputs
+    const firstName = row.find('td:eq(0) input').val();
+    const lastName = row.find('td:eq(1) input').val();
+    const phone = row.find('td:eq(2) input').val();
+
+    $.ajax({
+        url: 'employees/employee_update.php',
+        type: 'POST',
+        data: {
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone
+        },
+        success: function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                alert('Error al actualizar personal: ' + response.message);
             }
-        });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error de conexión:', textStatus, errorThrown);
+            alert('Error de conexión al servidor');
+        }
     });
+});
+
+// Cancelar edición
+$(document).on('click', '.cancel-edit', function() {
+    const row = $(this).closest('tr');
+    
+    // Volver a mostrar los datos originales
+    row.find('td').each(function(index) {
+        if (index < 3) { // Solo para Nombre, Apellidos y Teléfono
+            const currentText = $(this).find('input').val(); // Obtener el valor del input
+            $(this).html(currentText); // Reemplazar el input con el texto original
+        }
+    });
+
+    // Ocultar los botones de guardar y cancelar
+    row.find('.save-staff').hide();
+    row.find('.cancel-edit').hide();
+
+    // Mostrar el botón de editar y eliminar
+    row.find('.edit-staff').show();
+    row.find('.delete-staff').show();
+});
 
     // Activar/Desactivar personal
     $('.toggle-staff-status').change(function() {
         const $checkbox = $(this);
         const id = $checkbox.data('id');
-        const isActive = $checkbox.prop('checked');
-        
+        const isActive = $checkbox.prop('checked') ? 1 : 0; // 1 para activo, 0 para inactivo
+
         $.ajax({
-            url: 'staff/staff_reactivate.php',
+            url: 'ajax/toggle_status.php', // Cambia a la URL de toggle_status.php
             type: 'POST',
             data: {
-                id_employee: id,
-                isActive: isActive ? 1 : 0
+                id: id,
+                type: 'employee', // Especificar que es un empleado
+                is_active: isActive
             },
             success: function(response) {
                 if (!response.success) {
-                    alert('Error al actualizar el estado');
-                    $checkbox.prop('checked', !isActive);
+                    alert('Error al actualizar el estado: ' + response.message);
+                    $checkbox.prop('checked', !$checkbox.prop('checked')); // Revertir el estado si hay un error
                 }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error de conexión:', textStatus, errorThrown);
+                alert('Error de conexión al servidor');
+                $checkbox.prop('checked', !$checkbox.prop('checked')); // Revertir el estado si hay un error
             }
         });
     });
@@ -239,19 +275,23 @@ $(document).ready(function() {
             const id = $(this).data('id');
             
             $.ajax({
-                url: 'staff/staff_delete.php',
+                url: 'employees/employee_delete.php',
                 type: 'POST',
-                data: { id_employee: id },
+                data: { id: id },
                 success: function(response) {
                     if (response.success) {
                         row.remove();
                     } else {
-                        alert('Error al eliminar el empleado');
+                        alert('Error al eliminar el empleado: ' + response.message);
                     }
+                },
+                error: function() {
+                    alert('Error de conexión al servidor');
                 }
             });
         }
     });
+
 
     $(document).on('submit', '#addSpecialDayForm', function(e) {
         e.preventDefault();

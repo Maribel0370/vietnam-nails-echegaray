@@ -525,6 +525,12 @@ try {
                                                 <button type="button" class="btn btn-sm btn-danger delete-staff" data-id="<?= $employee['id_employee'] ?>">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
+                                                <button type="button" class="btn btn-sm btn-success save-staff" style="display: none;" data-id="<?= $employee['id_employee'] ?>">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-secondary cancel-edit" style="display: none;">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

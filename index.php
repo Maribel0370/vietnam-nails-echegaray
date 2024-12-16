@@ -30,7 +30,7 @@ function translate($key, $default = '') {
 $sql = "SELECT * FROM special_days 
         WHERE date >= CURDATE() 
         AND is_open = 1 
-        ORDER BY date ASC LIMIT 2"; // Solo obtenemos los dos primeros
+        ORDER BY date ASC LIMIT 4"; // Solo obtenemos los 4 primeros
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $specialDays = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -54,28 +54,28 @@ include 'setup_files/header.php'; // Incluir el header
     <meta name="author" content=" Maribel García, David Gutierrez, Fernanda Montalvan, Cristian Gómez">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure, Salon uñas Badalona">
-    <link rel="icon" href="<?php echo $basePath; ?>public/resources/img/icons/favicon_vne.png" type="image/x-icon"> <!-- Añadir favicon -->
-    <link rel="stylesheet" href="public/Resources/css/style.css">
-    <title><?php echo translate('welcome_message', 'Vietnam Nails Echegaray'); ?></title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Estilos personalizados -->
+<link rel="stylesheet" href="public/Resources/css/style.css?v=1.1">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title><?php echo translate('welcome_message', 'Vietnam Nails Echegaray'); ?></title>
 </head>  
 <body>
 <?php if (count($specialDays) > 0): ?>
-        <div class="special-opening-banner">
-            <button class="close-banner" onclick="closeBanner()">X</button>
-            <div class="banner-content">
-                <h3>Días Especiales de Apertura</h3>
-                <?php foreach ($specialDays as $specialDay): ?>
-                    <p><strong>Fecha:</strong> <?php echo date("d-m-Y", strtotime($specialDay['date'])); ?></p>
-                    <p><strong>Descripción:</strong> <?php echo htmlspecialchars($specialDay['description']); ?></p>
-                    <p><strong>Horario:</strong> <?php echo date("H:i", strtotime($specialDay['opening_time'])); ?> - <?php echo date("H:i", strtotime($specialDay['closing_time'])); ?></p>
-                    <hr>
-                <?php endforeach; ?>
-            </div>
+    <div class="special-opening-banner">
+        <button class="close-banner" onclick="closeBanner()">×</button>
+        <div class="banner-content">
+            <h3>Días Especiales de Apertura</h3>
+            <?php foreach ($specialDays as $specialDay): ?>
+                <p><strong>Fecha:</strong> <?php echo date("d-m-Y", strtotime($specialDay['date'])); ?></p>
+                <p><strong>Descripción:</strong> <?php echo htmlspecialchars($specialDay['description']); ?></p>
+                <p><strong>Horario:</strong> <?php echo date("H:i", strtotime($specialDay['opening_time'])); ?> - <?php echo date("H:i", strtotime($specialDay['closing_time'])); ?></p>
+                <hr>
+            <?php endforeach; ?>
         </div>
-    <?php endif; ?>
+    </div>
+<?php endif; ?>
     <!-- Sección de bienvenida -->
     <main>
         <section id="home">
@@ -267,10 +267,9 @@ include 'setup_files/header.php'; // Incluir el header
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-    // Función para cerrar el banner cuando el usuario hace clic en el botón de cierre
     function closeBanner() {
         document.querySelector('.special-opening-banner').style.display = 'none';
     }
-    </script>
+</script>
 </body>
 </html>

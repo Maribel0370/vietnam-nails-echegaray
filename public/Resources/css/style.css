@@ -197,7 +197,7 @@ nav {
 #about {
     height: 550px;
     text-align: center;
-    padding: 100px 0;
+    padding: 70px 0;
     background: transparent;
     background-color: rgba(238, 236, 236, 0.636);
     position: relative;
@@ -237,6 +237,29 @@ nav {
         z-index: -1;
     }
 
+}
+/* Media Query para pantallas pequeñas (móviles) */
+@media (max-width: 576px) {
+    .about {
+        margin-top: 40px !important;  /* Margen superior */
+        margin-bottom: 20px !important; /* Margen inferior */
+    }
+}
+
+/* Media Query para pantallas medianas (tabletas) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .about {
+        margin-top: 40px !important;  /* Margen superior */
+        margin-bottom: 20px !important; /* Margen inferior */
+    }
+}
+
+/* Media Query para pantallas grandes (escritorio) */
+@media (min-width: 769px) {
+    .about {
+        margin-top: 40px !important;  /* Margen superior */
+        margin-bottom: 20px !important; /* Margen inferior */
+    }
 }
 /* Carrousel Section */
 
@@ -989,36 +1012,6 @@ section {
     margin: 0;
     font-size: 0.55rem;
 }
-.special-opening-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #b04b6d; /* Color de fondo del banner */
-    padding: 15px;
-    text-align: center;
-    z-index: 1000;
-}
-
-.banner-content h3 {
-    font-size: 1.5em;
-    margin: 0;
-}
-
-.close-banner {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    color: black;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.close-banner:hover {
-    color: red;
-}   
 
 
 

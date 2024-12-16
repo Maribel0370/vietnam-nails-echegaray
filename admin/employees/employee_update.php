@@ -25,6 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['phone'],
             $_POST['id']
         ]);
+
+        // Verificar si se actualizó alguna fila
+        if ($stmt->rowCount() === 0) {
+            throw new Exception('No se pudo actualizar el empleado. Verifique el ID.');
+        }
         
         echo json_encode(['success' => true]);
     } catch (Exception $e) {

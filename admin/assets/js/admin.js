@@ -165,6 +165,8 @@ $(document).ready(function() {
         });
     });
 
+    
+
  // Editar personal
 $(document).on('click', '.edit-staff', function() {
     const row = $(this).closest('tr');
@@ -240,57 +242,57 @@ $(document).on('click', '.cancel-edit', function() {
     row.find('.delete-staff').show();
 });
 
-    // Activar/Desactivar personal
-    $('.toggle-staff-status').change(function() {
-        const $checkbox = $(this);
-        const id = $checkbox.data('id');
-        const isActive = $checkbox.prop('checked') ? 1 : 0; // 1 para activo, 0 para inactivo
+// Activar/Desactivar personal
+$('.toggle-staff-status').change(function() {
+    const $checkbox = $(this);
+    const id = $checkbox.data('id');
+    const isActive = $checkbox.prop('checked') ? 1 : 0; // 1 para activo, 0 para inactivo
 
-        $.ajax({
-            url: 'ajax/toggle_status.php', // Cambia a la URL de toggle_status.php
-            type: 'POST',
-            data: {
-                id: id,
-                type: 'employee', // Especificar que es un empleado
-                is_active: isActive
-            },
-            success: function(response) {
-                if (!response.success) {
-                    alert('Error al actualizar el estado: ' + response.message);
-                    $checkbox.prop('checked', !$checkbox.prop('checked')); // Revertir el estado si hay un error
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error de conexión:', textStatus, errorThrown);
-                alert('Error de conexión al servidor');
+    $.ajax({
+        url: 'ajax/toggle_status.php', // Cambia a la URL de toggle_status.php
+        type: 'POST',
+        data: {
+            id: id,
+            type: 'employee', // Especificar que es un empleado
+            is_active: isActive
+        },
+        success: function(response) {
+            if (!response.success) {
+                alert('Error al actualizar el estado: ' + response.message);
                 $checkbox.prop('checked', !$checkbox.prop('checked')); // Revertir el estado si hay un error
             }
-        });
-    });
-
-    // Eliminar personal
-    $('.delete-staff').click(function() {
-        if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
-            const row = $(this).closest('tr');
-            const id = $(this).data('id');
-            
-            $.ajax({
-                url: 'employees/employee_delete.php',
-                type: 'POST',
-                data: { id: id },
-                success: function(response) {
-                    if (response.success) {
-                        row.remove();
-                    } else {
-                        alert('Error al eliminar el empleado: ' + response.message);
-                    }
-                },
-                error: function() {
-                    alert('Error de conexión al servidor');
-                }
-            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error de conexión:', textStatus, errorThrown);
+            alert('Error de conexión al servidor');
+            $checkbox.prop('checked', !$checkbox.prop('checked')); // Revertir el estado si hay un error
         }
     });
+});
+
+// Eliminar personal
+$('.delete-staff').click(function() {
+    if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+        const row = $(this).closest('tr');
+        const id = $(this).data('id');
+        
+        $.ajax({
+            url: 'employees/employee_delete.php',
+            type: 'POST',
+            data: { id: id },
+            success: function(response) {
+                if (response.success) {
+                    row.remove();
+                } else {
+                    alert('Error al eliminar el empleado: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error de conexión al servidor');
+            }
+        });
+    }
+});
 
 
     $(document).on('submit', '#addSpecialDayForm', function(e) {
@@ -313,4 +315,66 @@ $(document).on('click', '.cancel-edit', function() {
             }
         });
     });
+
+    // Cambiar estado de horario (activar/desactivar)
+    $(document).on('change', '.toggle-schedule-status', function() {
+        const id = $(this).data('id');
+        const isActive = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            url: 'ajax/toggle_status.php',
+            type: 'POST',
+            data: {
+                id: id,
+                isActive: isActive
+            },
+            success: function(response) {
+                const result = JSON.parse(response);
+                if (result.success) {
+                    // Si la respuesta es exitosa, no hacer nada
+                    console.log('Estado actualizado correctamente.');
+                } else {
+                    // Si hay un error, mostrarlo
+                    alert('Error al cambiar el estado del horario: ' + result.error);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error de conexión:', textStatus, errorThrown);
+                // No mostrar un mensaje de error si la conexión es exitosa
+            }
+        });
+    });
 }); 
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-schedule');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const scheduleId = this.getAttribute('data-id');
+            console.log('ID enviado:', scheduleId); // Verifica si el ID se envía correctamente
+            if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
+                fetch('schedule/schedule_delete.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'id_workSchedule=' + scheduleId // Asegúrate de usar el mismo nombre de campo
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta:', data); // Imprime la respuesta del servidor
+                    alert(data.message);
+                    if (data.success) {
+                        location.reload(); // Recargar la página si la eliminación fue exitosa
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    });
+});
+
+
+

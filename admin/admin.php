@@ -249,6 +249,44 @@ try {
     logError($e->getMessage());
     // ... código existente ...
 }
+
+// Obtener todos los empleados
+$employees = $pdo->query("SELECT * FROM employees")->fetchAll(PDO::FETCH_ASSOC);
+
+// Manejar la solicitud para ver horarios de un empleado
+$schedules = [];
+$selectedEmployeeId = null; // Variable para mantener el ID del empleado seleccionado
+$editSchedule = null; // Variable para almacenar el horario a editar
+$showCreateForm = false; // Variable para controlar la visibilidad del formulario de creación
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_employee'])) {
+    $selectedEmployeeId = $_POST['id_employee']; // Guardar el ID del empleado seleccionado
+
+    try {
+        $sql = "SELECT * FROM workschedules WHERE id_employee = ? ORDER BY dayOfWeek ASC, startTime ASC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$selectedEmployeeId]);
+        $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error al obtener horarios: " . $e->getMessage());
+        $schedules = [];
+    }
+}
+
+// Manejar la solicitud de edición
+if (isset($_GET['edit_id'])) {
+    $editId = $_GET['edit_id'];
+    $sql = "SELECT * FROM workschedules WHERE id_workSchedule = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$editId]);
+    $editSchedule = $stmt->fetch(PDO::FETCH_ASSOC);
+    $selectedEmployeeId = $editSchedule['id_employee']; // Mantener el ID del empleado al editar
+}
+
+// Manejar la solicitud para crear un nuevo horario
+if (isset($_GET['create'])) {
+    $showCreateForm = true; // Mostrar el formulario de creación
+}
 ?>
 
 <!DOCTYPE html>
@@ -279,7 +317,7 @@ try {
             </a>
         </div>
     </header>
-
+<main>
     <div class="container admin-container">
         <h2 class="mb-4">Panel de Administración</h2>
 
@@ -316,6 +354,7 @@ try {
                 </button>
             </li>
         </ul>
+
 
         <!-- Contenido de las pestañas -->
         <div class="tab-content" id="adminTabsContent">
@@ -518,21 +557,21 @@ try {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-sm btn-primary edit-staff" data-id="<?= $employee['id_employee'] ?>">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger delete-staff" data-id="<?= $employee['id_employee'] ?>">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-success save-staff" style="display: none;" data-id="<?= $employee['id_employee'] ?>">
-                                                    <i class="fas fa-save"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-secondary cancel-edit" style="display: none;">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </td>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-sm btn-primary edit-staff" data-id="<?= $employee['id_employee'] ?>">
+            <i class="fas fa-edit"></i> <!-- Ícono de lápiz -->
+        </button>
+        <button type="button" class="btn btn-sm btn-danger delete-staff" data-id="<?= $employee['id_employee'] ?>">
+            <i class="fas fa-trash"></i> <!-- Ícono de papelera -->
+        </button>
+        <button type="button" class="btn btn-sm btn-success save-staff" style="display: none;" data-id="<?= $employee['id_employee'] ?>">
+            <i class="fas fa-save"></i> <!-- Ícono de disquete -->
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary cancel-edit" style="display: none;">
+            <i class="fas fa-times"></i> <!-- Ícono de X -->
+        </button>
+    </div>
+</td>
                                     </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
@@ -551,121 +590,176 @@ try {
                 <div class="schedule-content">
                     <h3>Gestión de Horarios</h3>
                     
-                    <!-- Formulario para añadir nuevo horario -->
-                    <form method="POST" id="addScheduleForm" class="mb-4">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label>Empleado *</label>
-                                    <select name="id_employee" class="form-control" required>
-                                        <?php foreach ($staff as $employee): ?>
-                                            <option value="<?= $employee['id_employee'] ?>">
-                                                <?= htmlspecialchars($employee['firstName'] . ' ' . $employee['lastName']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label>Día de la semana *</label>
-                                    <select name="dayOfWeek" class="form-control" required>
-                                        <option value="Monday">Lunes</option>
-                                        <option value="Tuesday">Martes</option>
-                                        <option value="Wednesday">Miércoles</option>
-                                        <option value="Thursday">Jueves</option>
-                                        <option value="Friday">Viernes</option>
-                                        <option value="Saturday">Sábado</option>
-                                        <option value="Sunday">Domingo</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label>Tipo de Jornada *</label>
-                                    <select name="blockType" class="form-control" required>
-                                        <option value="Full Day">Jornada Completa</option>
-                                        <option value="Morning">Mañana</option>
-                                        <option value="Afternoon">Tarde</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label>Hora inicio *</label>
-                                    <input type="time" name="startTime" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label>Hora fin *</label>
-                                    <input type="time" name="endTime" class="form-control" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-check mb-3">
-                            <input type="checkbox" name="isActive" class="form-check-input" id="scheduleActive" checked>
-                            <label class="form-check-label" for="scheduleActive">Activo</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Añadir Horario</button>
-                    </form>
-
-                    <!-- Lista de horarios -->
-                    <div class="table-responsive mt-4">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Empleado</th>
-                                    <th>Día</th>
-                                    <th>Tipo</th>
-                                    <th>Hora Inicio</th>
-                                    <th>Hora Fin</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($schedules)): ?>
-                                    <?php foreach ($schedules as $schedule): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($schedule['employeeName']) ?></td>
-                                        <td><?= $diasSemana[$schedule['dayOfWeek']] ?></td>
-                                        <td><?= $tiposJornada[$schedule['blockType']] ?></td>
-                                        <td><?= date('H:i', strtotime($schedule['startTime'])) ?></td>
-                                        <td><?= date('H:i', strtotime($schedule['endTime'])) ?></td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input type="checkbox" class="form-check-input toggle-schedule-status" 
-                                                       data-id="<?= $schedule['id_workSchedule'] ?>" 
-                                                       <?= $schedule['isActive'] ? 'checked' : '' ?>>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-sm btn-primary edit-schedule" 
-                                                        data-id="<?= $schedule['id_workSchedule'] ?>">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger delete-schedule" 
-                                                        data-id="<?= $schedule['id_workSchedule'] ?>">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center">No hay horarios registrados</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                  <!-- Formulario para seleccionar un empleado y ver sus horarios -->
+    <form method="POST" id="viewScheduleForm" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group mb-3">
+                    <label>Seleccionar Empleado *</label>
+                    <select name="id_employee" class="form-control" id="employeeSelect" required>
+                        <?php foreach ($employees as $employee): ?>
+                            <option value="<?= $employee['id_employee'] ?>" <?= ($selectedEmployeeId == $employee['id_employee']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($employee['firstName'] . ' ' . $employee['lastName']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Ver Horarios</button>
+        
+    </form>
+
+    <!-- Contenedor para mostrar los horarios del empleado seleccionado -->
+    <div id="employeeSchedules" class="mt-3">
+        <?php if (!empty($schedules)): ?>
+            <h4>Horarios del Empleado:</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Tipo</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($schedules as $schedule): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($schedule['dayOfWeek']) ?></td>
+                        <td><?= htmlspecialchars($schedule['blockType']) ?></td>
+                        <td><?= date('H:i', strtotime($schedule['startTime'])) ?></td>
+                        <td><?= date('H:i', strtotime($schedule['endTime'])) ?></td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input toggle-schedule-status" 
+                                       data-id="<?= $schedule['id_workSchedule'] ?>" 
+                                       <?= $schedule['isActive'] ? 'checked' : '' ?>>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="?edit_id=<?= $schedule['id_workSchedule'] ?>" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger delete-schedule" 
+        data-id="<?= htmlspecialchars($schedule['id_workSchedule']) ?>" 
+        aria-label="Eliminar horario del día <?= htmlspecialchars($schedule['dayOfWeek']) ?>">
+        <i class="fas fa-trash" aria-hidden="true"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No hay horarios registrados para este empleado.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Formulario de Edición -->
+    <?php if ($editSchedule): ?>
+        <h4>Editar Horario:</h4>
+        <form method="POST" action="schedule/schedule_update.php">
+            <input type="hidden" name="id" value="<?= $editSchedule['id_workSchedule'] ?>">
+            <input type="hidden" name="employee" value="<?= $selectedEmployeeId ?>"> <!-- Mantener el ID del empleado -->
+            <div class="form-group">
+                <label>Día de la semana *</label>
+                <select name="dayOfWeek" class="form-control" required>
+                    <option value="Monday" <?= $editSchedule['dayOfWeek'] == 'Monday' ? 'selected' : '' ?>>Lunes</option>
+                    <option value="Tuesday" <?= $editSchedule['dayOfWeek'] == 'Tuesday' ? 'selected' : '' ?>>Martes</option>
+                    <option value="Wednesday" <?= $editSchedule['dayOfWeek'] == 'Wednesday' ? 'selected' : '' ?>>Miércoles</option>
+                    <option value="Thursday" <?= $editSchedule['dayOfWeek'] == 'Thursday' ? 'selected' : '' ?>>Jueves</option>
+                    <option value="Friday" <?= $editSchedule['dayOfWeek'] == 'Friday' ? 'selected' : '' ?>>Viernes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tipo de Jornada *</label>
+                <select name="blockType" class="form-control" required>
+                    <option value="Full Day" <?= $editSchedule['blockType'] == 'Full Day' ? 'selected' : '' ?>>Jornada Completa</option>
+                    <option value="Morning" <?= $editSchedule['blockType'] == 'Morning' ? 'selected' : '' ?>>Mañana</option>
+                    <option value="Afternoon" <?= $editSchedule['blockType'] == 'Afternoon' ? 'selected' : '' ?>>Tarde</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Hora inicio *</label>
+                <input type="time" name="startTime" class="form-control" value="<?= $editSchedule['startTime'] ?>" required min="09:30" max="20:30">
+            </div>
+            <div class="form-group">
+                <label>Hora fin *</label>
+                <input type="time" name="endTime" class="form-control" value="<?= $editSchedule['endTime'] ?>" required min="09:30" max="20:30">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="isActive" class="form-check-input" id="scheduleActive" <?= $editSchedule['isActive'] ? 'checked' : '' ?>>
+                <label class="form-check-label" for="scheduleActive">Activo</label>
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> 
+                </button>
+                <a href="admin.php?id_employee=<?= $selectedEmployeeId ?>" class="btn btn-secondary" aria-label="Cancelar la acción">
+                  <i class="fas fa-times" aria-hidden="true"></i> 
+                </a>
+                <a href="?create=true" class="btn btn-success" aria-label="Crear nuevo horario">
+                    <i class="fas fa-plus" aria-hidden="true"></i> 
+                </a>
+            </div>       
+             
+            </div>
+        </form>
+    <?php endif; ?>
+
+    <!-- Formulario para Crear Nuevo Horario -->
+    <?php if ($showCreateForm): ?>
+        <h4>Crear Nuevo Horario:</h4>
+        <form method="POST" action="schedule/schedule_create.php" class="mb-4">
+            <input type="hidden" name="id_employee" value="<?= $selectedEmployeeId ?>">
+            <div class="form-group">
+                <label>Día de la semana *</label>
+                <select name="dayOfWeek" class="form-control" required>
+                    <option value="Monday">Lunes</option>
+                    <option value="Tuesday">Martes</option>
+                    <option value="Wednesday">Miércoles</option>
+                    <option value="Thursday">Jueves</option>
+                    <option value="Friday">Viernes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tipo de Jornada *</label>
+                <select name="blockType" class="form-control" required>
+                    <option value="Full Day">Jornada Completa</option>
+                    <option value="Morning">Mañana</option>
+                    <option value="Afternoon">Tarde</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Hora inicio *</label>
+                <input type="time" name="startTime" class="form-control" required min="09:30" max="20:30">
+            </div>
+            <div class="form-group">
+                <label>Hora fin *</label>
+                <input type="time" name="endTime" class="form-control" required min="09:30" max="20:30">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="isActive" class="form-check-input" id="scheduleActive" checked>
+                <label class="form-check-label" for="scheduleActive">Activo</label>
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-success" aria-label="Guardar horario">
+                <i class="fas fa-save" aria-hidden="true"></i> 
+            </button>
+            <a href="admin.php?id_employee=<?= $selectedEmployeeId ?>" class="btn btn-secondary" aria-label="Cancelar la acción">
+                <i class="fas fa-times" aria-hidden="true"></i> 
+            </a> <!-- Botón de Cancelar -->
+            <a href="?edit=true" class="btn btn-primary" aria-label="Editar horario existente">
+                <i class="fas fa-edit" aria-hidden="true"></i> 
+            </a>
+    
+            </div>
+        </form>
+    <?php endif; ?>
 
             <!-- Pestaña de Días Especiales -->
             <div class="tab-pane fade" id="special-days" role="tabpanel" aria-labelledby="special-days-tab">
@@ -778,6 +872,7 @@ try {
             </div>
         </div>
     </div>
+    </main>
 
     <footer>
     <div class="contentFooter">

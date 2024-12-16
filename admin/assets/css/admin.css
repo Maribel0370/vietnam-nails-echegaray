@@ -1,13 +1,13 @@
 /* Estilos base */
 body {
     font-family: 'Roboto', sans-serif;
-    background-image: url('../public/resources/images/pared_vn.jpg');
+    background: var(--background-body),
+                url('../img/pared_vn.jpg');
     background-size: cover;
+    background-position: left top;  /* Posiciona la imagen arriba y a la izquierda */
+    background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
 }
 
 header {
@@ -466,4 +466,32 @@ select[multiple] {
     padding-left: 5px;  /* Ajusta el padding izquierdo */
 }
 
+/* Footer */
+footer {
+    background: linear-gradient(135deg, rgb(94, 94, 94), rgba(206, 205, 205), rgb(152, 151, 151), rgb(173, 173, 173), rgb(103, 103, 103));
+    position: sticky;
+    background-size: 200% 110%; 
+    animation: shine;
+    padding: 30px 0;
+    text-align: center;
 
+    .contentFooter {
+        display: flex;
+        margin: 0 auto;
+        width: 50%;
+        justify-content: space-between;
+
+        .redes, .contacto {
+            img {
+                width: 60px;
+                height: auto;
+                margin: 0 5px;
+            }
+        }
+
+        .contacto {
+            a {
+                color: #0056b3;
+            }
+        }
+    }

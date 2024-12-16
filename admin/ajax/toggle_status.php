@@ -48,3 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     echo json_encode(['success' => false, 'message' => 'Método no permitido']);
 } 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = $_POST['id'];
+    $isActive = $_POST['isActive'];
+
+    try {
+        $sql = "UPDATE workschedules SET isActive = ? WHERE id_workSchedule = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$isActive, $id]);
+
+        echo json_encode(['success' => true]); // Respuesta exitosa en formato JSON
+    } catch (PDOException $e) {
+        error_log("Error al cambiar el estado del horario: " . $e->getMessage());
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]); // Respuesta de error
+    }
+}

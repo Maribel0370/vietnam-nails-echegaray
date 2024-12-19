@@ -1012,6 +1012,47 @@ section {
     margin: 0;
     font-size: 0.55rem;
 }
+.special-opening-banner {
+    position: fixed !important;
+    top: 50% !important; /* Centrado vertical */
+    left: 20px !important; /* Espacio desde el lado izquierdo */
+    transform: translateY(-50%) !important; /* Centrado vertical */
+    width: 300px !important; /* Ancho del banner */
+    background-color: #b04b6d !important; /* Color de fondo */
+    padding: 20px !important; /* Espaciado interno */
+    border-radius: 10px !important; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; /* Sombra */
+    z-index: 1000 !important; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.banner-content, h3 {
+    color: white; /* Color del texto */
+}
+
+.banner-content h3 {
+    font-size: 1.2rem; /* Tamaño del título */
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+.banner-content p {
+    font-size: 1rem; /* Tamaño del texto */
+    margin: 5px 0; /* Espaciado entre párrafos */
+}
+
+.close-banner {
+    position: absolute;
+    top: 0px;
+    right: 7px;
+    background: transparent;
+    border: none;
+    color: white; /* Color del botón de cierre */
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.close-banner:hover {
+    color: red; /* Color al pasar el mouse */
+}
 
 
 

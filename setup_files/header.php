@@ -16,9 +16,9 @@ include_once __DIR__ . '/init.php';
  $isAdmin = strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
  $basePath = $isAdmin ? '../' : '';
  ?>
-    <link rel="icon" href="public/Resources/img/icons/favicon_vne.png" type="image/x-icon"> <!-- Añadir favicon -->
+    <link rel="icon" href="/public/Resources/img/icons/favicon_vne.png?v=1.1" type="image/x-icon"> <!-- Añadir favicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="<?php echo $basePath; ?>public/resources/css/styles.css"> <!-- Archivo de estilos -->
+    <link rel="stylesheet" hrefpublic/Resources/css/styles.css?v=1.1"> <!-- Archivo de estilos -->
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
 </head>
 <body>

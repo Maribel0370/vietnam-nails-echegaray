@@ -30,7 +30,7 @@ function translate($key, $default = '') {
 $sql = "SELECT * FROM special_days 
         WHERE date >= CURDATE() 
         AND is_open = 1 
-        ORDER BY date ASC LIMIT 4"; // Solo obtenemos los 4 primeros
+        ORDER BY date ASC LIMIT 4"; // Solo obtenemos los cuatro primeros
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $specialDays = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -54,12 +54,10 @@ include 'setup_files/header.php'; // Incluir el header
     <meta name="author" content=" Maribel García, David Gutierrez, Fernanda Montalvan, Cristian Gómez">
     <meta name="description" content="Vietnam Nails">
     <meta name="keywords" content="nail salon, manicure, pedicure, Salon uñas Badalona">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Estilos personalizados -->
-<link rel="stylesheet" href="public/Resources/css/style.css?v=1.1">
-
-    <title><?php echo translate('welcome_message', 'Vietnam Nails Echegaray'); ?></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="public/Resources/css/style.css?v=1.1">
 </head>  
 <body>
 <?php if (count($specialDays) > 0): ?>

@@ -222,27 +222,127 @@ include_once __DIR__ . '/init.php';
 
     <!-- Modal de Reservas -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- anterior aviso de reserva 
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Realizar una reserva'); ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="mb-3">
+                        <strong>¡Estamos trabajando para ti!</strong><br>
+                        El sistema de reservas estará disponible muy pronto. Mientras tanto, puedes contactarnos a través de WhatsApp.
+                    </p>
+                    <a href="https://wa.me/34608268978" target="_blank" class="btn whatsapp-btn d-flex align-items-center justify-content-center">
+                    <img src="../public/Resources/img/icons/whatsapp.png" alt="WhatsApp" style="width: 24px; height: 24px; margin-right: 8px;">
+                    Contactar por WhatsApp
+                    </a>
+                </div>
+                -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel"><?php echo translate('make_reservation', 'Reservar servicios'); ?></h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservationForm" novalidate>
+                        <!-- Datos personales -->
+                        <div class="personal-info">
+                            <div class="personal-info-row">
+                                <!-- Nombre del cliente -->
+                                <div class="form-group">
+                                    <label for="name">Nombre completo:</label>
+                                    <input type="text" id="name" name="name" placeholder="Tú nombre" required>
+                                </div>
+                                <!-- Teléfono del cliente -->
+                                <div class="form-group">
+                                    <label for="phone">Teléfono:</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="Tú número móvil" required>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Servicios -->
+                        <div id="servicesContainer">
+                            <div class="service-group" data-service-id="1">
+                                <h5>Servicio 1</h5>
+                                <!-- Fecha y hora del servicio -->
+                                <div class="date-time-container">
+                                    <div class="calendar-wrapper">
+                                        <input type="date" id="calendar_1" name="calendar_1" required
+                                            lang="es"
+                                            data-date-format="DD/MM/YYYY"
+                                            style="dsipay: none;">
+                                        <div id="calendarContainer_1" class="calendar-container"></div>
+                                    </div>
+                                    <div class="time-wrapper">
+                                        <label>Horarios disponibles:</label>
+                                        <div id="timeSelector_1" class="time-selector">
+                                            <!-- Aquí se añadirán los horarios disponibles dinámicamente -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Servicios y Empleados -->
+                                <div class="service-employee-container">
+                                    <div class="form-group">
+                                        <label for="service_1">Servicio:</label>
+                                        <select id="service_1" name="service_1" required>
+                                            <option value="">Selecciona un servicio</option>
+                                            <!-- Aquí se añadirán los servicios dinámicamente -->
+                                            <?php
+                                            $sql = "SELECT id_service, nameService FROM services WHERE isActive = 1";
+                                            $stmt = $pdo->query($sql);
+                                            $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if($services && count($services) > 0) {
+                                                foreach ($services as $row) {
+                                                    echo "<option value='" . $row['id_service'] . "'>" . htmlspecialchars($row['nameService']) . "</option>";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="employee_1">Empleado:</label>
+                                        <select id="employee_1" name="employee_1" required>
+                                            <option value="">Seleccione un empleado</option>
+                                            <!-- Aquí se añadirán los empleados dinámicamente -->
+                                            <?php
+                                            $sql = "SELECT id_employee, firstName, lastName FROM employees WHERE isActive = 1";
+                                            $stmt = $pdo->query($sql);
+                                            $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            if($employees && count($employees) > 0) {
+                                                foreach ($employees as $row) {
+                                                    echo "<option value='" . $row['id_employee'] . "'>" . htmlspecialchars($row['firstName'] . ' ' . $row['lastName']) . "</option>";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contenedor de botones -->
+                        <div class="buttons-container">
+                            <div class="left-buttons">
+                                <button type="button" id="addService">Añadir otro servicio</button>
+                                <button type="submit">Confirmar Reserva</button>
+                            </div>
+                            <div class="right-buttons">
+                                <button type="button" id="cancelReservation">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-            <div class="modal-body text-center">
-                <p class="mb-3">
-                    <strong>¡Estamos trabajando para ti!</strong><br>
-                    El sistema de reservas estará disponible muy pronto. Mientras tanto, puedes contactarnos a través de WhatsApp.
-                </p>
-                <a href="https://wa.me/34608268978" target="_blank" class="btn whatsapp-btn d-flex align-items-center justify-content-center">
-                 <img src="../public/Resources/img/icons/whatsapp.png" alt="WhatsApp" style="width: 24px; height: 24px; margin-right: 8px;">
-                 Contactar por WhatsApp
-            </a>
-           </div>
         </div>
     </div>
-</div>
  
 
 
@@ -358,6 +458,7 @@ window.onclick = function(event) {
         startOfferCountdown('<?php echo $offer['end_date']; ?>', 'offerTimer_<?php echo $offer['id_offer']; ?>');
     <?php endforeach; ?>
 </script>
+<script src="public/javascript/modalReservas.js"></script>
 </body>
 
 </html>

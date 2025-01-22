@@ -268,6 +268,7 @@ include 'setup_files/header.php'; // Incluir el header
     function closeBanner() {
         document.querySelector('.special-opening-banner').style.display = 'none';
     }
-</script>
+    </script>
+    <script src="public/javascript/modalReservas.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost'; // Nombre del servidor
-$dbname = 'VietnamNailsEchegaray'; // Nombre de la base de datos
+$dbname = 'VietnamNails'; // Nombre de la base de datos
 $username = 'root';
-$password = '1234';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

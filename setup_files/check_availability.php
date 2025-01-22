@@ -10,22 +10,22 @@ try {
         throw new Exception('Datos incompletos');
     }
 
-    $database = Database::getInstance();
-    $conn = $database->getConnection();
-
-    $reservationDateTime = date(format: 'Y-m-d H:i:s', strtotime($data['date'] . ' ' . $data['time']));
+    $reservationDateTime = date('Y-m-d H:i:s', strtotime($data['date'] . ' ' . $data['time']));
 
     // Verificar si ya existe una reserva para el empleado en la fecha y hora especificada
-    $sql = 'SELECT COUNT(*) AS count FROM reservations
-            WHERE employee_id = ?
-            AND reservationDate = ?
-            AND status != "cancelled"';
+    $sql = 'SELECT COUNT(*) AS count FROM reservations 
+            WHERE employee_id = :employee_id 
+            AND reservationDate = :reservation_date 
+            AND status != :status';
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('is', $data['employeeId'], $reservationDateTime);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':employee_id' => $data['employeeId'],
+        ':reservation_date' => $reservationDateTime,
+        ':status' => 'cancelled'
+    ]);
+    
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     echo json_encode([
         'available' => ($row['count'] === 0),

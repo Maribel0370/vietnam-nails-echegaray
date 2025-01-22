@@ -6,15 +6,12 @@ header('Content-Type: application/json');
 try {
     $data = json_decode(file_get_contents('php://input'), true);
 
-    if (!isset($data['customer']) ||!isset($data['services'])) {
+    if (!isset($data['customer']) || !isset($data['services'])) {
         throw new Exception('Datos incompletos');
     }
 
-    $database = Database::getInstance();
-    $conn = $database->getConnection();
-
     // Iniciar transacción
-    $conn->begin_transaction();
+    $pdo->beginTransaction();
 
     try {
         // 1. Procesar datos del cliente
@@ -23,107 +20,70 @@ try {
             throw new Exception('Datos del cliente incompletos');
         }
 
-        // Validar formato del teléfono (formato enpañol)
+        // Validar formato del teléfono (formato español)
         if (!preg_match('/^(?:(?:\+|00)34)?[6789]\d{8}$/', $customerData['phone'])) {
             throw new Exception('Formato de teléfono inválido');
         }
 
         // Verificar si el cliente existe
-        $stmt = $conn->prepare("SELECT id_customer, fullName FROM customersDetails WHERE phoneNumber = ?");
-        $stmt->bind_param('s', $customerData['phone']);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $pdo->prepare("SELECT id_customer, fullName FROM customersDetails WHERE phoneNumber = ?");
+        $stmt->execute([$customerData['phone']]);
+        $customer = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result->num_rows > 0) {
+        if ($customer) {
             // Actualizar cliente existente si el nombre ha cambiado
-            $customer = $result->fetch_assoc();
             $customerId = $customer['id_customer'];
-
             if ($customer['fullName'] !== $customerData['name']) {
-                $stmt = $conn->prepare("UPDATE customersDetails SET fullName = ? WHERE id_customer = ?");
-                $stmt->bind_param('si', $customerData['name'], $customerId);
-                $stmt->execute();
+                $stmt = $pdo->prepare("UPDATE customersDetails SET fullName = ? WHERE id_customer = ?");
+                $stmt->execute([$customerData['name'], $customerId]);
             }
         } else {
             // Crear nuevo cliente
-            $stmt = $conn->prepare("INSERT INTO customersDetails (fullName, phoneNumber) VALUES (?,?)");
-            $stmt->bind_param('ss', $customerData['name'], $customerData['phone']);
-            $stmt->execute();
-            $customerId = $conn->insert_id;
+            $stmt = $pdo->prepare("INSERT INTO customersDetails (fullName, phoneNumber) VALUES (?, ?)");
+            $stmt->execute([$customerData['name'], $customerData['phone']]);
+            $customerId = $pdo->lastInsertId();
         }
 
-        // 2. Validar y procesar servicios
+        // 2. Procesar las reservas
         $reservationIds = [];
-        $usedSlots = [];
-
         foreach ($data['services'] as $service) {
-            if (!isset($service['date']) || !isset($service['time']) ||
-                !isset($service['serviceId']) || !isset($service['employeeId'])) {
-                throw new Exception('Datos del servicio incompletos');
-            }
-
-            $reservationDateTime = $service['date'] . ' ' . $service['time'];
-            $slotKey = $service['employeeId'] . '_' . $reservationDateTime;
-
-            // Verificar que el slot no esté duplicado en la misma reserva
-            if (isset($usedSlots[$slotKey])) {
-                throw new Exception('Horario duplicado para el mismo empleado');
-            }
-            $usedSlots[$slotKey] = true;
-
-            // Verificar disponibilidad del empleado
-            $stmt = $conn->prepare("
-                SELECT COUNT(*) AS count 
-                FROM reservations
-                WHERE id_employee = ?
-                AND reservationDate = ?
-                AND status != 'cancelled'"
-            );
-            $stmt->bind_param('is', $service['employeeId'], $reservationDateTime);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-
-            if ($row['count'] > 0) {
-                throw new Exception('Horario no disponible para el empleado seleccionado');
-            }
-
-            // Crear nueva reserva
-            $stmt = $conn->prepare("
+            $stmt = $pdo->prepare("
                 INSERT INTO reservations (id_customer, id_employee, reservationDate, status)
-                VALUES (?,?,?, 'pending')
+                VALUES (?, ?, ?, 'pending')
             ");
-            $stmt->bind_param('iis', $customerId, $service['employeeId'], $reservationDateTime);
-            $stmt->execute();
-            $reservationIds[] = $conn->insert_id;
+            $stmt->execute([
+                $customerId,
+                $service['employeeId'],
+                $service['date'] . ' ' . $service['time']
+            ]);
+            $reservationId = $pdo->lastInsertId();
 
             // Registrar el servicio reservado
-            $stmt = $conn->prepare("
+            $stmt = $pdo->prepare("
                 INSERT INTO reservation_services (id_reservation, id_service) 
-                VALUES (?,?)
+                VALUES (?, ?)
             ");
-            $stmt->bind_param('ii', $conn->insert_id, $service['serviceId']);
-            $stmt->execute();
+            $stmt->execute([$reservationId, $service['serviceId']]);
             
             $reservationIds[] = [
                 'id' => $reservationId,
-                'datetime' => $reservationDateTime,
+                'datetime' => $service['date'] . ' ' . $service['time'],
                 'employeeId' => $service['employeeId'],
                 'serviceId' => $service['serviceId']
             ];
         }
 
-        // Confirmar la transacción si todo esta bien
-        $conn->commit();
+        $pdo->commit();
 
         echo json_encode([
             'success' => true,
             'message' => 'Reservas registradas correctamente',
             'reservations' => $reservationIds
         ]);
+
     } catch (Exception $e) {
         // Revertir la transacción si hay un error
-        $conn->rollback();
+        $pdo->rollBack();
         throw $e;
     }
 } catch (Exception $e) {

@@ -18,7 +18,7 @@ include_once __DIR__ . '/init.php';
  ?>
     <link rel="icon" href="/public/Resources/img/icons/favicon_vne.png?v=1.1" type="image/x-icon"> <!-- Añadir favicon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
-    <link rel="stylesheet" href="public/Resources/css/styles.css?v=1.1"> <!-- Archivo de estilos -->
+    <link rel="stylesheet" href="public/Resources/css/style.css?v=1.1"> <!-- Archivo de estilos -->
     <title>Vietnam Nails Echegaray</title> <!-- Updated title -->
 </head>
 <body>
@@ -275,7 +275,7 @@ include_once __DIR__ . '/init.php';
                                         <input type="date" id="calendar_1" name="calendar_1" required
                                             lang="es"
                                             data-date-format="DD/MM/YYYY"
-                                            style="dsipay: none;">
+                                            style="display: none;">
                                         <div id="calendarContainer_1" class="calendar-container"></div>
                                     </div>
                                     <div class="time-wrapper">
@@ -458,7 +458,10 @@ window.onclick = function(event) {
         startOfferCountdown('<?php echo $offer['end_date']; ?>', 'offerTimer_<?php echo $offer['id_offer']; ?>');
     <?php endforeach; ?>
 </script>
-<script src="public/javascript/modalReservas.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="<?php echo $basePath; ?>public/javascript/modalReservas.js"></script>
 </body>
 
 </html>

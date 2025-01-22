@@ -10,29 +10,26 @@ try {
         throw new Exception('Datos incompletos');
     }
 
-    $database = Database::getInstance();
-    $conn = $database->getConnection();
-
-    $startDateTime = new DataTime($data['date'] . ' ' . $data['time']);
+    $startDateTime = new DateTime($data['date'] . ' ' . $data['time']);
     $endDateTime = clone $startDateTime;
     $endDateTime->modify('+7 days'); // Buscar hasta 7 días después
 
-    $excludeIds = isset($data['excludeEmployeeIds']) ? implode(',', array_map('interval', $data['excludeEmployeeIds'])) : '';
+    $excludeIds = isset($data['excludeEmployeeIds']) ? implode(',', array_map('intval', $data['excludeEmployeeIds'])) : '';
     $excludeCondition = $excludeIds ? "AND e.id_employee NOT IN ($excludeIds)" : '';
 
     // Buscar el próximo horario disponible para cada empleado
-    $sql ="SELECT e.id_employee, e.firstName, e.lastName,
+    $sql = "SELECT e.id_employee, e.firstName, e.lastName,
            DATE(potential_date) AS date, TIME(potential_date) AS time
            FROM employees e
            CROSS JOIN (
-                SELECT DATE_ADD(?, INTERVAL n HOUR) AS potential_date
+                SELECT DATE_ADD(:start_date1, INTERVAL n HOUR) AS potential_date
                 FROM (
                     SELECT @row := @row + 1 AS n
                     FROM (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 3 UNION ALL SELECT 4) t1,
                          (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 3 UNION ALL SELECT 4) t2,
                          (SELECT @row := -1) t3                    
                     ) numbers
-                    WHERE DATE_ADD(?, INTERVAL n HOUR) <=?
+                    WHERE DATE_ADD(:start_date2, INTERVAL n HOUR) <= :end_date
                 ) dates
                 LEFT JOIN reservations r ON r.id_employee = e.id_employee
                     AND r.reservationDate = dates.potential_date
@@ -45,14 +42,18 @@ try {
                 ORDER BY potential_date, e.id_employee
                 LIMIT 1";
 
-    $stmt = $conn->prepare($sql);
+    $stmt = $pdo->prepare($sql);
     $startDateTimeStr = $startDateTime->format('Y-m-d H:i:s');
     $endDateTimeStr = $endDateTime->format('Y-m-d H:i:s');
-    $stmt->bind_param('sss', $startDateTimeStr, $startDateTimeStr, $endDateTimeStr);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->execute([
+        ':start_date1' => $startDateTimeStr,
+        ':start_date2' => $startDateTimeStr,
+        ':end_date' => $endDateTimeStr
+    ]);
 
-    if($row = $result->fetch_assoc()) {
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
         echo json_encode([
             'found' => true,
             'error' => false,

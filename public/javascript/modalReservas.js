@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const calendarInput = document.getElementById("calendar_1");
         if (calendarInput) {
             calendarInput.setAttribute("min", today);
-            calendarInput.setAttribute("value", today);
         }
 
         // Inicializar el primer grupo de servicios
@@ -31,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Función para limpia el formulario
+    // Función para limpiar el formulario
     function resetForm() {
         reservationForm.reset();
 
@@ -40,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("phone").value = "";
 
         // Eliminar todos los grupos de servicios excepto el primero
-        const serviceGroups = document.querySelectorAll(".service-Group");
+        const serviceGroups = document.querySelectorAll(".service-group");
         serviceGroups.forEach((group, index) => {
             if (index > 0) {
                 group.remove();
@@ -50,18 +49,46 @@ document.addEventListener("DOMContentLoaded", function() {
         // Resetear el primer grupo de servicios
         const firstGroup = serviceGroups[0];
         if(firstGroup) {
-            const calendarDays = firstGroup.querySelectorAll(".clendar-day");
+            // Resetear calendario
+            const calendarDays = firstGroup.querySelectorAll(".calendar-day");
             calendarDays.forEach(day => day.classList.remove("selected"));
+            
+            // Resetear input de fecha
+            const calendarInput = firstGroup.querySelector("input[type='date']");
+            if (calendarInput) {
+                calendarInput.value = "";
+            }
 
-            const timeRadios = firstGroup.querySelectorAll(".time-optin input[type='radio']");
-            timeRadios.forEach(radio => radio.checked = false);
+            // Resetear horarios
+            const timeRadios = firstGroup.querySelectorAll("input[type='radio']");
+            timeRadios.forEach(radio => {
+                radio.checked = false;
+            });
+            const timeLabels = firstGroup.querySelectorAll(".time-option label");
+            timeLabels.forEach(label => {
+                label.classList.remove("selected");
+            });
 
-            firstGroup.querySelector("select[id^='service']").value = "";
-            firstGroup.querySelector("select[id^='employee']").value = "";
+            // Resetear selects
+            const serviceSelect = firstGroup.querySelector("select[id^='service']");
+            if (serviceSelect) {
+                serviceSelect.value = "";
+            }
+
+            const employeeSelect = firstGroup.querySelector("select[id^='employee']");
+            if (employeeSelect) {
+                employeeSelect.value = "";
+            }
+
+            // Resetear mensaje de horarios si existe
+            const timeSelector = firstGroup.querySelector(".time-selector");
+            if (timeSelector) {
+                timeSelector.innerHTML = "<div class='no-slots-message'>Seleccione un día para ver los horarios disponibles</div>";
+            }
         }
 
         serviceCounter = 1;
-    };
+    }
 
     // Función para el botón Cancelar
     cancelReservaButton.addEventListener("click", () => {
@@ -197,10 +224,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Agregar los días del mes
         for (let day = 1; day <= lastDay.getDate(); day++) {
+            // Crear la fecha y formatearla correctamente para evitar problemas con la zona horaria
             const currentDate = new Date(currentYear, currentMonth, day);
             const isToday = currentDate.toDateString() === today.toDateString();
-            const dateString = currentDate.toISOString().split("T")[0];
-            const isPast = currentDate < new Date(new Date().setHours(0, 0, 0, 0));
+            
+            // Formatear la fecha manualmente para evitar problemas con la zona horaria
+            const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            
+            // Comparar con la fecha actual
+            const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const isPast = currentDate < todayMidnight;
 
             calendarHTML += `
                 <div class="calendar-day ${isToday ? 'today' : ''} ${isPast ? 'past' : ''}"
@@ -231,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     day.classList.add('selected');
 
                     // Generar los horarios disponibles para la fecha seleccionada
-                    generateTimeSlots(groupId);
+                    generateTimeSlots(groupId, selectedDate);
                 });
             }
         });
@@ -252,13 +285,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Función para generar los horarios disponibles
-    function generateTimeSlots(groupId = 1) {
+    function generateTimeSlots(groupId = 1, selectedDate) {
         const timeSelector = document.getElementById(`timeSelector_${groupId}`);
-        const selectedDate = document.getElementById(`calendar_${groupId}`).value;
-
-        // Si no hay fecha seleccionada, no se generan horarios
+        
+        // Si no hay fecha seleccionada, mostrar mensaje y salir
         if (!selectedDate) {
-            timeSelector.innerHTML = "<div class='no-slots-message'>Por favor selecciona una fecha.</div>";
+            timeSelector.innerHTML = "<div class='no-slots-message'>Seleccione un día para ver los horarios disponibles</div>";
             return;
         }
 
@@ -275,27 +307,29 @@ document.addEventListener("DOMContentLoaded", function() {
         const today = now.toISOString().split("T")[0];
         const currentHour = now.getHours();
         const currentMinutes = now.getMinutes();
+        const currentTime = currentHour * 60 + currentMinutes;
 
-        // Verificar si estamos fuera del horario de atención
-        const isOutsideBusinessHours = currentHour >= 20 || currentHour < 9 || 
-                                      (currentHour === 9 && currentMinutes > 30) || 
-                                      (currentHour === 20 && currentMinutes > 0);
-
-        // Si es el día actual y estamos fuera del horario de atención, mostrar mensaje
-        if (selectedDate === today && isOutsideBusinessHours) {
-            timeSelector.innerHTML = "<div class='no-slots-message'>Lo sentimos, no hay horarios disponibles para el día seleccionado. Por favor, seleccione otro día.</div>";
-            return;
+        // Verificar si es el día actual y si estamos fuera del horario de atención
+        if (selectedDate === today) {
+            // Si es después de las 20:00 o antes de las 9:30, no hay horarios disponibles
+            if (currentHour >= 20 ) { // || (currentHour === 9 && currentMinutes < 30) || currentHour < 9) {
+                timeSelector.innerHTML = "<div class='no-slots-message'>No hay más horarios disponibles para hoy. Por favor, seleccione otro día.</div>";
+                return;
+            }
         }
 
         let slotsHTML = "";
+        let hasAvailableSlots = false;
+
         timeSlots.forEach(timeString => {
             const [slotHour, slotMinute] = timeString.split(":").map(num => parseInt(num));
+            const slotTime = slotHour * 60 + slotMinute;
             let isDisabled = false;
 
-            // Verificar si la hora ya pasó para el día actual
+            // Solo verificar horarios pasados si es el día actual
             if (selectedDate === today) {
-                if (slotHour < currentHour || 
-                    (slotHour === currentHour && slotMinute <= currentMinutes)) {
+                // Deshabilitar si la hora ya pasó o si es la hora actual
+                if (slotTime <= currentTime) {
                     isDisabled = true;
                 }
             }
@@ -312,18 +346,26 @@ document.addEventListener("DOMContentLoaded", function() {
                            class="${isDisabled ? 'disabled' : ''}">${timeString}</label>
                 </div>
             `;
+
+            if (!isDisabled) {
+                hasAvailableSlots = true;
+            }
         });
+
+        // Si es el día actual y no hay slots disponibles, mostrar mensaje
+        if (selectedDate === today && !hasAvailableSlots) {
+            timeSelector.innerHTML = "<div class='no-slots-message'>No hay más horarios disponibles para hoy. Por favor, seleccione otro día.</div>";
+            return;
+        }
 
         timeSelector.innerHTML = slotsHTML;
 
         // Agregar eventos click a las etiquetas
         timeSelector.querySelectorAll('.time-option label:not(.disabled)').forEach(label => {
             label.addEventListener('click', function() {
-                // Remover la selección previa
                 timeSelector.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
                 timeSelector.querySelectorAll('label').forEach(l => l.classList.remove('selected'));
                 
-                // Seleccionar el nuevo horario
                 const input = document.getElementById(this.getAttribute('for'));
                 input.checked = true;
                 this.classList.add('selected');

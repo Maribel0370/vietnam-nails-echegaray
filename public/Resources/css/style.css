@@ -1287,7 +1287,7 @@ section {
 
 .buttons-container #cancelReservation {
     background-color: #dc3545;
-    color: white;
+    color: var(--font-color);
 }
 
 .buttons-container #cancelReservation:hover {
